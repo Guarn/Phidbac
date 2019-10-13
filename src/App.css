@@ -1,22 +1,114 @@
-.App {
-  text-align: center;
+* {
+    box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #e2e0d8;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.DEVOIR {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 0s infinite;
+}
+.ART {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 1s infinite;
+}
+.BONHEUR {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 2s infinite;
+}
+.CONSCIENCE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 3s infinite;
+}
+.INCONSCIENT {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 4s infinite;
+}
+.JUSTICE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 5s infinite;
+}
+.TEMPS {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 6s infinite;
+}
+.VERITE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 7s infinite;
+}
+.NATURE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 8s infinite;
+}
+.LIBERTE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 9s infinite;
+}
+.LANGAGE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 10s infinite;
+}
+.ETAT {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 11s infinite;
+}
+.RELIGION {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 12s infinite;
+}
+.SCIENCE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 13s infinite;
+}
+.RAISON {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 14s infinite;
+}
+.TECHNIQUE {
+    fill: #bfbfbf;
+    animation: opacite 12s linear 15s infinite;
 }
 
-.App-link {
-  color: #09d3ac;
+@keyframes opacite {
+    0% {
+        fill: #bfbfbf;
+    }
+    10% {
+        fill: #878787;
+    }
+    20% {
+        fill: #bfbfbf;
+    }
+    30% {
+        fill: #4e4e4e;
+    }
+    40% {
+        fill: #bfbfbf;
+    }
+    50% {
+        fill: #000000;
+    }
+    60% {
+        fill: #bfbfbf;
+    }
 }
+
+
+
+
+
