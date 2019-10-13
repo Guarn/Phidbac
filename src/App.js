@@ -225,22 +225,17 @@ const App = (props) => {
                         />
                     </BoutonHome>
                     <ConteneurLiensPage>
-                        <BoutonPage
-                            onClick={() => changementPage("/Programme")}
-                        >
+                        <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
                             Programmes / Epreuves
-                        </BoutonPage>
-
-                        <BoutonPage onClick={() => changementPage("/Cours")}>
-                            Cours
-                        </BoutonPage>
-                        <BoutonPage
-                            onClick={() => changementPage("/Exercices")}
-                        >
-                            Exercices
                         </BoutonPage>
                         <BoutonPage onClick={() => changementPage("/Sujets")}>
                             Sujets
+                        </BoutonPage>
+                        <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                            Cours
+                        </BoutonPage>
+                        <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                            Exercices
                         </BoutonPage>
 
                         <BoutonPage
