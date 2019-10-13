@@ -114,8 +114,8 @@ const App = (props) => {
     const [identMod, setIdentMod] = useState(false);
     let test = false;
     const [coordsCercle, setCoordsCercle] = useState({
-        Top: "-60%",
-        Left: "50%"
+        Top: "-10%",
+        Left: "-40%"
     });
 
     let changementPage = (UrlPage) => {
