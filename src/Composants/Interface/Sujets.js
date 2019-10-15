@@ -170,7 +170,8 @@ const Sujets = (props) => {
             2015,
             2016,
             2017,
-            2018
+            2018,
+            2019
         ],
         destinations: [],
         auteurs: [],
@@ -436,11 +437,11 @@ const Sujets = (props) => {
                                 ]
                             ].toString()
                         }}
-                        max={2018}
+                        max={2019}
                         min={1996}
                         tooltipVisible={false}
                         step={1}
-                        defaultValue={[1996, 2018]}
+                        defaultValue={[1996, 2019]}
                         onChange={(val) => changeFiltres(val, "annees")}
                     />
 
@@ -454,7 +455,7 @@ const Sujets = (props) => {
                             RefSessions.current.state.value = "TOUTES";
                             RefAnnees.current.rcSlider.state.bounds = [
                                 1996,
-                                2018
+                                2019
                             ];
                             setFiltres(false);
                             setIdSujet(1);
@@ -486,7 +487,8 @@ const Sujets = (props) => {
                                     2015,
                                     2016,
                                     2017,
-                                    2018
+                                    2018,
+                                    2019
                                 ],
                                 destinations: [],
                                 auteurs: [],
