@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import "./App.css";
 import styled from "styled-components";
-import Accueil from "./Composants/Interface/Accueil";
-import Sujets from "./Composants/Interface/Sujets";
 import axios from "axios";
 import ico from "./Assets/ICONE-PHI.jpg";
 import { withCookies } from "react-cookie";
@@ -14,6 +12,9 @@ import {
     Redirect
 } from "react-router-dom";
 import { Modal, Input, Dropdown, Menu, Icon, Divider } from "antd";
+
+const Accueil = React.lazy(() => import("./Composants/Interface/Accueil"));
+const Sujets = React.lazy(() => import("./Composants/Interface/Sujets"));
 
 //SECTION STYLED-COMPONENTS
 
@@ -100,7 +101,7 @@ const Cercle = styled.div`
 
 const App = (props) => {
     const ax = axios.create({
-        baseURL: "http://phidbac.fr:4000/",
+        baseURL: "http://192.168.0.85:4000/",
         headers: { Authorization: props.cookies.get("token") },
         responseType: "json"
     });
@@ -140,6 +141,7 @@ const App = (props) => {
     };
 
     const identification = () => {
+        console.log("test");
         if (formIdent !== "" && formPass !== "") {
             ax.post("/login", { email: formIdent, password: formPass })
                 .then((rep) => {
@@ -162,7 +164,7 @@ const App = (props) => {
                 <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="http://www.phidbac.fr:3001"
+                    href="http://www.192.168.0.85:3001"
                 >
                     Administration
                 </a>
@@ -177,43 +179,22 @@ const App = (props) => {
             </Menu.Item>
         </Menu>
     );
+    
 
     useEffect(() => {
+        console.log("TEST2");
         if (props.cookies.get("token")) {
             ax.get("/p").then((rep) => {
-                setUser(rep.data.req);
+                setUser(rep.data.prenom + " " + rep.data.nom);
             });
         }
-    }, [user]);
+    }, []);
 
     return (
         <Router>
             <ConteneurGlobal>
                 <Cercle animate={coordsCercle} />
-                <Modal
-                    title="Identification"
-                    centered
-                    visible={identMod}
-                    onCancel={() => setIdentMod(false)}
-                    okText="Se connecter"
-                    cancelText="Annuler"
-                    onOk={() => identification()}
-                >
-                    <Input
-                        ref={refNom}
-                        style={{ marginBottom: "10px" }}
-                        autoFocus
-                        placeholder="Identifiant"
-                        onPressEnter={() => refPass.current.focus()}
-                        onChange={(e) => setFormIdent(e.target.value)}
-                    />
-                    <Input.Password
-                        ref={refPass}
-                        placeholder="Mot de passe"
-                        onChange={(e) => setFormPass(e.target.value)}
-                        onPressEnter={() => identification()}
-                    />
-                </Modal>
+
                 <ConteneurHeader>
                     {redActive && <Redirect push to={page} />}
                     <BoutonHome onClick={() => changementPage("/")}>
@@ -237,7 +218,6 @@ const App = (props) => {
                         <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
                             Exercices
                         </BoutonPage>
-
                         <BoutonPage
                             onClick={() => {
                                 if (user === "") setIdentMod(true);
@@ -254,15 +234,40 @@ const App = (props) => {
                                 "Se connecter"
                             )}
                         </BoutonPage>
+                        <Modal
+                            title="Identification"
+                            centered
+                            visible={identMod}
+                            onCancel={() => setIdentMod(false)}
+                            okText="Se connecter"
+                            cancelText="Annuler"
+                            onOk={() => identification()}
+                        >
+                            <Input
+                                ref={refNom}
+                                style={{ marginBottom: "10px" }}
+                                autoFocus
+                                placeholder="Identifiant"
+                                onPressEnter={() => refPass.current.focus()}
+                                onChange={(e) => setFormIdent(e.target.value)}
+                            />
+                            <Input.Password
+                                ref={refPass}
+                                placeholder="Mot de passe"
+                                onChange={(e) => setFormPass(e.target.value)}
+                                onPressEnter={() => identification()}
+                            />
+                        </Modal>
                     </ConteneurLiensPage>
                 </ConteneurHeader>
-
-                <Switch>
-                    <ConteneurContenu>
-                        <Route exact path="/" component={Accueil} />
-                        <Route path="/Sujets" component={Sujets} />
-                    </ConteneurContenu>
-                </Switch>
+                <Suspense fallback={<ConteneurContenu />}>
+                    <Switch>
+                        <ConteneurContenu>
+                            <Route exact path="/" component={Accueil} />
+                            <Route path="/Sujets" component={Sujets} />
+                        </ConteneurContenu>
+                    </Switch>
+                </Suspense>
 
                 <ConteneurFooter>Copyright 2019</ConteneurFooter>
             </ConteneurGlobal>
