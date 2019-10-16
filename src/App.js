@@ -105,6 +105,7 @@ const App = (props) => {
         headers: { Authorization: props.cookies.get("token") },
         responseType: "json"
     });
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState("");
     const [redActive, setRedActive] = useState(false);
     const [formIdent, setFormIdent] = useState("");
@@ -179,7 +180,6 @@ const App = (props) => {
             </Menu.Item>
         </Menu>
     );
-    
 
     useEffect(() => {
         console.log("TEST2");
@@ -220,7 +220,7 @@ const App = (props) => {
                         </BoutonPage>
                         <BoutonPage
                             onClick={() => {
-                                if (user === "") setIdentMod(true);
+                                if (loading) setIdentMod(true);
                             }}
                         >
                             {user !== "" ? (

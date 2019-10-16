@@ -134,78 +134,56 @@ const contenuTexte = [
 ];
 
 const Accueil = () => {
-    const Div2Roulette = () => {
-        const [fctInterval, setFctInterval] = useState(true);
-        const [stateRoulette, setStateRoulette] = useState(0);
-        const [enRotation, setEnRotation] = useState(false);
-        const [indexDescription, setIndexDescription] = useState(0);
-        const UseRoulette = (event) => {
-            if (event !== 50) {
-                setFctInterval(false);
+    const [fctInterval, setFctInterval] = useState(true);
+    const [stateRoulette, setStateRoulette] = useState(0);
+    const [enRotation, setEnRotation] = useState(false);
+    const [indexDescription, setIndexDescription] = useState(0);
+    const UseRoulette = (event) => {
+        if (event !== 50) {
+            setFctInterval(false);
+        }
+        if (!enRotation) {
+            setEnRotation(true);
+
+            if (event > 0) {
+                setStateRoulette(stateRoulette + 30);
+
+                setTimeout(() => {
+                    setIndexDescription((c) =>
+                        c === contenuTexte.length - 1 ? 0 : c + 1
+                    );
+                }, 500);
             }
-            if (!enRotation) {
-                setEnRotation(true);
 
-                if (event > 0) {
-                    setStateRoulette((a) => a + 30);
-
+            if (event < 0) {
+                setStateRoulette((a) => a - 30);
+                if (indexDescription === 0) {
                     setTimeout(() => {
-                        setIndexDescription((c) =>
-                            c === contenuTexte.length - 1 ? 0 : c + 1
-                        );
+                        setIndexDescription(contenuTexte.length - 1);
+                    }, 500);
+                } else {
+                    setTimeout(() => {
+                        setIndexDescription((b) => b - 1);
                     }, 500);
                 }
-
-                if (event < 0) {
-                    setStateRoulette((a) => a - 30);
-                    if (indexDescription === 0) {
-                        setTimeout(() => {
-                            setIndexDescription(contenuTexte.length - 1);
-                        }, 500);
-                    } else {
-                        setTimeout(() => {
-                            setIndexDescription((b) => b - 1);
-                        }, 500);
-                    }
-                }
-                setTimeout(() => {
-                    setEnRotation(false);
-                }, 700);
             }
-        };
-        useEffect(() => {
-            if (fctInterval) {
-                let interval = setInterval(() => {
-                    UseRoulette(50);
-                }, 4000);
-                return () => {
-                    clearInterval(interval);
-                };
-            }
-        }, [fctInterval]);
-        return (
-            <ConteneurRoulette
-                enRotation={enRotation}
-                rotation={stateRoulette}
-                onWheel={(e) => UseRoulette(e.nativeEvent.deltaY)}
-                onClick={() => {
-                    setFctInterval(!fctInterval);
-                }}
-            >
-                <Roulette alt="" height="200" width="200" />
-                <DivRoulette rotation={enRotation}>
-                    <RouletteTitre>
-                        {contenuTexte[indexDescription].Titre}
-                    </RouletteTitre>
-                    <RouletteDescription>
-                        {contenuTexte[indexDescription].Description}
-                    </RouletteDescription>
-                </DivRoulette>
-            </ConteneurRoulette>
-        );
+            setTimeout(() => {
+                setEnRotation(false);
+            }, 700);
+        }
     };
-
-    useEffect(() => {}, []);
+    useEffect(() => {
+        console.log("DivRoulmtte");
+        if (fctInterval) {
+            let interval = setInterval(() => {
+                UseRoulette(50);
+            }, 4000);
+            return () => {
+                console.log("EXIT DivRoulmtte");
+                clearInterval(interval);
+            };
+        }
+    }, [fctInterval]);
 
     return (
         <>
@@ -258,7 +236,24 @@ const Accueil = () => {
                         ce sera φ’ tout court) propose de A à Z une préparation
                         à l’épreuve de philosophie du nouveau bac (juin 2021) :
                     </TexteContenu>
-                    <Div2Roulette />
+                    <ConteneurRoulette
+                        enRotation={enRotation}
+                        rotation={stateRoulette}
+                        onWheel={(e) => UseRoulette(e.nativeEvent.deltaY)}
+                        onClick={() => {
+                            setFctInterval(!fctInterval);
+                        }}
+                    >
+                        <Roulette alt="" height="200" width="200" />
+                        <DivRoulette rotation={enRotation}>
+                            <RouletteTitre>
+                                {contenuTexte[indexDescription].Titre}
+                            </RouletteTitre>
+                            <RouletteDescription>
+                                {contenuTexte[indexDescription].Description}
+                            </RouletteDescription>
+                        </DivRoulette>
+                    </ConteneurRoulette>
                     <TexteContenuFooter>
                         La présentation du programme et des épreuves, ainsi que
                         la base de sujets de bac sont en libre consultation. En
