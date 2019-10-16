@@ -65,7 +65,7 @@ const contenuTexte = [
     {
         Titre: "Des leçons progressives",
         Description:
-            "φ’ propose un ensemble de leçons traitant l’ensemble du programme à partir de problèmes, comme le ferait un professeur sur l’ensemble de l’année. Des tests réguliers permettent de vérifier que l’on a bien assimilé le contenu de la leçon."
+            "φ’ propose un ensemble de leçons traitant le programme à partir de problèmes, comme le ferait un professeur sur l’ensemble de l’année. Des tests réguliers permettent de vérifier que l’on a bien assimilé le contenu de la leçon."
     },
     {
         Titre: "Des exercices pas à pas",
