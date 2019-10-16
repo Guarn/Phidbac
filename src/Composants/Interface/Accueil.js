@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../Assets/LOG.svg";
-import { ReactComponent as Roulette } from "../../Assets/Roulette.svg";
+import { Icon } from "antd";
+import "./Accueil.css";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { transform } from "@babel/core";
 
 //SECTION STYLED-COMPONENTS
 
@@ -10,6 +13,7 @@ const PartieG = styled.div`
     z-index: 2;
     display: flex;
     font-size: 16px;
+    height: 100%;
     flex-direction: column;
     justify-content: space-evenly;
 `;
@@ -37,65 +41,16 @@ const TexteContenuFooter = styled.p`
     padding-left: 125px;
 `;
 
-const ConteneurRoulette = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    width: 100%;
-    position: relative;
-    margin-top: -30px;
-    margin-bottom: -30px;
-    left: -100px;
-
-    .cls-1 {
-        fill: #e2e0d8;
-        transform-origin: 50%;
-        transition: all 1s ease-in-out;
-
-        transform: ${(props) => `rotate(${props.rotation}deg)`};
-    }
-
-    .cls-2 {
-        transform-origin: 227.624px 123.972px;
-        transition: all 0.3s ease-in-out;
-        transform: ${(props) => (props.enRotation ? "scale(0.5)" : "scale(1)")};
-        stroke: ${(props) => (props.enRotation ? "#c5c5c5" : "orange")};
-    }
-    .cls-3 {
-        fill: #e2e0d8;
-        stroke: #c5c5c5;
-    }
+const ConteneurCat = styled.div`
+    height: 100px;
 `;
 
-const DivRoulette = styled.div`
-    flex: 1;
-    border-left: 2px solid rgba(0, 0, 0, 0.2);
-    padding-left: 5px;
-    margin-left: 52px;
-    animation: ${(props) => (props.rotation ? "fondu 1s ease-in-out" : null)};
-    @keyframes fondu {
-        0% {
-            opacity: 1;
-        }
-        45% {
-            opacity: 0;
-        }
-        55% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
+const TitreCat = styled.div`
+    margin-left: 125px;
+    &:hover {
+        color: orange;
+        cursor: pointer;
     }
-`;
-
-const RouletteTitre = styled.div`
-    font-weight: bold;
-    margin-bottom: 10px;
-`;
-const RouletteDescription = styled.div`
-    text-align: justify;
 `;
 
 //!SECTION
@@ -109,7 +64,7 @@ const contenuTexte = [
     {
         Titre: "Des leçons progressives",
         Description:
-            "φ’ propose un ensemble de leçon traitant l’ensemble du programme à partir de problèmes, comme le ferait un professeur sur l’ensemble de l’année. Des tests réguliers permettent de vérifier que l’on a bien assimilé le contenu de la leçon."
+            "φ’ propose un ensemble de leçons traitant l’ensemble du programme à partir de problèmes, comme le ferait un professeur sur l’ensemble de l’année. Des tests réguliers permettent de vérifier que l’on a bien assimilé le contenu de la leçon."
     },
     {
         Titre: "Des exercices pas à pas",
@@ -134,57 +89,9 @@ const contenuTexte = [
 ];
 
 const Accueil = () => {
-    const [fctInterval, setFctInterval] = useState(true);
-    const [stateRoulette, setStateRoulette] = useState(0);
-    const [enRotation, setEnRotation] = useState(false);
-    const [indexDescription, setIndexDescription] = useState(0);
-    const UseRoulette = (event) => {
-        if (event !== 50) {
-            setFctInterval(false);
-        }
-        if (!enRotation) {
-            setEnRotation(true);
-
-            if (event > 0) {
-                setStateRoulette(stateRoulette + 30);
-
-                setTimeout(() => {
-                    setIndexDescription((c) =>
-                        c === contenuTexte.length - 1 ? 0 : c + 1
-                    );
-                }, 500);
-            }
-
-            if (event < 0) {
-                setStateRoulette((a) => a - 30);
-                if (indexDescription === 0) {
-                    setTimeout(() => {
-                        setIndexDescription(contenuTexte.length - 1);
-                    }, 500);
-                } else {
-                    setTimeout(() => {
-                        setIndexDescription((b) => b - 1);
-                    }, 500);
-                }
-            }
-            setTimeout(() => {
-                setEnRotation(false);
-            }, 700);
-        }
-    };
-    useEffect(() => {
-        console.log("DivRoulmtte");
-        if (fctInterval) {
-            let interval = setInterval(() => {
-                UseRoulette(50);
-            }, 4000);
-            return () => {
-                console.log("EXIT DivRoulmtte");
-                clearInterval(interval);
-            };
-        }
-    }, [fctInterval]);
-
+    const [descriptionAff, setDescriptionAff] = useState(false);
+    const [descriptionAff2, setDescriptionAff2] = useState(true);
+    const [numDescription, setnumDescription] = useState(0);
     return (
         <>
             <PartieG>
@@ -236,24 +143,168 @@ const Accueil = () => {
                         ce sera φ’ tout court) propose de A à Z une préparation
                         à l’épreuve de philosophie du nouveau bac (juin 2021) :
                     </TexteContenu>
-                    <ConteneurRoulette
-                        enRotation={enRotation}
-                        rotation={stateRoulette}
-                        onWheel={(e) => UseRoulette(e.nativeEvent.deltaY)}
-                        onClick={() => {
-                            setFctInterval(!fctInterval);
-                        }}
-                    >
-                        <Roulette alt="" height="200" width="200" />
-                        <DivRoulette rotation={enRotation}>
-                            <RouletteTitre>
-                                {contenuTexte[indexDescription].Titre}
-                            </RouletteTitre>
-                            <RouletteDescription>
-                                {contenuTexte[indexDescription].Description}
-                            </RouletteDescription>
-                        </DivRoulette>
-                    </ConteneurRoulette>
+                    <ConteneurCat>
+                        <TransitionGroup>
+                            {!descriptionAff && (
+                                <CSSTransition
+                                    classNames="titres"
+                                    unmountOnExit
+                                    timeout={200}
+                                >
+                                    <div style={{ position: "absolute" }}>
+                                        <TitreCat
+                                            onClick={() => {
+                                                setnumDescription(0);
+                                                setDescriptionAff2(false);
+                                                setDescriptionAff(true);
+                                            }}
+                                        >
+                                            <Icon
+                                                type="right"
+                                                style={{
+                                                    color: "orange",
+                                                    marginRight: "10px"
+                                                }}
+                                            />
+                                            {contenuTexte[0].Titre}
+                                        </TitreCat>
+
+                                        <TitreCat
+                                            onClick={() => {
+                                                setnumDescription(1);
+                                                setDescriptionAff2(false);
+                                                setDescriptionAff(true);
+                                            }}
+                                        >
+                                            <Icon
+                                                type="right"
+                                                style={{
+                                                    color: "orange",
+                                                    marginRight: "10px"
+                                                }}
+                                            />
+                                            {contenuTexte[1].Titre}
+                                        </TitreCat>
+                                        <TitreCat
+                                            onClick={() => {
+                                                setnumDescription(2);
+                                                setDescriptionAff2(false);
+                                                setDescriptionAff(true);
+                                            }}
+                                        >
+                                            <Icon
+                                                type="right"
+                                                style={{
+                                                    color: "orange",
+                                                    marginRight: "10px"
+                                                }}
+                                            />
+                                            {contenuTexte[2].Titre}
+                                        </TitreCat>
+                                        <TitreCat
+                                            onClick={() => {
+                                                setnumDescription(3);
+                                                setDescriptionAff2(false);
+                                                setDescriptionAff(true);
+                                            }}
+                                        >
+                                            <Icon
+                                                type="right"
+                                                style={{
+                                                    color: "orange",
+                                                    marginRight: "10px"
+                                                }}
+                                            />
+                                            {contenuTexte[3].Titre}
+                                        </TitreCat>
+                                        <TitreCat
+                                            onClick={() => {
+                                                setnumDescription(4);
+                                                setDescriptionAff2(false);
+                                                setDescriptionAff(true);
+                                            }}
+                                        >
+                                            <Icon
+                                                type="right"
+                                                style={{
+                                                    color: "orange",
+                                                    marginRight: "10px"
+                                                }}
+                                            />
+                                            {contenuTexte[4].Titre}
+                                        </TitreCat>
+                                        <TitreCat
+                                            onClick={() => {
+                                                setnumDescription(5);
+                                                setDescriptionAff2(false);
+                                                setDescriptionAff(true);
+                                            }}
+                                        >
+                                            <Icon
+                                                type="right"
+                                                style={{
+                                                    color: "orange",
+                                                    marginRight: "10px"
+                                                }}
+                                            />
+                                            {contenuTexte[5].Titre}
+                                        </TitreCat>
+                                    </div>
+                                </CSSTransition>
+                            )}
+                            {descriptionAff && (
+                                <CSSTransition
+                                    timeout={200}
+                                    unmountOnExit
+                                    classNames="descriptifs"
+                                >
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            textAlign: "justify"
+                                        }}
+                                        onClick={() => {
+                                            setDescriptionAff(false);
+                                            setTimeout(
+                                                () => setDescriptionAff2(true),
+                                                200
+                                            );
+                                        }}
+                                    >
+                                        <TitreCat
+                                            style={{ fontWeight: "bold" }}
+                                        >
+                                            <Icon
+                                                type="right"
+                                                style={{
+                                                    color: "orange",
+                                                    transform: descriptionAff
+                                                        ? "rotate(180deg)"
+                                                        : "",
+                                                    marginRight: "10px"
+                                                }}
+                                            />
+                                            {contenuTexte[numDescription].Titre}
+                                        </TitreCat>
+                                        <div
+                                            style={{
+                                                marginLeft: "145px",
+                                                width: "calc(50% - 300px)",
+                                                textAlign: "justify"
+                                            }}
+                                        >
+                                            {
+                                                contenuTexte[numDescription]
+                                                    .Description
+                                            }
+                                        </div>
+                                    </div>
+                                </CSSTransition>
+                            )}
+                        </TransitionGroup>
+                    </ConteneurCat>
+                </div>
+                <div>
                     <TexteContenuFooter>
                         La présentation du programme et des épreuves, ainsi que
                         la base de sujets de bac sont en libre consultation. En
@@ -261,8 +312,6 @@ const Accueil = () => {
                         autres ressources : leçons, exercices, étude d’œuvres,
                         index.
                     </TexteContenuFooter>
-                </div>
-                <div>
                     <TexteContenu>
                         <span
                             style={{

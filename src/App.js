@@ -9,12 +9,13 @@ import {
     Switch,
     Route,
     Link,
-    Redirect
+    Redirect,
+    withRouter
 } from "react-router-dom";
 import { Modal, Input, Dropdown, Menu, Icon, Divider } from "antd";
 
-const Accueil = React.lazy(() => import("./Composants/Interface/Accueil"));
-const Sujets = React.lazy(() => import("./Composants/Interface/Sujets"));
+import Accueil from "./Composants/Interface/Accueil";
+import Sujets from "./Composants/Interface/Sujets";
 
 //SECTION STYLED-COMPONENTS
 
@@ -105,7 +106,7 @@ const App = (props) => {
         headers: { Authorization: props.cookies.get("token") },
         responseType: "json"
     });
-    const [loading, setLoading] = useState(true);
+    const [connecte, setConnecte] = useState(false);
     const [user, setUser] = useState("");
     const [redActive, setRedActive] = useState(false);
     const [formIdent, setFormIdent] = useState("");
@@ -114,7 +115,6 @@ const App = (props) => {
     const [formPass, setFormPass] = useState("");
     const [page, setPage] = useState("");
     const [identMod, setIdentMod] = useState(false);
-    let test = false;
     const [coordsCercle, setCoordsCercle] = useState({
         Top: "-10%",
         Left: "-40%"
@@ -142,17 +142,15 @@ const App = (props) => {
     };
 
     const identification = () => {
-        console.log("test");
         if (formIdent !== "" && formPass !== "") {
             ax.post("/login", { email: formIdent, password: formPass })
                 .then((rep) => {
                     props.cookies.set("token", "Bearer " + rep.data.token, {
                         path: "/"
                     });
-                    setUser(rep.data.prenom);
+                    setIdentMod(false);
                 })
                 .catch((err) => console.log(err));
-            setIdentMod(false);
             setFormIdent("");
             setFormPass("");
             refNom.current.value = "";
@@ -172,7 +170,7 @@ const App = (props) => {
             </Menu.Item>
             <Menu.Item
                 onClick={() => {
-                    setUser("");
+                    setConnecte(false);
                     props.cookies.remove("token");
                 }}
             >
@@ -182,19 +180,42 @@ const App = (props) => {
     );
 
     useEffect(() => {
-        console.log("TEST2");
-        if (props.cookies.get("token")) {
+        if (props.cookies.get("token") && !connecte) {
             ax.get("/p").then((rep) => {
-                setUser(rep.data.prenom + " " + rep.data.nom);
+                setUser(rep.data);
+                setConnecte(true);
             });
         }
-    }, []);
+    }, [connecte, identMod]);
 
     return (
         <Router>
             <ConteneurGlobal>
                 <Cercle animate={coordsCercle} />
-
+                <Modal
+                    title="Identification"
+                    centered
+                    visible={identMod}
+                    onCancel={() => setIdentMod(false)}
+                    okText="Se connecter"
+                    cancelText="Annuler"
+                    onOk={() => identification()}
+                >
+                    <Input
+                        ref={refNom}
+                        style={{ marginBottom: "10px" }}
+                        autoFocus
+                        placeholder="Identifiant"
+                        onPressEnter={() => refPass.current.focus()}
+                        onChange={(e) => setFormIdent(e.target.value)}
+                    />
+                    <Input.Password
+                        ref={refPass}
+                        placeholder="Mot de passe"
+                        onChange={(e) => setFormPass(e.target.value)}
+                        onPressEnter={() => identification()}
+                    />
+                </Modal>
                 <ConteneurHeader>
                     {redActive && <Redirect push to={page} />}
                     <BoutonHome onClick={() => changementPage("/")}>
@@ -220,54 +241,29 @@ const App = (props) => {
                         </BoutonPage>
                         <BoutonPage
                             onClick={() => {
-                                if (loading) setIdentMod(true);
+                                if (!connecte) setIdentMod(true);
                             }}
                         >
-                            {user !== "" ? (
+                            {connecte && (
                                 <Dropdown overlay={menu}>
                                     <span style={{ color: "orange" }}>
-                                        {user}
+                                        {user.prenom + " " + user.nom}
                                         <Icon type="down" />
                                     </span>
                                 </Dropdown>
-                            ) : (
-                                "Se connecter"
                             )}
+                            {!connecte && <span>Se connecter</span>}
                         </BoutonPage>
-                        <Modal
-                            title="Identification"
-                            centered
-                            visible={identMod}
-                            onCancel={() => setIdentMod(false)}
-                            okText="Se connecter"
-                            cancelText="Annuler"
-                            onOk={() => identification()}
-                        >
-                            <Input
-                                ref={refNom}
-                                style={{ marginBottom: "10px" }}
-                                autoFocus
-                                placeholder="Identifiant"
-                                onPressEnter={() => refPass.current.focus()}
-                                onChange={(e) => setFormIdent(e.target.value)}
-                            />
-                            <Input.Password
-                                ref={refPass}
-                                placeholder="Mot de passe"
-                                onChange={(e) => setFormPass(e.target.value)}
-                                onPressEnter={() => identification()}
-                            />
-                        </Modal>
                     </ConteneurLiensPage>
                 </ConteneurHeader>
-                <Suspense fallback={<ConteneurContenu />}>
-                    <Switch>
-                        <ConteneurContenu>
+                <Switch>
+                    <ConteneurContenu>
+                        <Suspense fallback={<div>Chargement...</div>}>
                             <Route exact path="/" component={Accueil} />
                             <Route path="/Sujets" component={Sujets} />
-                        </ConteneurContenu>
-                    </Switch>
-                </Suspense>
+                        </Suspense>
+                    </ConteneurContenu>
+                </Switch>
 
                 <ConteneurFooter>Copyright 2019</ConteneurFooter>
             </ConteneurGlobal>

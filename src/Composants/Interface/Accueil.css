@@ -1,0 +1,52 @@
+.titres-enter {
+    transform: translateX(-400px);
+}
+.titres-enter-active {
+    transform: translateX(0px);
+    transition: all 200ms;
+}
+
+.titres-exit {
+    transform: translateX(0px);
+}
+.titres-exit-active {
+    transform: translateX(-400px);
+    transition: all 200ms;
+}
+
+.descriptifs-enter {
+    position: relative;
+    opacity: 0;
+    transform: translateX(400px);
+}
+.descriptifs-enter-active {
+    opacity: 1;
+    transform: translateX(0px);
+    transition: all 200ms;
+}
+
+.descriptifs-exit {
+    opacity: 1;
+    transform: translateX(0px);
+}
+.descriptifs-exit-active {
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 200ms;
+}
+
+.item-enter {
+    opacity: 0;
+  }
+  .item-enter-active {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+  }
+  .item-exit {
+    opacity: 1;
+  }
+  .item-exit-active {
+    opacity: 0;
+    transition: opacity 200ms ease-in;
+  }
+  
