@@ -42,7 +42,8 @@ const TexteContenuFooter = styled.p`
 `;
 
 const ConteneurCat = styled.div`
-    height: 100px;
+    height: 150px;
+    z-index: 30;
 `;
 
 const TitreCat = styled.div`
@@ -151,7 +152,12 @@ const Accueil = () => {
                                     unmountOnExit
                                     timeout={200}
                                 >
-                                    <div style={{ position: "absolute" }}>
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            zIndex: "100"
+                                        }}
+                                    >
                                         <TitreCat
                                             onClick={() => {
                                                 setnumDescription(0);
@@ -261,7 +267,8 @@ const Accueil = () => {
                                     <div
                                         style={{
                                             position: "absolute",
-                                            textAlign: "justify"
+                                            textAlign: "justify",
+                                            zIndex: "100"
                                         }}
                                         onClick={() => {
                                             setDescriptionAff(false);

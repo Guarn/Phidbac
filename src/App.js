@@ -95,7 +95,6 @@ const Cercle = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 50% /50%;
     z-index: 1;
-    transition: all 1s ease-in-out;
 `;
 
 //!SECTION
@@ -146,7 +145,8 @@ const App = (props) => {
             ax.post("/login", { email: formIdent, password: formPass })
                 .then((rep) => {
                     props.cookies.set("token", "Bearer " + rep.data.token, {
-                        path: "/"
+                        path: "/",
+                        domain: "phidbac.fr"
                     });
                     setIdentMod(false);
                 })
