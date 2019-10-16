@@ -146,7 +146,8 @@ const App = (props) => {
                 .then((rep) => {
                     props.cookies.set("token", "Bearer " + rep.data.token, {
                         path: "/",
-                        domain: "phidbac.fr"
+                        domain: "www.phidbac.fr",
+                        httponly
                     });
                     setIdentMod(false);
                 })
@@ -171,7 +172,11 @@ const App = (props) => {
             <Menu.Item
                 onClick={() => {
                     setConnecte(false);
-                    props.cookies.remove("token");
+                    props.cookies.remove("token", {
+                        path: "/",
+                        domain: "wwww.phidbac.fr",
+                        httpOnly
+                    });
                 }}
             >
                 Se déconnecter
