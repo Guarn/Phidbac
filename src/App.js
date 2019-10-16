@@ -146,8 +146,7 @@ const App = (props) => {
                 .then((rep) => {
                     props.cookies.set("token", "Bearer " + rep.data.token, {
                         path: "/",
-                        domain: ".phidbac.fr",
-                        httpOnly: true
+                        domain: "www.phidbac.fr"
                     });
                     setIdentMod(false);
                 })
@@ -174,8 +173,7 @@ const App = (props) => {
                     setConnecte(false);
                     props.cookies.remove("token", {
                         path: "/",
-                        domain: ".phidbac.fr",
-                        httpOnly: true
+                        domain: "www.phidbac.fr"
                     });
                 }}
             >
