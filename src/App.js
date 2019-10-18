@@ -146,7 +146,6 @@ const App = (props) => {
                 .then((rep) => {
                     props.cookies.set("token", "Bearer " + rep.data.token, {
                         path: "/",
-                        domain:"phidbac.fr"
                     });
                     setIdentMod(false);
                 })
@@ -163,7 +162,7 @@ const App = (props) => {
                 <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="http://phidbac.fr:3001"
+                    href="http://www.phidbac.fr:3001"
                 >
                     Administration
                 </a>
