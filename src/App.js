@@ -1,9 +1,17 @@
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import React, {
+    useState,
+    useEffect,
+    useRef,
+    Suspense,
+    useReducer
+} from "react";
 import "./App.css";
 import styled from "styled-components";
 import axios from "axios";
 import ico from "./Assets/ICONE-PHI.jpg";
-import { withCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
+import Login from "./Composants/Interface/Login/Login";
+import { userReducer } from "./Composants/Interface/reducers";
 import {
     BrowserRouter as Router,
     Switch,
@@ -12,7 +20,16 @@ import {
     Redirect,
     withRouter
 } from "react-router-dom";
-import { Modal, Input, Dropdown, Menu, Icon, Divider } from "antd";
+import {
+    Modal,
+    Input,
+    Dropdown,
+    Menu,
+    Icon,
+    Divider,
+    Popover,
+    Form
+} from "antd";
 
 import Accueil from "./Composants/Interface/Accueil";
 import Sujets from "./Composants/Interface/Sujets";
@@ -97,16 +114,19 @@ const Cercle = styled.div`
     z-index: 1;
 `;
 
+const initialUser = { connecte: false };
+
 //!SECTION
 
 const App = (props) => {
+    const [cookies, setCookie, removeCookie] = useCookies();
     const ax = axios.create({
         baseURL: "http://phidbac.fr:4000/",
-        headers: { Authorization: props.cookies.get("token") },
+        headers: { Authorization: cookies["token"] },
         responseType: "json"
     });
     const [connecte, setConnecte] = useState(false);
-    const [user, setUser] = useState("");
+    const [user, setUser] = useReducer(userReducer, initialUser);
     const [redActive, setRedActive] = useState(false);
     const [formIdent, setFormIdent] = useState("");
     const refNom = useRef(null);
@@ -140,22 +160,6 @@ const App = (props) => {
         setRedActive(true);
     };
 
-    const identification = () => {
-        if (formIdent !== "" && formPass !== "") {
-            ax.post("/login", { email: formIdent, password: formPass })
-                .then((rep) => {
-                    props.cookies.set("token", "Bearer " + rep.data.token, {
-                        path: "/",
-                    });
-                    setIdentMod(false);
-                })
-                .catch((err) => console.log(err));
-            setFormIdent("");
-            setFormPass("");
-            refNom.current.value = "";
-        }
-    };
-
     const menu = (
         <Menu style={{ marginLeft: "-25px" }}>
             <Menu.Item>
@@ -169,10 +173,8 @@ const App = (props) => {
             </Menu.Item>
             <Menu.Item
                 onClick={() => {
-                    setConnecte(false);
-                    props.cookies.remove("token", {
-                        path: "/"
-                    });
+                    setUser({ type: "REMOVE" });
+                    removeCookie("token");
                 }}
             >
                 Se déconnecter
@@ -181,42 +183,19 @@ const App = (props) => {
     );
 
     useEffect(() => {
-        if (props.cookies.get("token") && !connecte) {
+        console.log(user);
+        if (cookies["token"] && !user.connecte) {
             ax.get("/p").then((rep) => {
-                setUser(rep.data);
-                setConnecte(true);
+                setUser({ type: "UPDATE", user: rep.data });
             });
         }
-    }, [connecte, identMod]);
+    }, [user.connecte]);
 
     return (
         <Router>
             <ConteneurGlobal>
                 <Cercle animate={coordsCercle} />
-                <Modal
-                    title="Identification"
-                    centered
-                    visible={identMod}
-                    onCancel={() => setIdentMod(false)}
-                    okText="Se connecter"
-                    cancelText="Annuler"
-                    onOk={() => identification()}
-                >
-                    <Input
-                        ref={refNom}
-                        style={{ marginBottom: "10px" }}
-                        autoFocus
-                        placeholder="Identifiant"
-                        onPressEnter={() => refPass.current.focus()}
-                        onChange={(e) => setFormIdent(e.target.value)}
-                    />
-                    <Input.Password
-                        ref={refPass}
-                        placeholder="Mot de passe"
-                        onChange={(e) => setFormPass(e.target.value)}
-                        onPressEnter={() => identification()}
-                    />
-                </Modal>
+
                 <ConteneurHeader>
                     {redActive && <Redirect push to={page} />}
                     <BoutonHome onClick={() => changementPage("/")}>
@@ -240,12 +219,8 @@ const App = (props) => {
                         <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
                             Exercices
                         </BoutonPage>
-                        <BoutonPage
-                            onClick={() => {
-                                if (!connecte) setIdentMod(true);
-                            }}
-                        >
-                            {connecte && (
+                        <BoutonPage>
+                            {user.connecte && (
                                 <Dropdown overlay={menu}>
                                     <span style={{ color: "orange" }}>
                                         {user.prenom + " " + user.nom}
@@ -253,7 +228,20 @@ const App = (props) => {
                                     </span>
                                 </Dropdown>
                             )}
-                            {!connecte && <span>Se connecter</span>}
+                            {!user.connecte && (
+                                <Popover
+                                    style={{ width: "100px" }}
+                                    placement="bottomRight"
+                                    content={
+                                        <Identification
+                                            setUser={(val) => setUser(val)}
+                                        />
+                                    }
+                                    trigger="click"
+                                >
+                                    <span>Se connecter</span>
+                                </Popover>
+                            )}
                         </BoutonPage>
                     </ConteneurLiensPage>
                 </ConteneurHeader>
@@ -272,4 +260,6 @@ const App = (props) => {
     );
 };
 
-export default withCookies(App);
+const Identification = Form.create({ name: "login" })(Login);
+
+export default App;
