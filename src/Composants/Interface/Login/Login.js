@@ -46,6 +46,7 @@ const Login = (props) => {
                     ]
                 })(
                     <Input
+                        autoFocus
                         prefix={
                             <Icon
                                 type="user"
