@@ -149,7 +149,7 @@ const App = () => {
                 <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="http://www.phidbac.fr:3001"
+                    href="http://admin.phidbac.fr"
                 >
                     Administration
                 </a>
