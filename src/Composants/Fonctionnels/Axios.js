@@ -3,7 +3,6 @@ import axios from "axios";
 let reg = /token=.*;*/g;
 let test;
 
-
 if (document.cookie !== "" && document.cookie.match(reg)[0]) {
     test = document.cookie.match(reg)[0].substring(6);
     if (test.charAt(test.length - 1) === ";")
@@ -14,7 +13,7 @@ if (document.cookie !== "" && document.cookie.match(reg)[0]) {
 }
 
 export default axios.create({
-    baseURL: "http://192.168.0.85:4000/",
+    baseURL: "http://phidbac.fr:4000/",
     headers: { Authorization: test },
     responseType: "json"
 });
