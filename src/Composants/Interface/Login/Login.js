@@ -1,23 +1,19 @@
 import React from "react";
 import { Button, Form, Input, Icon, Checkbox } from "antd";
 import "./Login.css";
-import axios from "axios";
+import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 
 const Login = (props) => {
     const { setUser } = props;
     const [cookies, setCookie, removeCookie] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
-    const ax = axios.create({
-        baseURL: "http://phidbac.fr:4000/",
-        headers: { Authorization: cookies["token"] },
-        responseType: "json"
-    });
+
     const handleSubmit = (e) => {
         e.preventDefault();
         validateFields((err, values) => {
             if (!err) {
-                ax.post("/login", {
+                Axios.post("/login", {
                     email: values.email,
                     password: values.password
                 }).then((rep) => {

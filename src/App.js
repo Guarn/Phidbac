@@ -1,17 +1,11 @@
-import React, {
-    useState,
-    useEffect,
-    useRef,
-    Suspense,
-    useReducer
-} from "react";
+import React, { useState, useEffect, Suspense, useReducer } from "react";
 import "./App.css";
 import styled from "styled-components";
-import axios from "axios";
 import ico from "./Assets/ICONE-PHI.jpg";
 import { useCookies } from "react-cookie";
 import Login from "./Composants/Interface/Login/Login";
 import { userReducer } from "./Composants/Interface/reducers";
+import Axios from "./Composants/Fonctionnels/Axios";
 import {
     BrowserRouter as Router,
     Switch,
@@ -31,7 +25,7 @@ import {
     Form
 } from "antd";
 
-import Accueil from "./Composants/Interface/Accueil";
+import Accueil from "./Composants/Interface/Accueil/Accueil";
 import Sujets from "./Composants/Interface/Sujets";
 
 //SECTION STYLED-COMPONENTS
@@ -89,7 +83,6 @@ const ConteneurContenu = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    transition: all 0.5s linear;
 `;
 
 const ConteneurFooter = styled.div`
@@ -118,22 +111,12 @@ const initialUser = { connecte: false };
 
 //!SECTION
 
-const App = (props) => {
+const App = () => {
     const [cookies, setCookie, removeCookie] = useCookies();
-    const ax = axios.create({
-        baseURL: "http://phidbac.fr:4000/",
-        headers: { Authorization: cookies["token"] },
-        responseType: "json"
-    });
-    const [connecte, setConnecte] = useState(false);
     const [user, setUser] = useReducer(userReducer, initialUser);
     const [redActive, setRedActive] = useState(false);
-    const [formIdent, setFormIdent] = useState("");
-    const refNom = useRef(null);
-    const refPass = useRef(null);
-    const [formPass, setFormPass] = useState("");
+
     const [page, setPage] = useState("");
-    const [identMod, setIdentMod] = useState(false);
     const [coordsCercle, setCoordsCercle] = useState({
         Top: "-10%",
         Left: "-40%"
@@ -183,11 +166,15 @@ const App = (props) => {
     );
 
     useEffect(() => {
-        console.log(user);
         if (cookies["token"] && !user.connecte) {
-            ax.get("/p").then((rep) => {
-                setUser({ type: "UPDATE", user: rep.data });
-            });
+            Axios.get("/p")
+                .then((rep) => {
+                    setUser({ type: "UPDATE", user: rep.data });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    //removeCookie("token");
+                });
         }
     }, [user.connecte]);
 

@@ -2,16 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import "antd/dist/antd.css";
 import { Divider, Select, Radio, Slider, Button, Icon } from "antd";
-import axios from "axios";
 import "react-quill/dist/quill.snow.css";
 import "./Sujets.css";
 import ReactQuill from "react-quill";
+import Axios from "../Fonctionnels/Axios";
 
 const { Option } = Select;
-const ax = axios.create({
-    baseURL: "http://phidbac.fr:4000/",
-    responseType: "json"
-});
 
 //SECTION STYLED-COMPONENTS
 
@@ -229,7 +225,7 @@ const Sujets = (props) => {
     //NOTE Recherche par filtres avec récupération données sur base
 
     const RechercheFiltres = () => {
-        ax.post("/resultatsAdmin", { elementsCoches }).then((rep) => {
+        Axios.post("/resultatsAdmin", { elementsCoches }).then((rep) => {
             if (rep.data.count > 0) {
                 setSujets(rep.data.rows);
                 setNbResultats(rep.data.count);
@@ -270,7 +266,7 @@ const Sujets = (props) => {
     useEffect(() => {
         // ANCHOR Premier affichage ou filtres0
         if (sujets.length === 0) {
-            ax.get(`/sujets/${idSujet}`).then((rep) => {
+            Axios.get(`/sujets/${idSujet}`).then((rep) => {
                 if (
                     rep.data.Count > 0 &&
                     idSujet <= rep.data.Count &&
@@ -289,7 +285,7 @@ const Sujets = (props) => {
         } else {
             // ANCHOR Si Resultats > 0
             if (nbResultats > 0 && !filtres) {
-                ax.get(`/sujets/${idSujet}`).then((rep) => {
+                Axios.get(`/sujets/${idSujet}`).then((rep) => {
                     if (
                         rep.data.Count > 0 &&
                         idSujet <= rep.data.Count &&
@@ -308,7 +304,7 @@ const Sujets = (props) => {
             }
         }
         if (!menu.annees) {
-            ax.get("/menu").then((rep) => {
+            Axios.get("/menu").then((rep) => {
                 let state = rep.data;
                 state.annees.sort((a, b) => a["Annee"] - b["Annee"]);
                 state.auteurs.sort((a, b) =>

@@ -1,5 +1,4 @@
 export const userReducer = (state, action) => {
-    console.log(action);
     switch (action.type) {
         case "UPDATE":
             return {
