@@ -165,7 +165,7 @@ const App = () => {
                 })
                 .catch((err) => {
                     console.log(err);
-                    //removeCookie("token");
+                    removeCookie("token");
                 });
         }
     }, [user.connecte]);
@@ -228,7 +228,7 @@ const App = () => {
                     <ConteneurContenu>
                         <Suspense fallback={<div>Chargement...</div>}>
                             <Route exact path="/" component={Accueil} />
-                            // <Route path="/Sujets" component={Sujets} />
+                            <Route path="/Sujets" component={Sujets} />
                         </Suspense>
                     </ConteneurContenu>
                 </Switch>
