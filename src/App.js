@@ -1,18 +1,14 @@
-import React, { useState, useEffect, Suspense, useReducer } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import "./App.css";
 import styled from "styled-components";
 import ico from "./Assets/ICONE-PHI.jpg";
-import { useCookies } from "react-cookie";
-import Login from "./Composants/Interface/Login/Login";
-import { userReducer } from "./Composants/Interface/reducers";
-import Axios from "./Composants/Fonctionnels/Axios";
+import Connexion from "./Connexion";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Redirect
 } from "react-router-dom";
-import { Dropdown, Menu, Icon, Popover, Form } from "antd";
 
 const Accueil = React.lazy(() =>
     import("./Composants/Interface/Accueil/Accueil")
@@ -99,13 +95,9 @@ const Cercle = styled.div`
     z-index: 1;
 `;
 
-const initialUser = { connecte: false };
-
 //!SECTION
 
 const App = () => {
-    const [cookies, , removeCookie] = useCookies();
-    const [user, setUser] = useReducer(userReducer, initialUser);
     const [redActive, setRedActive] = useState(false);
 
     const [page, setPage] = useState("");
@@ -135,40 +127,9 @@ const App = () => {
         setRedActive(true);
     };
 
-    const menu = (
-        <Menu style={{ marginLeft: "-25px" }}>
-            <Menu.Item>
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://admin.phidbac.fr"
-                >
-                    Administration
-                </a>
-            </Menu.Item>
-            <Menu.Item
-                onClick={() => {
-                    setUser({ type: "REMOVE" });
-                    removeCookie("token");
-                }}
-            >
-                Se déconnecter
-            </Menu.Item>
-        </Menu>
-    );
-
     useEffect(() => {
-        if (cookies["token"] && !user.connecte) {
-            Axios.get("/p")
-                .then((rep) => {
-                    setUser({ type: "UPDATE", user: rep.data });
-                })
-                .catch((err) => {
-                    console.log(err);
-                    removeCookie("token");
-                });
-        }
-    }, [user.connecte]);
+        console.log('UE APPS');
+    })
 
     return (
         <Router>
@@ -199,28 +160,7 @@ const App = () => {
                             Exercices
                         </BoutonPage>
                         <BoutonPage>
-                            {user.connecte && (
-                                <Dropdown overlay={menu}>
-                                    <span style={{ color: "orange" }}>
-                                        {user.prenom + " " + user.nom}
-                                        <Icon type="down" />
-                                    </span>
-                                </Dropdown>
-                            )}
-                            {!user.connecte && (
-                                <Popover
-                                    style={{ width: "100px" }}
-                                    placement="bottomRight"
-                                    content={
-                                        <Identification
-                                            setUser={(val) => setUser(val)}
-                                        />
-                                    }
-                                    trigger="click"
-                                >
-                                    <span>Se connecter</span>
-                                </Popover>
-                            )}
+                            <Connexion />
                         </BoutonPage>
                     </ConteneurLiensPage>
                 </ConteneurHeader>
@@ -238,7 +178,5 @@ const App = () => {
         </Router>
     );
 };
-
-const Identification = Form.create({ name: "login" })(Login);
 
 export default App;

@@ -17,3 +17,5 @@ export const userReducer = (state, action) => {
             throw new Error();
     }
 };
+
+export const userInit = { connecte: false };

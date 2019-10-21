@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Input, Icon, Checkbox } from "antd";
 import "./Login.css";
 import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 
 const Login = (props) => {
-    const { setUser } = props;
+    const { userDispatch } = props;
     const [cookies, setCookie, removeCookie] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log('Confirm Form');
         validateFields((err, values) => {
             if (!err) {
                 Axios.post("/login", {
@@ -21,11 +22,14 @@ const Login = (props) => {
                         path: "/",
                         domain: ".phidbac.fr"
                     });
-                    setUser({ type: "UPDATE", user: rep.data });
+                    userDispatch({ type: "UPDATE", user: rep.data });
                 });
             }
         });
     };
+    useEffect(() => {
+        console.log("UE Login");
+    }, [validateFields]);
     return (
         <Form
             className="Login"
