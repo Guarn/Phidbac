@@ -37,6 +37,7 @@ const ConteneurGlobal = styled.div`
     display: flex;
     flex-direction: column;
     font-family: century-gothic, sans-serif;
+    font-display: optional;
 `;
 
 const ConteneurHeader = styled.div`
