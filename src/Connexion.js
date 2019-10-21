@@ -6,9 +6,6 @@ import Axios from "./Composants/Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 
 const Lien = (props) => {
-    useEffect(() => {
-        console.log("UUE LIEN");
-    });
     return (
         <Menu style={{ marginLeft: "-25px" }}>
             <Menu.Item>
@@ -37,11 +34,7 @@ const Header = () => {
     const [cookies, setCookie, removeCookie] = useCookies();
 
     useEffect(() => {
-        console.log("UE CONNEXION");
-        console.log(user);
-        console.log(cookies);
         if (Object.keys(cookies).length >= 1) {
-            console.log("IF");
             if (user.connecte === false)
                 Axios.get("/p")
                     .then((rep) => {
@@ -55,7 +48,6 @@ const Header = () => {
                         console.log(err.response);
                     });
         } else {
-            console.log("SANS IF");
         }
     });
 

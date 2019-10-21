@@ -11,7 +11,6 @@ const Login = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Confirm Form');
         validateFields((err, values) => {
             if (!err) {
                 Axios.post("/login", {
@@ -27,9 +26,7 @@ const Login = (props) => {
             }
         });
     };
-    useEffect(() => {
-        console.log("UE Login");
-    }, [validateFields]);
+    useEffect(() => {}, [validateFields]);
     return (
         <Form
             className="Login"

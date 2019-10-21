@@ -127,10 +127,6 @@ const App = () => {
         setRedActive(true);
     };
 
-    useEffect(() => {
-        console.log('UE APPS');
-    })
-
     return (
         <Router>
             <ConteneurGlobal>
