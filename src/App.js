@@ -10,23 +10,14 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
-    Redirect,
-    withRouter
+    Redirect
 } from "react-router-dom";
-import {
-    Modal,
-    Input,
-    Dropdown,
-    Menu,
-    Icon,
-    Divider,
-    Popover,
-    Form
-} from "antd";
+import { Dropdown, Menu, Icon, Popover, Form } from "antd";
 
-import Accueil from "./Composants/Interface/Accueil/Accueil";
-import Sujets from "./Composants/Interface/Sujets";
+const Accueil = React.lazy(() =>
+    import("./Composants/Interface/Accueil/Accueil")
+);
+const Sujets = React.lazy(() => import("./Composants/Interface/Sujets"));
 
 //SECTION STYLED-COMPONENTS
 
@@ -113,7 +104,7 @@ const initialUser = { connecte: false };
 //!SECTION
 
 const App = () => {
-    const [cookies, setCookie, removeCookie] = useCookies();
+    const [cookies, , removeCookie] = useCookies();
     const [user, setUser] = useReducer(userReducer, initialUser);
     const [redActive, setRedActive] = useState(false);
 
@@ -237,7 +228,7 @@ const App = () => {
                     <ConteneurContenu>
                         <Suspense fallback={<div>Chargement...</div>}>
                             <Route exact path="/" component={Accueil} />
-                            <Route path="/Sujets" component={Sujets} />
+                            // <Route path="/Sujets" component={Sujets} />
                         </Suspense>
                     </ConteneurContenu>
                 </Switch>
