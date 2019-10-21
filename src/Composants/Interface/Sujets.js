@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import "antd/dist/antd.css";
 import { Divider, Select, Radio, Slider, Button, Icon } from "antd";
 import "react-quill/dist/quill.snow.css";
 import "./Sujets.css";
