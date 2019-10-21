@@ -38,10 +38,6 @@ const Header = () => {
             if (user.connecte === false)
                 Axios.get("/p")
                     .then((rep) => {
-                        setCookie("token", "Bearer " + rep.data.token, {
-                            path: "/",
-                            domain: ".phidbac.fr"
-                        });
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
                     .catch((err) => {
