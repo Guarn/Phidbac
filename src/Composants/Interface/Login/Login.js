@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 const Login = (props) => {
     const { userDispatch } = props;
-    const [, setCookie] = useCookies();
+    const [, setCookie, removeCookie] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
 
     const handleSubmit = (e) => {
