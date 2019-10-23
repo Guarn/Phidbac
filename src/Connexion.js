@@ -20,7 +20,7 @@ const Lien = (props) => {
             <Menu.Item
                 onClick={() => {
                     props.userDispatch({ type: "REMOVE" });
-                    //removeCookie("token");
+                    removeCookie("token");
                 }}
             >
                 Se déconnecter
