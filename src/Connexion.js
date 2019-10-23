@@ -20,7 +20,7 @@ const Lien = (props) => {
             <Menu.Item
                 onClick={() => {
                     props.userDispatch({ type: "REMOVE" });
-                    removeCookie("token");
+                    props.removeCookie();
                 }}
             >
                 Se déconnecter
@@ -52,7 +52,12 @@ const Header = () => {
         <>
             {user.connecte && (
                 <Dropdown
-                    overlay={<Lien userDispatch={(val) => userDispatch(val)} />}
+                    overlay={
+                        <Lien
+                            removeCookie={() => removeCookie("token")}
+                            userDispatch={(val) => userDispatch(val)}
+                        />
+                    }
                 >
                     <span style={{ color: "orange" }}>
                         {user.prenom + " " + user.nom}
