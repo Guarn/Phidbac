@@ -19,6 +19,7 @@ const Lien = (props) => {
             </Menu.Item>
             <Menu.Item
                 onClick={() => {
+                    console.log(props);
                     props.userDispatch({ type: "REMOVE" });
                     props.removeCookie();
                 }}
@@ -41,7 +42,7 @@ const Header = () => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
                     .catch((err) => {
-                        removeCookie("token");
+                        removeCookie("token", { domain: ".phidbac.fr" });
                         console.log(err.response);
                     });
         } else {
@@ -54,7 +55,7 @@ const Header = () => {
                 <Dropdown
                     overlay={
                         <Lien
-                            removeCookie={() => removeCookie("token")}
+                            removeCookie={() => removeCookie("token",{ domain: ".phidbac.fr" })}
                             userDispatch={(val) => userDispatch(val)}
                         />
                     }
