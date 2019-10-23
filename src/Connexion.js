@@ -19,7 +19,6 @@ const Lien = (props) => {
             </Menu.Item>
             <Menu.Item
                 onClick={() => {
-                    console.log(props);
                     props.userDispatch({ type: "REMOVE" });
                     props.removeCookie();
                 }}
@@ -36,15 +35,11 @@ const Header = () => {
 
     useEffect(() => {
         console.log("UE Connex");
-        console.log(user);
         if (Object.keys(cookies).length >= 1) {
-            console.log(cookies);
-            console.log(user);
+            console.log("OBJECT KEYS");
             if (!user.connecte) {
-                console.log(user);
-                console.log(cookies);
+                console.log("USER PAS CONNECTE");
                 Axios.get("/p")
-
                     .then((rep) => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
