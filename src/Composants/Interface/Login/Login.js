@@ -16,13 +16,15 @@ const Login = (props) => {
                 Axios.post("/login", {
                     email: values.email,
                     password: values.password
-                }).then((rep) => {
-                    setCookie("token", "Bearer " + rep.data.token, {
-                        path: "/",
-                        domain: ".phidbac.fr"
-                    });
-                    userDispatch({ type: "UPDATE", user: rep.data });
-                });
+                })
+                    .then((rep) => {
+                        setCookie("token", "Bearer " + rep.data.token, {
+                            path: "/",
+                            domain: ".phidbac.fr"
+                        });
+                        userDispatch({ type: "UPDATE", user: rep.data });
+                    })
+                    .catch((err) => console.log(err));
             }
         });
     };

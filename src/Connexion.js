@@ -36,7 +36,7 @@ const Header = () => {
 
     useEffect(() => {
         if (Object.keys(cookies).length >= 1) {
-            if (user.connecte === false)
+            if (!user.connecte)
                 Axios.get("/p")
                     .then((rep) => {
                         userDispatch({ type: "UPDATE", user: rep.data });
@@ -45,7 +45,6 @@ const Header = () => {
                         removeCookie("token", { domain: ".phidbac.fr" });
                         console.log(err.response);
                     });
-        } else {
         }
     });
 
@@ -55,7 +54,9 @@ const Header = () => {
                 <Dropdown
                     overlay={
                         <Lien
-                            removeCookie={() => removeCookie("token",{ domain: ".phidbac.fr" })}
+                            removeCookie={() =>
+                                removeCookie("token", { domain: ".phidbac.fr" })
+                            }
                             userDispatch={(val) => userDispatch(val)}
                         />
                     }
