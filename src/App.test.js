@@ -1,9 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App, { Search } from "./App";
+import renderer from "react-test-renderer";
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe("Search", () => {
+    it("renders without crashing", () => {
+        const div = document.createElement("div");
+        ReactDOM.render(<Search>Search</Search>, div);
+        ReactDOM.unmountComponentAtNode(div);
+    });
+    test("has a valid snapshot", () => {
+        const component = renderer.create(<Search>Search</Search>);
+        let tree = component.toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

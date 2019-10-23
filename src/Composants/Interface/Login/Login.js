@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 const Login = (props) => {
     const { userDispatch } = props;
-    const [cookies, setCookie, removeCookie] = useCookies();
+    const [, setCookie] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
 
     const handleSubmit = (e) => {
@@ -88,7 +88,10 @@ const Login = (props) => {
                 >
                     Connexion
                 </Button>
-                Ou <a href="">Créer un compte</a>
+                Ou{" "}
+                <span style={{ color: "blue", cursor: "pointer" }}>
+                    Créer un compte
+                </span>
             </Form.Item>
         </Form>
     );

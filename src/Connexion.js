@@ -31,7 +31,7 @@ const Lien = (props) => {
 
 const Header = () => {
     const [user, userDispatch] = useReducer(userReducer, userInit);
-    const [cookies, setCookie, removeCookie] = useCookies();
+    const [cookies, , removeCookie] = useCookies();
 
     useEffect(() => {
         if (Object.keys(cookies).length >= 1) {
@@ -41,6 +41,7 @@ const Header = () => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
                     .catch((err) => {
+                        removeCookie("token");
                         console.log(err.response);
                     });
         } else {

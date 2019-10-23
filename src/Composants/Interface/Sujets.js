@@ -129,7 +129,6 @@ const Sujets = (props) => {
     const [filtres, setFiltres] = useState(false);
     const [idSujet, setIdSujet] = useState(1);
     const [nbResultats, setNbResultats] = useState();
-    const [loading, setLoading] = useState(true);
     const [sujets, setSujets] = useState([]);
     const [state, setState] = useState();
     const [menu, setMenu] = useState([]);
@@ -181,8 +180,6 @@ const Sujets = (props) => {
 
     //NOTE : Gestion des boutons suivants/précédent
     const SwitchSujet = (val) => {
-        setLoading(true);
-
         if (filtres) {
             if (val === "+") {
                 if (idSujet === nbResultats - 1) {
@@ -275,8 +272,6 @@ const Sujets = (props) => {
                     setSujets(state1);
                     setNbResultats(rep.data.Count);
                     setState(rep.data.Sujet);
-
-                    setLoading(false);
                 } else {
                     setNbResultats(0);
                 }
@@ -294,8 +289,6 @@ const Sujets = (props) => {
                         setSujets(state1);
                         setNbResultats(rep.data.Count);
                         setState(rep.data.Sujet);
-
-                        setLoading(false);
                     } else {
                         setNbResultats(0);
                     }

@@ -50,7 +50,6 @@ const TitreCat = styled.div`
 
 const PartieG = (props) => {
     const [descriptionAff, setDescriptionAff] = useState(false);
-    const [descriptionAff2, setDescriptionAff2] = useState(true);
     const [numDescription, setnumDescription] = useState(0);
     return (
         <Conteneur>
@@ -95,7 +94,6 @@ const PartieG = (props) => {
                                     <TitreCat
                                         onClick={() => {
                                             setnumDescription(0);
-                                            setDescriptionAff2(false);
                                             setDescriptionAff(true);
                                         }}
                                     >
@@ -112,7 +110,6 @@ const PartieG = (props) => {
                                     <TitreCat
                                         onClick={() => {
                                             setnumDescription(1);
-                                            setDescriptionAff2(false);
                                             setDescriptionAff(true);
                                         }}
                                     >
@@ -128,7 +125,6 @@ const PartieG = (props) => {
                                     <TitreCat
                                         onClick={() => {
                                             setnumDescription(2);
-                                            setDescriptionAff2(false);
                                             setDescriptionAff(true);
                                         }}
                                     >
@@ -144,7 +140,6 @@ const PartieG = (props) => {
                                     <TitreCat
                                         onClick={() => {
                                             setnumDescription(3);
-                                            setDescriptionAff2(false);
                                             setDescriptionAff(true);
                                         }}
                                     >
@@ -160,7 +155,6 @@ const PartieG = (props) => {
                                     <TitreCat
                                         onClick={() => {
                                             setnumDescription(4);
-                                            setDescriptionAff2(false);
                                             setDescriptionAff(true);
                                         }}
                                     >
@@ -176,7 +170,6 @@ const PartieG = (props) => {
                                     <TitreCat
                                         onClick={() => {
                                             setnumDescription(5);
-                                            setDescriptionAff2(false);
                                             setDescriptionAff(true);
                                         }}
                                     >
@@ -206,10 +199,7 @@ const PartieG = (props) => {
                                     }}
                                     onClick={() => {
                                         setDescriptionAff(false);
-                                        setTimeout(
-                                            () => setDescriptionAff2(true),
-                                            200
-                                        );
+
                                     }}
                                 >
                                     <TitreCat style={{ fontWeight: "bold" }}>

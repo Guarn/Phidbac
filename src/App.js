@@ -1,14 +1,9 @@
-import React, { useState, Suspense, useEffect } from "react";
+import React, { useState, Suspense } from "react";
 import "./App.css";
 import styled from "styled-components";
 import ico from "./Assets/ICONE-PHI.jpg";
 import Connexion from "./Connexion";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect
-} from "react-router-dom";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 
 const Accueil = React.lazy(() =>
     import("./Composants/Interface/Accueil/Accueil")
@@ -95,83 +90,68 @@ const Cercle = styled.div`
     z-index: 1;
 `;
 
+const coordsCercle = [
+    { Top: "-10%", Left: "-40%" },
+    {
+        Top: "-60%",
+        Left: "50%"
+    }
+];
+
 //!SECTION
 
-const App = () => {
+const App = (props) => {
     const [redActive, setRedActive] = useState(false);
-
     const [page, setPage] = useState("");
-    const [coordsCercle, setCoordsCercle] = useState({
-        Top: "-10%",
-        Left: "-40%"
-    });
 
     let changementPage = (UrlPage) => {
-        switch (UrlPage) {
-            case "/":
-                setCoordsCercle({
-                    Top: "-10%",
-                    Left: "-40%"
-                });
-                break;
-            case "/Sujets":
-                setCoordsCercle({
-                    Top: "-60%",
-                    Left: "50%"
-                });
-                break;
-            default:
-                break;
-        }
         setPage(UrlPage);
         setRedActive(true);
     };
 
+    let location = useLocation();
+
     return (
-        <Router>
-            <ConteneurGlobal>
-                <Cercle animate={coordsCercle} />
+        <ConteneurGlobal>
+            {location.pathname === "/" && <Cercle animate={coordsCercle[0]} />}
+            {location.pathname === "/Sujets" && (
+                <Cercle animate={coordsCercle[1]} />
+            )}
+            {redActive && <Redirect push to={page} />}
 
-                <ConteneurHeader>
-                    {redActive && <Redirect push to={page} />}
-                    <BoutonHome onClick={() => changementPage("/")}>
-                        <img
-                            height="50"
-                            width="50"
-                            src={ico}
-                            alt="Bouton Home"
-                        />
-                    </BoutonHome>
-                    <ConteneurLiensPage>
-                        <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
-                            Programmes / Epreuves
-                        </BoutonPage>
-                        <BoutonPage onClick={() => changementPage("/Sujets")}>
-                            Sujets
-                        </BoutonPage>
-                        <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
-                            Cours
-                        </BoutonPage>
-                        <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
-                            Exercices
-                        </BoutonPage>
-                        <BoutonPage>
-                            <Connexion />
-                        </BoutonPage>
-                    </ConteneurLiensPage>
-                </ConteneurHeader>
-                <Switch>
-                    <ConteneurContenu>
-                        <Suspense fallback={<div>Chargement...</div>}>
-                            <Route exact path="/" component={Accueil} />
-                            <Route path="/Sujets" component={Sujets} />
-                        </Suspense>
-                    </ConteneurContenu>
-                </Switch>
+            <ConteneurHeader>
+                <BoutonHome onClick={() => changementPage("/")}>
+                    <img height="50" width="50" src={ico} alt="Bouton Home" />
+                </BoutonHome>
+                <ConteneurLiensPage>
+                    <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                        Programmes / Epreuves
+                    </BoutonPage>
+                    <BoutonPage onClick={() => changementPage("/Sujets")}>
+                        Sujets
+                    </BoutonPage>
+                    <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                        Cours
+                    </BoutonPage>
+                    <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                        Exercices
+                    </BoutonPage>
+                    <BoutonPage>
+                        <Connexion />
+                    </BoutonPage>
+                </ConteneurLiensPage>
+            </ConteneurHeader>
+            <Switch>
+                <ConteneurContenu>
+                    <Suspense fallback={<div>Chargement...</div>}>
+                        <Route exact path="/" component={Accueil} />
+                        <Route path="/Sujets" component={Sujets} />
+                    </Suspense>
+                </ConteneurContenu>
+            </Switch>
 
-                <ConteneurFooter>Copyright 2019</ConteneurFooter>
-            </ConteneurGlobal>
-        </Router>
+            <ConteneurFooter>Copyright 2019</ConteneurFooter>
+        </ConteneurGlobal>
     );
 };
 
