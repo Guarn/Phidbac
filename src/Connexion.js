@@ -40,10 +40,11 @@ const Header = () => {
         if (Object.keys(cookies).length >= 1) {
             console.log(cookies);
             console.log(user);
-            if (!user.connecte)
-                Axios.get("/p")
+            if (!user.connecte) {
                 console.log(user);
                 console.log(cookies);
+                Axios.get("/p")
+
                     .then((rep) => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
@@ -51,6 +52,7 @@ const Header = () => {
                         removeCookie("token", { domain: ".phidbac.fr" });
                         console.log(err.response);
                     });
+            }
         }
     });
 
