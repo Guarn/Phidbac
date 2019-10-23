@@ -18,7 +18,6 @@ const Login = (props) => {
                     password: values.password
                 })
                     .then((rep) => {
-                        console.log(rep);
                         setCookie("token", "Bearer " + rep.data.token, {
                             path: "/",
                             domain: ".phidbac.fr"

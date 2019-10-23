@@ -6,6 +6,9 @@ import Axios from "./Composants/Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 
 const Lien = (props) => {
+    useEffect(() => {
+        console.log('HAHA');
+    })
     return (
         <Menu style={{ marginLeft: "-25px" }}>
             <Menu.Item>
@@ -19,8 +22,8 @@ const Lien = (props) => {
             </Menu.Item>
             <Menu.Item
                 onClick={() => {
-                    props.userDispatch({ type: "REMOVE" });
                     props.removeCookie();
+                    props.userDispatch({ type: "REMOVE" });
                 }}
             >
                 Se déconnecter
