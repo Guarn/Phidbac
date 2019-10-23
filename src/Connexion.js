@@ -36,6 +36,7 @@ const Header = () => {
 
     useEffect(() => {
         console.log("UE Connex");
+        console.log(user);
         if (Object.keys(cookies).length >= 1) {
             console.log(cookies);
             if (!user.connecte)
