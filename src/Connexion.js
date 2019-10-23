@@ -1,14 +1,11 @@
 import React, { useEffect, useReducer } from "react";
-import { Dropdown, Menu, Icon, Popover, Form } from "antd";
+import { Menu, Icon, Popover, Form } from "antd";
 import Login from "./Composants/Interface/Login/Login";
 import { userReducer, userInit } from "./Composants/Interface/reducers";
 import Axios from "./Composants/Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 
 const Lien = (props) => {
-    useEffect(() => {
-        console.log('HAHA');
-    })
     return (
         <Menu style={{ marginLeft: "-25px" }}>
             <Menu.Item>
@@ -54,8 +51,10 @@ const Header = () => {
     return (
         <>
             {user.connecte && (
-                <Dropdown
-                    overlay={
+                <Popover
+                    trigger="click"
+                    placement="bottomRight"
+                    content={
                         <Lien
                             removeCookie={() =>
                                 removeCookie("token", { domain: ".phidbac.fr" })
@@ -68,7 +67,7 @@ const Header = () => {
                         {user.prenom + " " + user.nom}
                         <Icon type="down" />
                     </span>
-                </Dropdown>
+                </Popover>
             )}
             {!user.connecte && (
                 <Popover
