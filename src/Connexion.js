@@ -35,7 +35,9 @@ const Header = () => {
     const [cookies, , removeCookie] = useCookies();
 
     useEffect(() => {
+        console.log("UE Connex");
         if (Object.keys(cookies).length >= 1) {
+            console.log(cookies);
             if (!user.connecte)
                 Axios.get("/p")
                     .then((rep) => {
