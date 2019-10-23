@@ -4,11 +4,31 @@ import Login from "./Composants/Interface/Login/Login";
 import { userReducer, userInit } from "./Composants/Interface/reducers";
 import Axios from "./Composants/Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
+import styled from "styled-components";
+
+const LienCo = styled.div`
+    color: #1890ff;
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px;
+    margin-left: -16px;
+    padding-left: 16px;
+    margin-right: -16px;
+    padding-right: 16px;
+    &:hover {
+        background-color: rgba(0, 0, 255, 0.1);
+    }
+`;
 
 const Lien = (props) => {
     return (
-        <Menu style={{ marginLeft: "-25px" }}>
-            <Menu.Item>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column"
+            }}
+        >
+            <LienCo>
                 <a
                     target="_blank"
                     rel="noopener noreferrer"
@@ -16,16 +36,16 @@ const Lien = (props) => {
                 >
                     Administration
                 </a>
-            </Menu.Item>
-            <Menu.Item
+            </LienCo>
+            <LienCo
                 onClick={() => {
                     props.removeCookie();
                     props.userDispatch({ type: "REMOVE" });
                 }}
             >
                 Se déconnecter
-            </Menu.Item>
-        </Menu>
+            </LienCo>
+        </div>
     );
 };
 
