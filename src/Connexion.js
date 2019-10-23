@@ -54,7 +54,7 @@ const Header = () => {
                     });
             }
         }
-    });
+    }, [user.connecte]);
 
     return (
         <>
