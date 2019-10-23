@@ -39,8 +39,11 @@ const Header = () => {
         console.log(user);
         if (Object.keys(cookies).length >= 1) {
             console.log(cookies);
+            console.log(user);
             if (!user.connecte)
                 Axios.get("/p")
+                console.log(user);
+                console.log(cookies);
                     .then((rep) => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
