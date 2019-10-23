@@ -34,11 +34,8 @@ const Header = () => {
     const [cookies, , removeCookie] = useCookies();
 
     useEffect(() => {
-        console.log("UE Connex");
         if (Object.keys(cookies).length >= 1) {
-            console.log("OBJECT KEYS");
             if (!user.connecte) {
-                console.log("USER PAS CONNECTE");
                 Axios.get("/p")
                     .then((rep) => {
                         userDispatch({ type: "UPDATE", user: rep.data });
