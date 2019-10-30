@@ -11,7 +11,7 @@ if (reg.test(document.cookie)) {
         test1 = test1.slice(0, test1.length - 1);
     test1 = test1.replace("Bearer%20", "Bearer ");
 }
-console.log(test);
+console.log(test1);
 
 export default axios.create({
     baseURL: "http://phidbac.fr:4000/",
