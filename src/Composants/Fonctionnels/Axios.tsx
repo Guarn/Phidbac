@@ -15,6 +15,6 @@ console.log(test);
 
 export default axios.create({
     baseURL: "http://phidbac.fr:4000/",
-    headers: { Authorization: test },
+    headers: { Authorization: test1 },
     responseType: "json"
 });
