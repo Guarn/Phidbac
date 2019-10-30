@@ -1,58 +1,91 @@
-import React, { useState } from "react";
+import * as React from "react";
 import styled from "styled-components";
-import { contenuTexte } from "./initialState";
-import { Icon } from "antd";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-
-const Conteneur = styled.div`
-    flex: 1;
-    z-index: 2;
-    display: flex;
-    font-size: 16px;
-    height: 100%;
-    flex-direction: column;
-    justify-content: center;
-`;
+import { Icon } from "antd";
+import { contenuTexte } from "../initialState";
 
 const Phi = styled.span`
     color: orange;
     font-family: "Century Gothic";
+    z-index: 1000;
+    position: relative;
 `;
 
 const TexteTitre = styled.div`
     width: 100%;
     font-size: 5vw;
-    padding-left: 125px;
+    padding-left: 100px;
+    z-index: 100;
+    position: relative;
 `;
 
 const TexteContenu = styled.p`
-    padding-left: 125px;
-    padding-right: 125px;
+    padding-left: 100px;
+    text-align: justify;
+    z-index: 100;
+    position: relative;
 `;
 const TexteContenuFooter = styled.p`
     text-align: justify;
     position: relative;
-    padding-left: 125px;
+    padding-left: 100px;
+    z-index: 100;
 `;
 
 const ConteneurCat = styled.div`
     height: 180px;
-    z-index: 30;
+    z-index: 100;
+    position: relative;
 `;
 
 const TitreCat = styled.div`
-    margin-left: 125px;
+    margin-left: 100px;
     &:hover {
         color: orange;
         cursor: pointer;
     }
+    z-index: 100;
+    position: relative;
 `;
 
-const PartieG = (props) => {
-    const [descriptionAff, setDescriptionAff] = useState(false);
-    const [numDescription, setnumDescription] = useState(0);
+const SousConteneurCat = styled.div`
+    position: absolute;
+    z-index: 100;
+`;
+
+const SousConteneurDescription = styled.div`
+    position: absolute;
+    text-align: justify;
+    z-index: 100;
+`;
+
+const DescriptionCat = styled.div`
+    position: absolute;
+    margin-left: 125px;
+    width: 400px;
+    text-align: justify;
+    z-index: 100;
+`;
+
+const Cercle = styled.div`
+    position: fixed;
+    top: -10%;
+    left: -40%;
+    width: 100%;
+    height: 200%;
+    background-color: #e9e7e1;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 50% /50%;
+    z-index: 0;
+    opacity: 0.5;
+`;
+
+const PartieGDesktop = () => {
+    const [descriptionAff, setDescriptionAff] = React.useState(false);
+    const [numDescription, setnumDescription] = React.useState(0);
     return (
-        <Conteneur>
+        <>
+            <Cercle />
             <div>
                 <TexteTitre>
                     <Phi>φ</Phi>d<Phi>'</Phi>
@@ -68,7 +101,6 @@ const PartieG = (props) => {
                     <Phi>'</Phi>! c’est la philosophie du bac.
                 </TexteContenu>
             </div>
-
             <div>
                 <TexteContenu>
                     <Phi>φ</Phi>d<Phi>'</Phi>
@@ -77,20 +109,16 @@ const PartieG = (props) => {
                     A à Z une préparation à l’épreuve de philosophie du nouveau
                     bac (juin 2021) :
                 </TexteContenu>
+
                 <ConteneurCat>
-                    <TransitionGroup>
+                    <TransitionGroup component={null}>
                         {!descriptionAff && (
                             <CSSTransition
                                 classNames="titres"
                                 unmountOnExit
                                 timeout={200}
                             >
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        zIndex: "100"
-                                    }}
-                                >
+                                <SousConteneurCat>
                                     <TitreCat
                                         onClick={() => {
                                             setnumDescription(0);
@@ -182,7 +210,7 @@ const PartieG = (props) => {
                                         />
                                         {contenuTexte[5].Titre}
                                     </TitreCat>
-                                </div>
+                                </SousConteneurCat>
                             </CSSTransition>
                         )}
                         {descriptionAff && (
@@ -191,15 +219,9 @@ const PartieG = (props) => {
                                 unmountOnExit
                                 classNames="descriptifs"
                             >
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        textAlign: "justify",
-                                        zIndex: "100"
-                                    }}
+                                <SousConteneurDescription
                                     onClick={() => {
                                         setDescriptionAff(false);
-
                                     }}
                                 >
                                     <TitreCat style={{ fontWeight: "bold" }}>
@@ -215,19 +237,13 @@ const PartieG = (props) => {
                                         />
                                         {contenuTexte[numDescription].Titre}
                                     </TitreCat>
-                                    <div
-                                        style={{
-                                            marginLeft: "145px",
-                                            width: "calc(50% - 300px)",
-                                            textAlign: "justify"
-                                        }}
-                                    >
+                                    <DescriptionCat>
                                         {
                                             contenuTexte[numDescription]
                                                 .Description
                                         }
-                                    </div>
-                                </div>
+                                    </DescriptionCat>
+                                </SousConteneurDescription>
                             </CSSTransition>
                         )}
                     </TransitionGroup>
@@ -245,8 +261,7 @@ const PartieG = (props) => {
                     succès !
                 </TexteContenu>
             </div>
-        </Conteneur>
+        </>
     );
 };
-
-export default PartieG;
+export default PartieGDesktop;

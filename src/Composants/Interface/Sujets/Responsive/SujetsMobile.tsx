@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { Divider, Select, Radio, Slider, Button, Icon } from "antd";
+import { Divider, Select, Radio, Slider, Button, Icon, Drawer } from "antd";
 import "react-quill/dist/quill.snow.css";
-import "./Sujets.css";
+import "../Sujets.css";
 import ReactQuill from "react-quill";
-import Axios from "../Fonctionnels/Axios";
+import Axios from "../../../Fonctionnels/Axios";
+import { SliderValue } from "antd/lib/slider";
 
 const { Option } = Select;
 
@@ -14,47 +15,35 @@ const Conteneur = styled.div`
     display: flex;
     height: 100%;
     width: 100%;
+    overflow: auto;
 `;
-const PartieG = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
+
 const PartieD = styled.div`
-    flex: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
     width: 100%;
 `;
-const ConteneurFiltres = styled.div`
-    width: 300px;
-    border: 1px solid rgba(0, 0, 0, 0.16);
-    padding: 20px;
-    background-color: #e2e0d8;
-    z-index: 2;
-`;
 
 const ConteneurSuivPrec = styled.div`
-    margin-left: calc(50% - 225px);
     display: flex;
     z-index: 2;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-left: 2%;
+    margin-right: 2%;
 `;
 const ConteneurSujet = styled.div`
     z-index: 2;
-    height: 75%;
-    width: 75%;
-    margin-left: 12.5%;
-    overflow: auto;
+    height: 85%;
+    margin-left: 2%;
+    width: 96%;
+    padding-bottom: 100px;
 `;
 
 const NombreSujets = styled.div`
-    width: 150px;
     display: flex;
+    flex: 1;
     align-items: center;
     justify-content: center;
 `;
@@ -104,7 +93,6 @@ const Details = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-left: 20px;
     align-items: flex-start;
 `;
 const PartieGauche = styled.div`
@@ -113,7 +101,7 @@ const PartieGauche = styled.div`
 const Etiquette = styled.div`
     text-align: center;
     margin: auto;
-    margin-right: 10px;
+    margin-right: 2px;
     padding: 5px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-top: none;
@@ -123,22 +111,68 @@ const Etiquette = styled.div`
 
 //!SECTION
 
-const Sujets = (props) => {
-    //SECTION STATE
+export interface SujetI {
+    id: number;
+    Num: number;
+    Serie: string;
+    Destination: string[];
+    Session: string;
+    Code: string;
+    Sujet1: string;
+    Notion1: string[];
+    Sujet2: string;
+    Notion2: string[];
+    Sujet3: string;
+    Notion3: string[];
+    Auteur: string;
+    Problemes: boolean;
+    Annee: number;
+}
 
+export interface MenuI {
+    annees: { Annee: number; Menu: boolean }[];
+    auteurs: { Auteur: string; Menu: boolean; NbSujets: number }[];
+    destinations: { Destination: string; Menu: boolean }[];
+    notions: { Notion: string }[];
+    series: { Serie: string; Menu: boolean }[];
+    sessions: { Session: string; Menu: boolean }[];
+}
+
+export type filtreI =
+    | { e: [number, number] | SliderValue; cat: "annees" }
+    | {
+          e: string | ["NORMALE", "REMPLACEMENT", "SECOURS", "NONDEFINI"];
+          cat: "sessions";
+      }
+    | { e: string[]; cat: "destinations" | "auteurs" | "series" | "notions" };
+
+export interface ElementsCochesI {
+    notions: string[];
+    series: string[];
+    annees: number[];
+    destinations: string[];
+    auteurs: string[];
+    sessions: string[];
+    recherche: string;
+    typeRecherche: string;
+}
+
+const Sujets = () => {
+    //SECTION STATE
+    const [menuDisplay, setMenuDisplay] = useState(false);
     const [filtres, setFiltres] = useState(false);
     const [idSujet, setIdSujet] = useState(1);
     const [nbResultats, setNbResultats] = useState();
     const [sujets, setSujets] = useState([]);
     const [state, setState] = useState();
-    const [menu, setMenu] = useState([]);
-    const RefNotions = useRef(null);
-    const RefSeries = useRef(null);
-    const RefDestinations = useRef(null);
-    const RefAuteurs = useRef(null);
-    const RefSessions = useRef(null);
-    const RefAnnees = useRef(null);
-    const [elementsCoches, setElementsCoches] = useState({
+    const [menu, setMenu] = useState<MenuI | null>();
+    const RefNotions: any = useRef(null);
+    const RefSeries: any = useRef(null);
+    const RefDestinations: any = useRef(null);
+    const RefAuteurs: any = useRef(null);
+    const RefSessions: any = useRef(null);
+    const RefAnnees: any = useRef(null);
+    const [elementsCoches, setElementsCoches] = useState<ElementsCochesI>({
         notions: [],
         series: [],
         annees: [
@@ -179,7 +213,7 @@ const Sujets = (props) => {
     //SECTION FONCTIONS
 
     //NOTE : Gestion des boutons suivants/précédent
-    const SwitchSujet = (val) => {
+    const SwitchSujet = (val: "+" | "-") => {
         if (filtres) {
             if (val === "+") {
                 if (idSujet === nbResultats - 1) {
@@ -221,6 +255,7 @@ const Sujets = (props) => {
     //NOTE Recherche par filtres avec récupération données sur base
 
     const RechercheFiltres = () => {
+        setMenuDisplay(false);
         Axios.post("/resultatsAdmin", { elementsCoches }).then((rep) => {
             if (rep.data.count > 0) {
                 setSujets(rep.data.rows);
@@ -229,7 +264,7 @@ const Sujets = (props) => {
                 setFiltres(true);
                 setIdSujet(0);
             } else {
-                setSujets({});
+                setSujets([]);
                 setNbResultats(0);
                 setFiltres(true);
             }
@@ -238,16 +273,20 @@ const Sujets = (props) => {
 
     //NOTE Gestion cas particuuliers dans certains filtres
 
-    const changeFiltres = (e, cat) => {
-        if (cat === "annees") {
+    /**
+     * Change Le conteneur de filtres
+     *@param  e
+     */
+    const changeFiltres = ({ e, cat }: filtreI) => {
+        if (Array.isArray(e) && typeof e[0] === "number" && cat === "annees") {
             let tabAnnees = [];
             for (let i = e[0]; i <= e[1]; i++) {
                 tabAnnees.push(i);
             }
             let state = { ...elementsCoches, [cat]: tabAnnees };
             setElementsCoches(state);
-        } else if (cat === "sessions") {
-            let state = { ...elementsCoches, [cat]: [e] };
+        } else if (typeof e === "string" && cat === "sessions") {
+            let state = { ...elementsCoches, sessions: [e] };
             setElementsCoches(state);
         } else {
             let state = { ...elementsCoches, [cat]: e };
@@ -295,9 +334,9 @@ const Sujets = (props) => {
                 });
             }
         }
-        if (!menu.annees) {
+        if (!menu) {
             Axios.get("/menu").then((rep) => {
-                let state = rep.data;
+                let state: MenuI = rep.data;
                 state.annees.sort((a, b) => a["Annee"] - b["Annee"]);
                 state.auteurs.sort((a, b) =>
                     a["Auteur"].localeCompare(b["Auteur"])
@@ -318,22 +357,46 @@ const Sujets = (props) => {
     return (
         <Conteneur>
             <Carre />
-            <PartieG>
-                {
-                    //SECTION FILTRES
-                }
-                <ConteneurFiltres>
-                    <Divider>Notions</Divider>
+            <Button
+                onClick={() => setMenuDisplay(true)}
+                icon="filter"
+                type="primary"
+                style={{
+                    position: "fixed",
+                    bottom: "20px",
+                    right: "20px",
+                    zIndex: 100
+                }}
+            />
+
+            {
+                //SECTION FILTRES
+            }
+            <Drawer
+                visible={menuDisplay}
+                placement="left"
+                width="100%"
+                onClose={() => setMenuDisplay(false)}
+            >
+                <div style={{ marginLeft: "20px", marginRight: "20px" }}>
+                    <Divider style={{ marginBottom: "0px", marginTop: "0" }}>
+                        Notions
+                    </Divider>
                     <Select
                         ref={RefNotions}
                         mode="multiple"
-                        style={{ width: "100%" }}
-                        defaultValue={elementsCoches.Notions1}
+                        style={{
+                            width: "100%"
+                        }}
+                        defaultValue={elementsCoches.notions}
                         placeholder="Toutes les notions"
-                        onChange={(e) => changeFiltres(e, "notions")}
+                        onChange={(e: string[]) =>
+                            changeFiltres({ e, cat: "notions" })
+                        }
                     >
-                        {menu.notions &&
-                            menu.notions.map((el, index) => {
+                        {menu &&
+                            menu!.notions &&
+                            menu!.notions.map((el, index) => {
                                 return (
                                     <Option key={el["Notion"]}>
                                         {el["Notion"]}
@@ -342,16 +405,19 @@ const Sujets = (props) => {
                             })}
                     </Select>
 
-                    <Divider>Séries</Divider>
+                    <Divider style={{ marginBottom: "5px" }}>Séries</Divider>
                     <Select
                         ref={RefSeries}
                         mode="multiple"
                         style={{ width: "100%" }}
                         placeholder="Toutes les séries"
-                        onChange={(e) => changeFiltres(e, "series")}
+                        onChange={(e: string[]) =>
+                            changeFiltres({ e, cat: "series" })
+                        }
                     >
-                        {menu.series &&
-                            menu.series.map((el, index) => {
+                        {menu &&
+                            menu!.series &&
+                            menu!.series.map((el, index) => {
                                 return (
                                     <Option key={el["Serie"]}>
                                         {el["Serie"]}
@@ -359,16 +425,21 @@ const Sujets = (props) => {
                                 );
                             })}
                     </Select>
-                    <Divider>Destinations</Divider>
+                    <Divider style={{ marginBottom: "5px" }}>
+                        Destinations
+                    </Divider>
                     <Select
                         ref={RefDestinations}
                         mode="multiple"
                         style={{ width: "100%" }}
                         placeholder="Toutes les destinations"
-                        onChange={(e) => changeFiltres(e, "destinations")}
+                        onChange={(e: string[]) =>
+                            changeFiltres({ e, cat: "destinations" })
+                        }
                     >
-                        {menu.destinations &&
-                            menu.destinations.map((el, index) => {
+                        {menu &&
+                            menu!.destinations &&
+                            menu!.destinations.map((el, index) => {
                                 return (
                                     <Option key={el["Destination"]}>
                                         {el["Destination"]}
@@ -376,16 +447,19 @@ const Sujets = (props) => {
                                 );
                             })}
                     </Select>
-                    <Divider>Auteurs</Divider>
+                    <Divider style={{ marginBottom: "5px" }}>Auteurs</Divider>
                     <Select
                         ref={RefAuteurs}
                         mode="multiple"
                         style={{ width: "100%" }}
                         placeholder="Tous les auteurs"
-                        onChange={(e) => changeFiltres(e, "auteurs")}
+                        onChange={(e: string[]) =>
+                            changeFiltres({ e, cat: "auteurs" })
+                        }
                     >
-                        {menu.auteurs &&
-                            menu.auteurs.map((el) => {
+                        {menu &&
+                            menu!.auteurs &&
+                            menu!.auteurs.map((el) => {
                                 return (
                                     <Option key={el["Auteur"]}>
                                         {el["Auteur"] +
@@ -396,21 +470,24 @@ const Sujets = (props) => {
                                 );
                             })}
                     </Select>
-                    <Divider>Sessions</Divider>
+                    <Divider style={{ marginBottom: "5px" }}>Sessions</Divider>
                     <Radio.Group
                         ref={RefSessions}
                         size="small"
                         defaultValue="TOUTES"
-                        onChange={(e) =>
-                            changeFiltres(e.target.value, "sessions")
-                        }
+                        onChange={(e) => {
+                            changeFiltres({
+                                e: e.target.value,
+                                cat: "sessions"
+                            });
+                        }}
                     >
                         <Radio.Button value="TOUTES">Toutes</Radio.Button>
                         <Radio.Button value="NORMALE">Norm.</Radio.Button>
                         <Radio.Button value="REMPLACEMENT">Rempl.</Radio.Button>
                         <Radio.Button value="SECOURS">Secours</Radio.Button>
                     </Radio.Group>
-                    <Divider>Années</Divider>
+                    <Divider style={{ marginBottom: "5px" }}>Années</Divider>
                     <Slider
                         ref={RefAnnees}
                         range
@@ -430,13 +507,15 @@ const Sujets = (props) => {
                         tooltipVisible={false}
                         step={1}
                         defaultValue={[1996, 2019]}
-                        onChange={(val) => changeFiltres(val, "annees")}
+                        onChange={(e: [number, number] | SliderValue) =>
+                            changeFiltres({ e, cat: "annees" })
+                        }
                     />
 
                     <Divider style={{ marginTop: "40px" }} />
                     <Button
                         onClick={() => {
-                            RefNotions.current.rcSelect.state.value = [];
+                            RefNotions.current.rcSelect!.state.value = [];
                             RefAuteurs.current.rcSelect.state.value = [];
                             RefSeries.current.rcSelect.state.value = [];
                             RefDestinations.current.rcSelect.state.value = [];
@@ -513,11 +592,11 @@ const Sujets = (props) => {
                         <Icon type="search" />
                         Recherche
                     </Button>
-                </ConteneurFiltres>
-                {
-                    //!SECTION
-                }
-            </PartieG>
+                </div>
+            </Drawer>
+            {
+                //!SECTION
+            }
             <PartieD>
                 {
                     //SECTION Sujet
@@ -525,7 +604,8 @@ const Sujets = (props) => {
                 <ConteneurSuivPrec>
                     <Button
                         style={{
-                            width: "150px",
+                            flex: 1,
+                            padding: 5,
                             backgroundColor: "#e2e0d8",
                             borderColor: "#919191"
                         }}
@@ -538,7 +618,7 @@ const Sujets = (props) => {
                     } / ${nbResultats}`}</NombreSujets>
                     <Button
                         style={{
-                            width: "150px",
+                            flex: 1,
                             backgroundColor: "#e2e0d8",
                             borderColor: "#919191"
                         }}

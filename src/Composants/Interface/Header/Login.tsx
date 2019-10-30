@@ -1,17 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, FormEvent } from "react";
 import { Button, Form, Input, Icon, Checkbox } from "antd";
 import "./Login.css";
 import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
+import { Action } from "../reducers";
 
-const Login = (props) => {
+export interface Login_PROPS {
+    userDispatch: (arg0: Action) => void;
+    form: any;
+}
+
+export type formConnect = {
+    email: string;
+    password: string;
+    remember: boolean;
+};
+
+export type formError = {
+    email?: { errors: { message: string; field: string }[] };
+    password?: { errors: { message: string; field: string }[] };
+};
+
+const Login = (props: Login_PROPS) => {
     const { userDispatch } = props;
-    const [cookies, setCookie, removeCookie] = useCookies();
+    const [, setCookie,] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        validateFields((err, values) => {
+        validateFields((err: formError, values: formConnect) => {
             if (!err) {
                 Axios.post("/login", {
                     email: values.email,
