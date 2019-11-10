@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import "./App.css";
 import styled from "styled-components";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Menu from "./Composants/Interface/Header/Menu";
 import { Desktop, Tablet } from "./responsive";
 const Accueil = React.lazy(() =>
@@ -56,8 +56,6 @@ export interface animateProps {
 //!SECTION
 
 const App = () => {
-    let location = useLocation();
-
     return (
         <ConteneurGlobal>
             <ConteneurHeader>
