@@ -27,3 +27,14 @@ export {
 export {
     default as SearchOutline
 } from "@ant-design/icons/lib/outline/SearchOutline";
+
+export {
+    default as QuestionCircleOutline
+} from "@ant-design/icons/lib/outline/QuestionCircleOutline";
+
+export {
+    default as UserOutline
+} from "@ant-design/icons/lib/outline/UserOutline";
+export {
+    default as LockOutline
+} from "@ant-design/icons/lib/outline/LockOutline";

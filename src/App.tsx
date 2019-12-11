@@ -8,6 +8,9 @@ const Accueil = React.lazy(() =>
     import("./Composants/Interface/Accueil/Accueil")
 );
 const Sujets = React.lazy(() => import("./Composants/Interface/Sujets/Sujets"));
+const Programme = React.lazy(() =>
+    import("./Composants/Interface/Programme/Programme")
+);
 
 //SECTION STYLED-COMPONENTS
 
@@ -66,6 +69,7 @@ const App = () => {
                     <Suspense fallback={<div></div>}>
                         <Route exact path="/" component={Accueil} />
                         <Route path="/Sujets" component={Sujets} />
+                        <Route path="/Programme" component={Programme} />
                     </Suspense>
                 </ConteneurContenu>
             </Switch>

@@ -53,7 +53,7 @@ const Desktop = () => {
                 <img height="50" width="50" src={ico} alt="Bouton Home" />
             </BoutonHome>
             <ConteneurLiensPage>
-                <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                <BoutonPage onClick={() => changementPage("/Programme")}>
                     Programmes / Epreuves
                 </BoutonPage>
                 <BoutonPage onClick={() => changementPage("/Sujets")}>
