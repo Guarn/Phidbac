@@ -43,8 +43,6 @@ const TableMatiere = (props) => {
     const [state, setState] = useState(props.state);
 
     useEffect(() => {
-        console.log(state);
-
         Events.scrollEvent.register("begin", function() {});
 
         Events.scrollEvent.register("end", function() {});
@@ -59,8 +57,6 @@ const TableMatiere = (props) => {
     return (
         <Conteneur>
             {state.Cours.map((element, index) => {
-                console.log(state);
-
                 if (element.TableMatiere.actif) {
                     switch (element.TableMatiere.type) {
                         case "titre":
