@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Axios from "../../Fonctionnels/Axios";
 import Slate from "../../Fonctionnels/Slate";
 import { useLocation } from "react-router";
+import { Popover } from "antd";
 import Scroll, {
     Link,
     Events,
@@ -28,6 +29,7 @@ const ConteneurGlobal = styled.div<WidthProps>`
     padding-right: 30px;
     position: relative;
     margin-left: 10%;
+    height: 85%;
 `;
 interface SelectedProps {
     selected: boolean;
@@ -115,9 +117,129 @@ const Programme: React.FC<Programme> = (props) => {
                                     paddingBottom:
                                         element.options.paddingBottom + "px",
                                     fontFamily: "Century Gothic",
-                                    fontSize: "16px"
+                                    fontSize: "16px",
+                                    minHeight: element.image
+                                        ? element.imageOptions.height + "px"
+                                        : ""
                                 }}
                             >
+                                {element.image && (
+                                    <Popover
+                                        placement="bottom"
+                                        content={
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    margin: "-10px",
+                                                    maxWidth: "400px"
+                                                }}
+                                            >
+                                                {element.imageOptions
+                                                    .lienActif && (
+                                                    <div
+                                                        style={{
+                                                            borderRight:
+                                                                "1px solid rgba(0,0,0,0.1)",
+                                                            padding: "5px",
+                                                            marginRight: "10px",
+                                                            fontWeight: "bold",
+                                                            maxWidth: "200px"
+                                                        }}
+                                                    >
+                                                        {
+                                                            element.imageOptions
+                                                                .lienType
+                                                        }
+                                                    </div>
+                                                )}
+                                                {element.imageOptions.legende}
+                                            </div>
+                                        }
+                                    >
+                                        <div
+                                            style={{
+                                                float:
+                                                    element.imageOptions
+                                                        .align === "center"
+                                                        ? "none"
+                                                        : element.imageOptions
+                                                              .align,
+                                                display: "flex",
+
+                                                justifyContent: "center",
+                                                zIndex: -1,
+
+                                                marginLeft:
+                                                    element.imageOptions
+                                                        .marginLeft,
+                                                marginRight:
+                                                    element.imageOptions
+                                                        .marginRight,
+                                                marginBottom:
+                                                    element.imageOptions
+                                                        .marginBottom
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    height:
+                                                        element.imageOptions
+                                                            .height + "px",
+                                                    width:
+                                                        element.imageOptions
+                                                            .width + "px",
+                                                    cursor: element.imageOptions
+                                                        .lienActif
+                                                        ? "pointer"
+                                                        : "arrow"
+                                                }}
+                                            >
+                                                <img
+                                                    style={{
+                                                        height: "inherit",
+                                                        width: "inherit",
+                                                        paddingBottom: "10px",
+                                                        paddingLeft:
+                                                            element.imageOptions
+                                                                .align ===
+                                                            "right"
+                                                                ? "10px"
+                                                                : "0px",
+                                                        paddingRight:
+                                                            element.imageOptions
+                                                                .align ===
+                                                            "left"
+                                                                ? "10px"
+                                                                : "0px"
+                                                    }}
+                                                    src={
+                                                        element.imageOptions.src
+                                                    }
+                                                    alt={
+                                                        element.imageOptions
+                                                            .legende
+                                                    }
+                                                    onMouseDown={() => {
+                                                        if (
+                                                            element.imageOptions
+                                                                .lienActif
+                                                        ) {
+                                                            window.open(
+                                                                "http://" +
+                                                                    element
+                                                                        .imageOptions
+                                                                        .lien,
+                                                                "_blank"
+                                                            );
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </Popover>
+                                )}
                                 <Slate
                                     index={index}
                                     value={element.value}
