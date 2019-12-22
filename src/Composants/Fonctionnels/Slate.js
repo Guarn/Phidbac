@@ -188,7 +188,6 @@ const withRichText = (editor) => {
             const isActive = isFormatActive(editor, format);
             const memeCouleur = sontMemeCouleurs(editor, couleurTexte);
             const memeCouleur1 = sontMemeCouleurs1(editor, couleurBackground);
-            console.log(command);
             const active = () => {
                 if (isActive) {
                     if (command.couleurTexte === "" || memeCouleur) {
@@ -236,10 +235,6 @@ const withRichText = (editor) => {
                 );
             }
             if (format === "couleurBackgroundActive") {
-                console.log("TTTTT");
-                console.log(active1());
-                console.log(command);
-
                 Editor.setNodes(
                     editor,
                     {
@@ -294,7 +289,6 @@ const getCouleur = (editor) => {
     const [match] = Editor.nodes(editor, {
         match: { couleurTexteActive: true }
     });
-    console.log(match);
     if (match) {
         return match[0].couleurTexte;
     } else {
@@ -306,7 +300,6 @@ const getBackground = (editor) => {
     const [match] = Editor.nodes(editor, {
         match: { couleurBackgroundActive: true }
     });
-    console.log(match);
     if (match) {
         return match[0].couleurBackground;
     } else {

@@ -172,7 +172,6 @@ export const FormatCouleurTexte = ({ selected, couleurTexte }) => {
                         <GithubPicker
                             onChange={(val) => {
                                 setCouleur(val.hex);
-                                console.log(val);
 
                                 editor.exec({
                                     type: "couleur",
@@ -240,7 +239,6 @@ export const FormatCouleurBackground = ({ selected, couleurBackground }) => {
                         <GithubPicker
                             onChange={(val) => {
                                 setCouleur(val.hex);
-                                console.log(val);
 
                                 editor.exec({
                                     type: "couleur",

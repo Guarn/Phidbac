@@ -11,6 +11,8 @@ const Sujets = React.lazy(() => import("./Composants/Interface/Sujets/Sujets"));
 const Programme = React.lazy(() =>
     import("./Composants/Interface/Programme/Programme")
 );
+const Cours = React.lazy(() => import("./Composants/Interface/Cours/Cours"));
+const Index = React.lazy(() => import("./Composants/Interface/Index/Index"));
 
 //SECTION STYLED-COMPONENTS
 
@@ -35,7 +37,7 @@ const ConteneurHeader = styled.div`
 
 const ConteneurContenu = styled.div`
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 160px);
     display: flex;
 `;
 
@@ -70,6 +72,8 @@ const App = () => {
                         <Route exact path="/" component={Accueil} />
                         <Route path="/Sujets" component={Sujets} />
                         <Route path="/Programme" component={Programme} />
+                        <Route path="/Cours" component={Cours} />
+                        <Route path="/Index" component={Index} />
                     </Suspense>
                 </ConteneurContenu>
             </Switch>

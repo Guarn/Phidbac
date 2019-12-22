@@ -59,11 +59,14 @@ const Desktop = () => {
                 <BoutonPage onClick={() => changementPage("/Sujets")}>
                     Sujets
                 </BoutonPage>
-                <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                <BoutonPage onClick={() => changementPage("/Cours")}>
                     Cours
                 </BoutonPage>
                 <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
                     Exercices
+                </BoutonPage>
+                <BoutonPage onClick={() => changementPage("/Index")}>
+                    Index
                 </BoutonPage>
                 <BoutonPage>
                     <Connexion />

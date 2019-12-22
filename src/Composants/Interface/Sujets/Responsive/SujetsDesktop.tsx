@@ -320,10 +320,7 @@ const Sujets = () => {
         });
     };
     const RechercheFiltres2 = () => {
-        console.log(elementsCoches);
         Axios.post(`/resultats/1`, { elementsCoches }).then((rep) => {
-            console.log(rep);
-
             if (rep.data.Count > 0) {
                 setSujets(rep.data.Rows);
                 setNbResultats(rep.data.Count);
@@ -456,10 +453,6 @@ const Sujets = () => {
                     "background-color",
                     "yellow"
                 );
-                console.log(regex);
-                console.log(reg);
-                console.log(result);
-                console.log(indices);
             }
             while ((result = regex.exec(unst2.getText()))) {
                 editor2.formatText(
@@ -468,10 +461,6 @@ const Sujets = () => {
                     "background-color",
                     "yellow"
                 );
-                console.log(regex);
-                console.log(reg);
-                console.log(result);
-                console.log(indices);
             }
             while ((result = regex.exec(unst3.getText()))) {
                 editor3.formatText(
@@ -480,16 +469,10 @@ const Sujets = () => {
                     "background-color",
                     "yellow"
                 );
-                console.log(regex);
-                console.log(reg);
-                console.log(result);
-                console.log(indices);
             }
             if (indices.length > 0) {
                 if (texte !== "") {
-                    console.log(state);
                     let resultat = state.match(reg);
-                    console.log(resultat);
                     if (resultat && resultat[0].length > 0) {
                         longueur = resultat["0"].length;
                         index = resultat["index"];
@@ -534,9 +517,6 @@ const Sujets = () => {
                         "background-color",
                         "yellow"
                     );
-                    console.log(reg);
-                    console.log(result);
-                    console.log(indices);
                 }
                 while ((result = reg.exec(unst2.getText()))) {
                     editor2.formatText(
@@ -545,9 +525,6 @@ const Sujets = () => {
                         "background-color",
                         "yellow"
                     );
-                    console.log(reg);
-                    console.log(result);
-                    console.log(indices);
                 }
                 while ((result = reg.exec(unst3.getText()))) {
                     editor3.formatText(
@@ -556,14 +533,10 @@ const Sujets = () => {
                         "background-color",
                         "yellow"
                     );
-                    console.log(reg);
-                    console.log(result);
-                    console.log(indices);
                 }
                 if (indices.length > 0) {
                     if (texte.length > 0) {
                         let resultat = state.match(reg);
-                        console.log(resultat);
                         if (resultat && resultat[0].length > 0) {
                             longueur = resultat[`${index}`].length;
                             index = resultat["index"];
