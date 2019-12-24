@@ -39,7 +39,7 @@ const El3 = styled.div`
     margin-left: 24px;
 `;
 
-const TableMatiere = (props) => {
+const TableMatiere = (props: any) => {
     const [state, setState] = useState(props.state);
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const TableMatiere = (props) => {
     });
     return (
         <Conteneur>
-            {state.Cours.map((element, index) => {
+            {state.Cours.map((element: any, index: number) => {
                 if (element.TableMatiere.actif) {
                     switch (element.TableMatiere.type) {
                         case "titre":

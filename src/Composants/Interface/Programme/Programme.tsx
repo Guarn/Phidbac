@@ -69,16 +69,21 @@ const Programme: React.FC<Programme> = (props) => {
             });
         } else {
             let loc = location.hash.replace("#", "");
+            let el1: HTMLElement | null = document.getElementById("element-0");
+            let el2: HTMLElement | null = document.getElementById(
+                `element-${loc}`
+            );
             if (loc !== "") {
-                let elBase = document
-                    .getElementById("element-0")
-                    .getBoundingClientRect().top;
-                let elLien = document
-                    .getElementById(`element-${loc}`)
-                    .getBoundingClientRect().top;
-                animateScroll.scrollTo(elLien - elBase, {
-                    containerId: "ScrollConteneur"
-                });
+                let elBase: number | null = el1
+                    ? el1.getBoundingClientRect().top
+                    : null;
+                let elLien: number | null = el2
+                    ? el2.getBoundingClientRect().top
+                    : null;
+                if (elBase && elLien)
+                    animateScroll.scrollTo(elLien - elBase, {
+                        containerId: "ScrollConteneur"
+                    });
             }
         }
     }, [state]);
@@ -89,7 +94,7 @@ const Programme: React.FC<Programme> = (props) => {
                 className="element"
                 width={781}
             >
-                {state.Cours.map((element, index) => {
+                {state.Cours.map((element: any, index: number) => {
                     return (
                         <Element
                             id={`element-${index}`}

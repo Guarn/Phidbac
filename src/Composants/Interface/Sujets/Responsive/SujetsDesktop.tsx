@@ -206,6 +206,9 @@ export interface SujetI {
     Auteur: string;
     Problemes: boolean;
     Annee: number;
+    Sujet1Naked: string;
+    Sujet2Naked: string;
+    Sujet3Naked: string;
 }
 
 export interface MenuI {
@@ -242,7 +245,7 @@ const Sujets = () => {
     const [filtres, setFiltres] = useState(false);
     const [idSujet, setIdSujet] = useState(1);
     const [nbResultats, setNbResultats] = useState();
-    const [sujets, setSujets] = useState([]);
+    const [sujets, setSujets] = useState<SujetI[]>([]);
     const [state, setState] = useState();
     const [menu, setMenu] = useState<MenuI | null>();
     const RefNotions: any = useRef(null);
