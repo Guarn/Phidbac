@@ -98,7 +98,6 @@ const Index = () => {
         }
         if (state.length === 0) {
             Axios.get("/Indexes").then((rep) => {
-                console.log(rep);
                 setState(rep.data);
             });
         }
