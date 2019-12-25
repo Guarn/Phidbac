@@ -73,8 +73,6 @@ const Index = () => {
     const [menuPos, setMenuPos] = React.useState([0, 0]);
 
     function changeIndex(id: number) {
-        console.log("raté");
-
         if (id !== indexSel.id) {
             setIndexSel({ Cours: [], id: 0 });
             setId(id);
