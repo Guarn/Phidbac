@@ -393,7 +393,7 @@ const Sujets = () => {
     useEffect(() => {
         // ANCHOR Premier affichage ou filtres0
         if (sujets.length === 0) {
-            Axios.get(`/sujets/${idSujet}`).then((rep) => {
+            Axios.get(`/sujets/t/${idSujet}`).then((rep) => {
                 if (
                     rep.data.Count > 0 &&
                     idSujet <= rep.data.Count &&
@@ -410,7 +410,7 @@ const Sujets = () => {
         } else {
             // ANCHOR Si Resultats > 0
             if (nbResultats > 0 && !filtres) {
-                Axios.get(`/sujets/${idSujet}`).then((rep) => {
+                Axios.get(`/sujets/t/${idSujet}`).then((rep) => {
                     if (
                         rep.data.Count > 0 &&
                         idSujet <= rep.data.Count &&

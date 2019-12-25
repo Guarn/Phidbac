@@ -112,3 +112,11 @@ body,
 .ant-collapse-header {
     padding: 0px;
 }
+
+.switch-wrapper {
+    position: relative;
+}
+
+.switch-wrapper > div {
+    position: absolute;
+}

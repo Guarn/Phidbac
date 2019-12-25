@@ -4,6 +4,11 @@ import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import Menu from "./Composants/Interface/Header/Menu";
 import { Desktop } from "./responsive";
+import Accueil from "./Composants/Interface/Accueil/Accueil";
+import Sujets from "./Composants/Interface/Sujets/Sujets";
+import Programme from "./Composants/Interface/Programme/Programme";
+import Cours from "./Composants/Interface/Cours/Cours";
+import Index from "./Composants/Interface/Index/Index"; /*
 const Accueil = React.lazy(() =>
     import("./Composants/Interface/Accueil/Accueil")
 );
@@ -13,7 +18,7 @@ const Programme = React.lazy(() =>
 );
 const Cours = React.lazy(() => import("./Composants/Interface/Cours/Cours"));
 const Index = React.lazy(() => import("./Composants/Interface/Index/Index"));
-
+*/
 //SECTION STYLED-COMPONENTS
 
 const ConteneurGlobal = styled.div`
@@ -66,17 +71,15 @@ const App = () => {
             <ConteneurHeader>
                 <Menu />
             </ConteneurHeader>
-            <Switch>
-                <ConteneurContenu>
-                    <Suspense fallback={<div></div>}>
-                        <Route exact path="/" component={Accueil} />
-                        <Route path="/Sujets" component={Sujets} />
-                        <Route path="/Programme" component={Programme} />
-                        <Route path="/Cours" component={Cours} />
-                        <Route path="/Index" component={Index} />
-                    </Suspense>
-                </ConteneurContenu>
-            </Switch>
+            <ConteneurContenu>
+                <Switch>
+                    <Route exact path="/" component={Accueil} />
+                    <Route path="/Sujets" component={Sujets} />
+                    <Route path="/Programme" component={Programme} />
+                    <Route path="/Cours" component={Cours} />
+                    <Route path="/Index" component={Index} />
+                </Switch>
+            </ConteneurContenu>
 
             <Desktop>
                 <ConteneurFooter>Copyright 2019</ConteneurFooter>
