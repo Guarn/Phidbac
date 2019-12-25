@@ -25,7 +25,7 @@ interface stateProps {
     nom?: string;
     Cours?: any;
     type?: string;
-    lettre?: string;
+    lettre: string;
     description?: string;
 }
 
@@ -64,6 +64,7 @@ const Index = () => {
     const [state, setState] = React.useState<stateProps[]>([]);
     const [indexSel, setIndexSel] = React.useState<stateProps>({
         Cours: [],
+        lettre: "",
         id: 0
     });
 
@@ -74,7 +75,7 @@ const Index = () => {
 
     function changeIndex(id: number) {
         if (id !== indexSel.id) {
-            setIndexSel({ Cours: [], id: 0 });
+            setIndexSel({ Cours: [], id: 0, lettre: "" });
             setId(id);
         }
     }
@@ -97,6 +98,7 @@ const Index = () => {
         }
         if (state.length === 0) {
             Axios.get("/Indexes").then((rep) => {
+                console.log(rep);
                 setState(rep.data);
             });
         }
@@ -206,7 +208,9 @@ const Index = () => {
                                 {state
                                     .filter(
                                         (el) =>
-                                            el.lettre === item &&
+                                            el.lettre
+                                                .charAt(0)
+                                                .toUpperCase() === item &&
                                             ((filtre !== "tous" &&
                                                 filtre === el.type) ||
                                                 filtre === "tous")
@@ -365,10 +369,16 @@ const Index = () => {
                                                                 .lienActif
                                                         ) {
                                                             window.open(
-                                                                "http://" +
-                                                                    element
-                                                                        .imageOptions
-                                                                        .lien,
+                                                                element.imageOptions.lien.charAt(
+                                                                    0
+                                                                ) === "h"
+                                                                    ? element
+                                                                          .imageOptions
+                                                                          .lien
+                                                                    : "http://" +
+                                                                          element
+                                                                              .imageOptions
+                                                                              .lien,
                                                                 "_blank"
                                                             );
                                                         }
