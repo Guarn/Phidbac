@@ -4,13 +4,7 @@ import Axios from "../../Fonctionnels/Axios";
 import Slate from "../../Fonctionnels/Slate";
 import { useLocation } from "react-router";
 import { Popover } from "antd";
-import Scroll, {
-    Link,
-    Events,
-    scrollSpy,
-    animateScroll,
-    Element
-} from "react-scroll";
+import { animateScroll, Element } from "react-scroll";
 import TableMatiere from "./TableMatiere";
 import "./Programme.css";
 export interface Programme {}

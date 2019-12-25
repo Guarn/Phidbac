@@ -3,7 +3,7 @@ import "./App.css";
 import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import Menu from "./Composants/Interface/Header/Menu";
-import { Desktop, Tablet } from "./responsive";
+import { Desktop } from "./responsive";
 const Accueil = React.lazy(() =>
     import("./Composants/Interface/Accueil/Accueil")
 );

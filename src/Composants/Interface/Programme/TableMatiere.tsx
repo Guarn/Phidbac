@@ -1,12 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Scroll, {
-    Link,
-    Events,
-    scrollSpy,
-    animateScroll,
-    Element
-} from "react-scroll";
+import { Link, Events, scrollSpy } from "react-scroll";
 
 const Conteneur = styled.div`
     display: flex;
@@ -138,6 +132,7 @@ const TableMatiere = (props: any) => {
                             );
                     }
                 }
+                return null;
             })}
         </Conteneur>
     );

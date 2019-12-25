@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Radio } from "antd";
 
 const Conteneur = styled.div`
     height: 80%;
@@ -7,6 +8,14 @@ const Conteneur = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 5%;
+`;
+
+const ConteneurDescription = styled.div`
+    width: 500px;
+    margin-left: 40px;
+    overflow: auto;
+    height: 100%;
+    padding-right: 10px;
 `;
 
 const ConteneurLettres = styled.div`
@@ -59,6 +68,20 @@ const ConteneurListe = styled.div`
     width: 270px;
 `;
 
+const BlocLettre = styled.div`
+    margin-top: 10px;
+    margin-bottom: 10px;
+`;
+
+const Lettre2 = styled.div`
+    font-size: 24px;
+    color: orange;
+`;
+
+const RadioButton = styled(Radio.Button)`
+    background-color: rgba(0, 0, 0, 0);
+`;
+
 export const Styled = {
     Conteneur,
     ConteneurLettres,
@@ -66,5 +89,9 @@ export const Styled = {
     LettresD,
     ConteneurSlate,
     Lettre,
-    ConteneurListe
+    Lettre2,
+    ConteneurListe,
+    RadioButton,
+    ConteneurDescription,
+    BlocLettre
 };

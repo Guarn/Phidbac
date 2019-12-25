@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../../Assets/LOG.svg";
 import PartieG from "./PartieG";
-import { Desktop, Tablet, Mobile } from "../../../responsive";
+import { Desktop, Tablet } from "../../../responsive";
 
 //SECTION STYLED-COMPONENTS
 

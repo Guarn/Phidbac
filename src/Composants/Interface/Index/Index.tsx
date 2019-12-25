@@ -4,73 +4,10 @@ import "./Index.css";
 import Axios from "../../Fonctionnels/Axios";
 import { Popover, Radio } from "antd";
 import Slate from "../../Fonctionnels/Slate";
-import Scroll, {
-    Link,
-    Events,
-    scrollSpy,
-    animateScroll,
-    Element
-} from "react-scroll";
+import { Styled } from "./Styled";
+import { Link, Events, scrollSpy, Element } from "react-scroll";
 import { RadioChangeEvent } from "antd/lib/radio";
 
-const Conteneur = styled.div`
-    height: 80%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
-`;
-
-const ConteneurLettres = styled.div`
-    display: flex;
-`;
-
-const LettresG = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-const LettresD = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-`;
-
-const ConteneurSlate = styled.div`
-    position: relative;
-    box-sizing: border-box;
-    border: 1px dashed transparent;
-    transition: all 0.2s;
-`;
-
-const Lettre = styled.div`
-    height: 40px;
-    width: 40px;
-    text-align: center;
-    border: 1px solid #707070;
-    color: #707070;
-    font-size: 24px;
-    margin-bottom: 2px;
-    margin-right: 2px;
-    user-select: none;
-    cursor: pointer;
-    transition: 0.2s;
-    &:hover {
-        background-color: grey;
-        color: white;
-    }
-`;
-
-const ConteneurListe = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin-left: 40px;
-    height: 90%;
-    overflow: auto;
-    padding-right: 10px;
-    width: 270px;
-`;
 interface elementProps {
     selected: boolean;
 }
@@ -83,24 +20,6 @@ const ElementListe = styled.div<elementProps>`
     }
 `;
 
-const BlocLettre = styled.div`
-    margin-top: 10px;
-    margin-bottom: 10px;
-`;
-
-const Lettre2 = styled.div`
-    font-size: 24px;
-    color: orange;
-`;
-
-const ConteneurDescription = styled.div`
-    width: 500px;
-    margin-left: 40px;
-    overflow: auto;
-    height: 100%;
-    padding-right: 10px;
-`;
-
 interface stateProps {
     id: number;
     nom?: string;
@@ -109,10 +28,6 @@ interface stateProps {
     lettre?: string;
     description?: string;
 }
-
-const RadioButton = styled(Radio.Button)`
-    background-color: rgba(0, 0, 0, 0);
-`;
 
 type filtres = "tous" | "notion" | "terme" | "auteur";
 
@@ -208,9 +123,9 @@ const Index = () => {
         setFiltre(event.target.value);
     }
     return (
-        <Conteneur>
-            <ConteneurLettres>
-                <LettresG>
+        <Styled.Conteneur>
+            <Styled.ConteneurLettres>
+                <Styled.LettresG>
                     {alphabet.map((item, index) => {
                         if (index % 2 === 0) {
                             return (
@@ -223,13 +138,14 @@ const Index = () => {
                                     containerId="ConteneurListe"
                                     key={item + "-" + index}
                                 >
-                                    <Lettre>{item}</Lettre>
+                                    <Styled.Lettre>{item}</Styled.Lettre>
                                 </Link>
                             );
                         }
+                        return null;
                     })}
-                </LettresG>
-                <LettresD>
+                </Styled.LettresG>
+                <Styled.LettresD>
                     {alphabet.map((item, index) => {
                         if (index % 2) {
                             return (
@@ -242,13 +158,14 @@ const Index = () => {
                                     containerId="ConteneurListe"
                                     key={item + "-" + index}
                                 >
-                                    <Lettre>{item}</Lettre>
+                                    <Styled.Lettre>{item}</Styled.Lettre>
                                 </Link>
                             );
                         }
+                        return null;
                     })}
-                </LettresD>
-            </ConteneurLettres>
+                </Styled.LettresD>
+            </Styled.ConteneurLettres>
             <div
                 style={{
                     position: "absolute",
@@ -262,13 +179,19 @@ const Index = () => {
                     size="small"
                     onChange={filtres}
                 >
-                    <RadioButton value="tous">Tous</RadioButton>
-                    <RadioButton value="notion">Notions</RadioButton>
-                    <RadioButton value="terme">Termes</RadioButton>
-                    <RadioButton value="auteur">Auteurs</RadioButton>
+                    <Styled.RadioButton value="tous">Tous</Styled.RadioButton>
+                    <Styled.RadioButton value="notion">
+                        Notions
+                    </Styled.RadioButton>
+                    <Styled.RadioButton value="terme">
+                        Termes
+                    </Styled.RadioButton>
+                    <Styled.RadioButton value="auteur">
+                        Auteurs
+                    </Styled.RadioButton>
                 </Radio.Group>
             </div>
-            <ConteneurListe ref={refListe} id="ConteneurListe">
+            <Styled.ConteneurListe ref={refListe} id="ConteneurListe">
                 {alphabet.map((item) => {
                     return (
                         <div key={`Bloclettre-${item}`}>
@@ -278,10 +201,10 @@ const Index = () => {
                                 key={`Lettre-${item}`}
                                 className="element"
                             >
-                                <Lettre2>{item}</Lettre2>
+                                <Styled.Lettre2>{item}</Styled.Lettre2>
                             </Element>
 
-                            <BlocLettre>
+                            <Styled.BlocLettre>
                                 {state
                                     .filter(
                                         (el) =>
@@ -303,17 +226,17 @@ const Index = () => {
                                             </ElementListe>
                                         );
                                     })}
-                            </BlocLettre>
+                            </Styled.BlocLettre>
                         </div>
                     );
                 })}
-            </ConteneurListe>
-            <ConteneurDescription>
+            </Styled.ConteneurListe>
+            <Styled.ConteneurDescription>
                 {indexSel.Cours !== null &&
                     indexSel.Cours.length > 0 &&
                     indexSel.Cours.map((element: any, index: number) => {
                         return (
-                            <ConteneurSlate
+                            <Styled.ConteneurSlate
                                 key={`partie-${index}`}
                                 style={{
                                     backgroundColor:
@@ -462,11 +385,11 @@ const Index = () => {
                                     value={element.value}
                                     readOnly={true}
                                 />
-                            </ConteneurSlate>
+                            </Styled.ConteneurSlate>
                         );
                     })}
-            </ConteneurDescription>
-        </Conteneur>
+            </Styled.ConteneurDescription>
+        </Styled.Conteneur>
     );
 };
 export default Index;
