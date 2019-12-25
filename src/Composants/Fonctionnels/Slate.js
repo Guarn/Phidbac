@@ -1,14 +1,13 @@
 import React, { useCallback, useMemo } from "react";
 import { Editable, withReact, Slate } from "slate-react";
 import { createEditor } from "slate";
-import { withHistory } from "slate-history";
 
 import "./Slate.css";
 
 const SlateJs = (props) => {
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-    const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+    const editor = useMemo(() => withReact(createEditor()), []);
 
     return (
         <Slate editor={editor} value={props.value} selection={null}>
