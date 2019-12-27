@@ -81,7 +81,6 @@ const Header = () => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
                     .catch((err) => {
-                        removeCookie("token", { domain: ".phidbac.fr" });
                         console.log(err.response);
                     });
             }

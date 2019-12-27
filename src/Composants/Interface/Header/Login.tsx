@@ -23,7 +23,7 @@ export type formError = {
 
 const Login = (props: Login_PROPS) => {
     const { userDispatch } = props;
-    const [, setCookie,] = useCookies();
+    const [, setCookie] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
 
     const handleSubmit = (e: FormEvent) => {
