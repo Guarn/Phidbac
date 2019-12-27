@@ -1,7 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
 import { Timeline, Icon } from "antd";
-import Axios from "../../Fonctionnels/Axios";
 import "./Cours.css";
 
 const Conteneur = styled.div`

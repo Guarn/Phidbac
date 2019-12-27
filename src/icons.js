@@ -3,6 +3,8 @@ export { default as DownOutline } from "@ant-design/icons/lib/outline/DownOutlin
 export { default as LeftOutline } from "@ant-design/icons/lib/outline/LeftOutline";
 
 export { default as MenuOutline } from "@ant-design/icons/lib/outline/MenuOutline";
+export { default as MailOutline } from "@ant-design/icons/lib/outline/MailOutline";
+export { default as SettingOutline } from "@ant-design/icons/lib/outline/SettingOutline";
 
 export { default as FilterOutline } from "@ant-design/icons/lib/outline/FilterOutline";
 export { default as CloseOutline } from "@ant-design/icons/lib/outline/CloseOutline";
@@ -11,6 +13,7 @@ export { default as ReloadOutline } from "@ant-design/icons/lib/outline/ReloadOu
 export { default as SearchOutline } from "@ant-design/icons/lib/outline/SearchOutline";
 
 export { default as QuestionCircleOutline } from "@ant-design/icons/lib/outline/QuestionCircleOutline";
+export { default as QuestionOutline } from "@ant-design/icons/lib/outline/QuestionOutline";
 
 export { default as UserOutline } from "@ant-design/icons/lib/outline/UserOutline";
 export { default as LockOutline } from "@ant-design/icons/lib/outline/LockOutline";

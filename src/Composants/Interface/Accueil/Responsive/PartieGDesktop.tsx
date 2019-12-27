@@ -67,25 +67,14 @@ const DescriptionCat = styled.div`
     z-index: 100;
 `;
 
-const Cercle = styled.div`
-    position: fixed;
-    top: -10%;
-    left: -40%;
-    width: 100%;
-    height: 200%;
-    background-color: #e9e7e1;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 50% /50%;
-    z-index: 0;
-    opacity: 0.5;
-`;
+
 
 const PartieGDesktop = () => {
     const [descriptionAff, setDescriptionAff] = React.useState(false);
     const [numDescription, setnumDescription] = React.useState(0);
     return (
         <>
-            <Cercle />
+            
             <div>
                 <TexteTitre>
                     <Phi>φ</Phi>d<Phi>'</Phi>

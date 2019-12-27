@@ -34,14 +34,14 @@ const El3 = styled.div`
 `;
 
 const TableMatiere = (props: any) => {
-    const [state, setState] = useState(props.state);
+    const [state] = useState(props.state);
 
     useEffect(() => {
         Events.scrollEvent.register("begin", function() {});
 
         Events.scrollEvent.register("end", function() {});
 
-        scrollSpy.update();
+        scrollSpy.update(); 
 
         return () => {
             Events.scrollEvent.remove("begin");

@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import "./App.css";
 import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";

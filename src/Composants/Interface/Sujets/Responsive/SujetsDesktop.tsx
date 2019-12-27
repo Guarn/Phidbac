@@ -15,6 +15,7 @@ import "../Sujets.css";
 import ReactQuill from "react-quill";
 import Axios from "../../../Fonctionnels/Axios";
 import { SliderValue } from "antd/lib/slider";
+import { Transition } from "react-transition-group";
 
 const { Option } = Select;
 
@@ -30,24 +31,24 @@ const PartieG = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 `;
 const PartieD = styled.div`
     flex: 2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: 100%;
+    margin-top: 20px;
     width: 100%;
+    z-index: 20;
 `;
 const ConteneurFiltres = styled.div`
     position: relative;
-    top: 10%;
     width: 320px;
     border: 1px solid rgba(0, 0, 0, 0.16);
     padding: 20px;
     padding-top: 5px;
     background-color: #e2e0d8;
-    z-index: 2;
+    z-index: 200;
 `;
 
 const ConteneurSuivPrec = styled.div`
@@ -57,11 +58,11 @@ const ConteneurSuivPrec = styled.div`
     margin-bottom: 20px;
 `;
 const ConteneurSujet = styled.div`
-    z-index: 2;
-    height: 75%;
+    height: 90%;
     width: 75%;
     margin-left: 12.5%;
     overflow: auto;
+    padding-right: 10px;
 `;
 
 const NombreSujets = styled.div`
@@ -241,7 +242,8 @@ export interface ElementsCochesI {
 
 const Sujets = () => {
     //SECTION STATE
-
+    const [ine, setIn] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [filtres, setFiltres] = useState(false);
     const [idSujet, setIdSujet] = useState(1);
     const [nbResultats, setNbResultats] = useState();
@@ -275,6 +277,7 @@ const Sujets = () => {
                 } else {
                     setState(sujets[idSujet + 1]);
                     setIdSujet(idSujet + 1);
+                    setLoading(false);
                 }
             }
             if (val === "-") {
@@ -284,21 +287,26 @@ const Sujets = () => {
                 } else {
                     setState(sujets[idSujet - 1]);
                     setIdSujet(idSujet - 1);
+                    setLoading(false);
                 }
             }
         } else {
             if (val === "+") {
                 if (idSujet === nbResultats) {
                     setIdSujet(1);
+                    setLoading(false);
                 } else {
                     setIdSujet(idSujet + 1);
+                    setLoading(false);
                 }
             }
             if (val === "-") {
                 if (idSujet === 1) {
                     setIdSujet(nbResultats);
+                    setLoading(false);
                 } else {
                     setIdSujet(idSujet - 1);
+                    setLoading(false);
                 }
             }
         }
@@ -315,10 +323,12 @@ const Sujets = () => {
                 setState(rep.data.rows[0]);
                 setFiltres(true);
                 setIdSujet(0);
+                setLoading(false);
             } else {
                 setSujets([]);
                 setNbResultats(0);
                 setFiltres(true);
+                setLoading(false);
             }
         });
     };
@@ -330,10 +340,12 @@ const Sujets = () => {
                 setState(rep.data.Rows[0]);
                 setFiltres(true);
                 setIdSujet(0);
+                setLoading(false);
             } else {
                 setSujets([]);
                 setNbResultats(0);
                 setFiltres(true);
+                setLoading(false);
             }
         });
     };
@@ -391,6 +403,8 @@ const Sujets = () => {
     //SECTION USEEFFECT
 
     useEffect(() => {
+        if (!ine) setIn(true);
+
         // ANCHOR Premier affichage ou filtres0
         if (sujets.length === 0) {
             Axios.get(`/sujets/t/${idSujet}`).then((rep) => {
@@ -403,6 +417,7 @@ const Sujets = () => {
                     setSujets(state1);
                     setNbResultats(rep.data.Count);
                     setState(rep.data.Sujet);
+                    setLoading(false);
                 } else {
                     setNbResultats(0);
                 }
@@ -420,6 +435,7 @@ const Sujets = () => {
                         setSujets(state1);
                         setNbResultats(rep.data.Count);
                         setState(rep.data.Sujet);
+                        setLoading(false);
                     } else {
                         setNbResultats(0);
                     }
@@ -550,6 +566,7 @@ const Sujets = () => {
                         }
                     }
                 }
+                return null;
             });
         }
         if (!menu) {
@@ -571,6 +588,30 @@ const Sujets = () => {
     }, [idSujet]);
 
     //!SECTION
+    const duration = 200;
+    const duration2 = 200;
+
+    const defaultStyle = {
+        transition: `all ${duration}ms `,
+        opacity: 0,
+        transform: "translate3d(0px,-50px,0)"
+    };
+
+    const transitionStyles: any = {
+        entering: { opacity: 0, transform: "translate3d(0px,-50px,0)" },
+        entered: { opacity: 1, transform: "translate3d(0px,0px,0)" }
+    };
+    const defaultStyle2 = {
+        transition: `all ${duration2}ms `,
+        opacity: 0
+    };
+
+    const transitionStyles2: any = {
+        entering: { opacity: 0 },
+        entered: { opacity: 1 },
+        exiting: { opacity: 1 },
+        exited: { opacity: 0 }
+    };
 
     return (
         <Conteneur>
@@ -581,327 +622,423 @@ const Sujets = () => {
                     //SECTION FILTRES
                 }
 
-                <ConteneurFiltres>
-                    <Tabs
-                        size="small"
-                        defaultActiveKey="1"
-                        onChange={() => {
-                            setFiltres(false);
-                            setIdSujet(1);
-                            setSujets([]);
-
-                            setElementsCoches(initialState);
-                        }}
-                    >
-                        <Tabs.TabPane
-                            tab={
-                                <span>
-                                    <Icon type="filter" />
-                                    FILTRES
-                                </span>
-                            }
-                            key="1"
+                <Transition
+                    appear
+                    enter
+                    mountOnEnter
+                    in={true}
+                    timeout={{
+                        appear: 50,
+                        enter: 200
+                    }}
+                >
+                    {(state) => (
+                        <div
+                            style={{
+                                position: "relative",
+                                ...defaultStyle,
+                                ...transitionStyles[state]
+                            }}
                         >
-                            <Divider
-                                style={{ marginBottom: "5px", marginTop: "0" }}
-                            >
-                                Notions
-                            </Divider>
-                            <Select
-                                ref={RefNotions}
-                                mode="multiple"
-                                style={{ width: "100%" }}
-                                defaultValue={elementsCoches.notions}
-                                placeholder="Toutes les notions"
-                                onChange={(e: string[]) =>
-                                    changeFiltres({ e, cat: "notions" })
-                                }
-                            >
-                                {menu &&
-                                    menu!.notions &&
-                                    menu!.notions.map((el, index) => {
-                                        return (
-                                            <Option key={el["Notion"]}>
-                                                {el["Notion"]}
-                                            </Option>
-                                        );
-                                    })}
-                            </Select>
-                            <Divider style={{ marginBottom: "5px" }}>
-                                Séries
-                            </Divider>
-                            <Select
-                                ref={RefSeries}
-                                mode="multiple"
-                                style={{ width: "100%" }}
-                                placeholder="Toutes les séries"
-                                onChange={(e: string[]) =>
-                                    changeFiltres({ e, cat: "series" })
-                                }
-                            >
-                                {menu &&
-                                    menu!.series &&
-                                    menu!.series.map((el, index) => {
-                                        return (
-                                            <Option key={el["Serie"]}>
-                                                {el["Serie"]}
-                                            </Option>
-                                        );
-                                    })}
-                            </Select>
-                            <Divider style={{ marginBottom: "5px" }}>
-                                Destinations
-                            </Divider>
-                            <Select
-                                ref={RefDestinations}
-                                mode="multiple"
-                                style={{ width: "100%" }}
-                                placeholder="Toutes les destinations"
-                                onChange={(e: string[]) =>
-                                    changeFiltres({ e, cat: "destinations" })
-                                }
-                            >
-                                {menu &&
-                                    menu!.destinations &&
-                                    menu!.destinations.map((el, index) => {
-                                        return (
-                                            <Option key={el["Destination"]}>
-                                                {el["Destination"]}
-                                            </Option>
-                                        );
-                                    })}
-                            </Select>
-                            <Divider style={{ marginBottom: "5px" }}>
-                                Auteurs
-                            </Divider>
-                            <Select
-                                ref={RefAuteurs}
-                                mode="multiple"
-                                style={{ width: "100%" }}
-                                placeholder="Tous les auteurs"
-                                onChange={(e: string[]) =>
-                                    changeFiltres({ e, cat: "auteurs" })
-                                }
-                            >
-                                {menu &&
-                                    menu!.auteurs &&
-                                    menu!.auteurs.map((el) => {
-                                        return (
-                                            <Option key={el["Auteur"]}>
-                                                {el["Auteur"] +
-                                                    " (" +
-                                                    el["NbSujets"] +
-                                                    ")"}
-                                            </Option>
-                                        );
-                                    })}
-                            </Select>
-                            <Divider style={{ marginBottom: "5px" }}>
-                                Sessions
-                            </Divider>
-                            <Radio.Group
-                                ref={RefSessions}
-                                size="small"
-                                defaultValue="TOUTES"
-                                onChange={(e) => {
-                                    changeFiltres({
-                                        e: e.target.value,
-                                        cat: "sessions"
-                                    });
-                                }}
-                            >
-                                <Radio.Button value="TOUTES">
-                                    Toutes
-                                </Radio.Button>
-                                <Radio.Button value="NORMALE">
-                                    Norm.
-                                </Radio.Button>
-                                <Radio.Button value="REMPLACEMENT">
-                                    Rempl.
-                                </Radio.Button>
-                                <Radio.Button value="SECOURS">
-                                    Secours
-                                </Radio.Button>
-                            </Radio.Group>
-                            <Divider style={{ marginBottom: "5px" }}>
-                                Années
-                            </Divider>
-                            <Slider
-                                ref={RefAnnees}
-                                range
-                                style={{ marginLeft: "6%", marginRight: "6%" }}
-                                marks={{
-                                    [elementsCoches
-                                        .annees[0]]: elementsCoches.annees[0].toString(),
-                                    [elementsCoches.annees[
-                                        elementsCoches.annees.length - 1
-                                    ]]: [
-                                        elementsCoches.annees[
-                                            elementsCoches.annees.length - 1
-                                        ]
-                                    ].toString()
-                                }}
-                                max={2019}
-                                min={1996}
-                                tooltipVisible={false}
-                                step={1}
-                                defaultValue={[1996, 2019]}
-                                onChange={(e: [number, number] | SliderValue) =>
-                                    changeFiltres({ e, cat: "annees" })
-                                }
-                            />
-                            <Divider style={{ marginTop: "40px" }} />
-                            <Button
-                                onClick={() => {
-                                    RefNotions.current.rcSelect!.state.value = [];
-                                    RefAuteurs.current.rcSelect.state.value = [];
-                                    RefSeries.current.rcSelect.state.value = [];
-                                    RefDestinations.current.rcSelect.state.value = [];
-                                    RefSessions.current.state.value = "TOUTES";
-                                    RefAnnees.current.rcSlider.state.bounds = [
-                                        1996,
-                                        2019
-                                    ];
-                                    setFiltres(false);
-                                    setIdSujet(1);
-                                    setSujets([]);
+                            <ConteneurFiltres>
+                                <Tabs
+                                    size="small"
+                                    defaultActiveKey="1"
+                                    onChange={() => {
+                                        setFiltres(false);
+                                        setIdSujet(1);
+                                        setSujets([]);
 
-                                    setElementsCoches(initialState);
-                                }}
-                                size="small"
-                                style={{
-                                    marginBottom: "10px",
-                                    backgroundColor: "#e2e0d8",
-                                    borderColor: "#919191"
-                                }}
-                                block
-                            >
-                                Réinitialiser les filtres
-                                <Icon type="reload" />
-                            </Button>
-                            <Button
-                                size="large"
-                                style={{
-                                    backgroundColor: "rgba(255,255,255,0.1)",
-                                    borderColor: "rgba(0,0,0,0.3)"
-                                }}
-                                block
-                                onClick={() => RechercheFiltres()}
-                            >
-                                <Icon type="search" />
-                                Recherche
-                            </Button>
-                        </Tabs.TabPane>
-                        {
-                            // NOTE FILTRES EXPRESSION
-                        }
-                        <Tabs.TabPane
-                            tab={
-                                <span>
-                                    <Icon type="search" />
-                                    EXPRESSION
-                                </span>
-                            }
-                            key="2"
-                        >
-                            <div style={{ fontWeight: "bold" }}>
-                                Recherche :
-                            </div>
-                            <Input
-                                style={{
-                                    backgroundColor: "rgba(255,255,255,0.1)",
-                                    borderColor: "rgba(0,0,0,0.3)",
-                                    marginTop: "10px",
-                                    marginBottom: "10px"
-                                }}
-                                placeholder="un ou plusieurs mots, expression"
-                                onChange={(val) =>
-                                    setElementsCoches({
-                                        ...elementsCoches,
-                                        recherche: val.target.value
-                                    })
-                                }
-                            ></Input>
-                            <Radio.Group
-                                defaultValue={1}
-                                onChange={(val) => typeRecherche(val)}
-                            >
-                                <Radio style={radioStyle} value={1}>
-                                    Expression exacte
-                                    <Icon
-                                        type="question-circle"
-                                        style={{
-                                            color: "grey",
-                                            marginLeft: "5px"
-                                        }}
-                                    />
-                                </Radio>
-                                <Radio style={radioStyle} value={2}>
-                                    Tous les mots
-                                    <Icon
-                                        type="question-circle"
-                                        style={{
-                                            color: "grey",
-                                            marginLeft: "5px"
-                                        }}
-                                    />
-                                </Radio>
-                                <Radio style={radioStyle} value={3}>
-                                    Un des mots
-                                    <Icon
-                                        type="question-circle"
-                                        style={{
-                                            color: "grey",
-                                            marginLeft: "5px"
-                                        }}
-                                    />
-                                </Radio>
-                            </Radio.Group>
-                            <Divider style={{ marginTop: "40px" }} />
-                            <Button
-                                onClick={() => {
-                                    RefNotions.current.rcSelect!.state.value = [];
-                                    RefAuteurs.current.rcSelect.state.value = [];
-                                    RefSeries.current.rcSelect.state.value = [];
-                                    RefDestinations.current.rcSelect.state.value = [];
-                                    RefSessions.current.state.value = "TOUTES";
-                                    RefAnnees.current.rcSlider.state.bounds = [
-                                        1996,
-                                        2019
-                                    ];
-                                    setFiltres(false);
-                                    setIdSujet(1);
-                                    setSujets([]);
+                                        setElementsCoches(initialState);
+                                    }}
+                                >
+                                    <Tabs.TabPane
+                                        tab={
+                                            <span>
+                                                <Icon type="filter" />
+                                                FILTRES
+                                            </span>
+                                        }
+                                        key="1"
+                                    >
+                                        <Divider
+                                            style={{
+                                                marginBottom: "5px",
+                                                marginTop: "0"
+                                            }}
+                                        >
+                                            Notions
+                                        </Divider>
+                                        <Select
+                                            ref={RefNotions}
+                                            mode="multiple"
+                                            style={{ width: "100%" }}
+                                            defaultValue={
+                                                elementsCoches.notions
+                                            }
+                                            placeholder="Toutes les notions"
+                                            onChange={(e: string[]) =>
+                                                changeFiltres({
+                                                    e,
+                                                    cat: "notions"
+                                                })
+                                            }
+                                        >
+                                            {menu &&
+                                                menu!.notions &&
+                                                menu!.notions.map(
+                                                    (el, index) => {
+                                                        return (
+                                                            <Option
+                                                                key={
+                                                                    el["Notion"]
+                                                                }
+                                                            >
+                                                                {el["Notion"]}
+                                                            </Option>
+                                                        );
+                                                    }
+                                                )}
+                                        </Select>
+                                        <Divider
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            Séries
+                                        </Divider>
+                                        <Select
+                                            ref={RefSeries}
+                                            mode="multiple"
+                                            style={{ width: "100%" }}
+                                            placeholder="Toutes les séries"
+                                            onChange={(e: string[]) =>
+                                                changeFiltres({
+                                                    e,
+                                                    cat: "series"
+                                                })
+                                            }
+                                        >
+                                            {menu &&
+                                                menu!.series &&
+                                                menu!.series.map(
+                                                    (el, index) => {
+                                                        return (
+                                                            <Option
+                                                                key={
+                                                                    el["Serie"]
+                                                                }
+                                                            >
+                                                                {el["Serie"]}
+                                                            </Option>
+                                                        );
+                                                    }
+                                                )}
+                                        </Select>
+                                        <Divider
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            Destinations
+                                        </Divider>
+                                        <Select
+                                            ref={RefDestinations}
+                                            mode="multiple"
+                                            style={{ width: "100%" }}
+                                            placeholder="Toutes les destinations"
+                                            onChange={(e: string[]) =>
+                                                changeFiltres({
+                                                    e,
+                                                    cat: "destinations"
+                                                })
+                                            }
+                                        >
+                                            {menu &&
+                                                menu!.destinations &&
+                                                menu!.destinations.map(
+                                                    (el, index) => {
+                                                        return (
+                                                            <Option
+                                                                key={
+                                                                    el[
+                                                                        "Destination"
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    el[
+                                                                        "Destination"
+                                                                    ]
+                                                                }
+                                                            </Option>
+                                                        );
+                                                    }
+                                                )}
+                                        </Select>
+                                        <Divider
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            Auteurs
+                                        </Divider>
+                                        <Select
+                                            ref={RefAuteurs}
+                                            mode="multiple"
+                                            style={{ width: "100%" }}
+                                            placeholder="Tous les auteurs"
+                                            onChange={(e: string[]) =>
+                                                changeFiltres({
+                                                    e,
+                                                    cat: "auteurs"
+                                                })
+                                            }
+                                        >
+                                            {menu &&
+                                                menu!.auteurs &&
+                                                menu!.auteurs.map((el) => {
+                                                    return (
+                                                        <Option
+                                                            key={el["Auteur"]}
+                                                        >
+                                                            {el["Auteur"] +
+                                                                " (" +
+                                                                el["NbSujets"] +
+                                                                ")"}
+                                                        </Option>
+                                                    );
+                                                })}
+                                        </Select>
+                                        <Divider
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            Sessions
+                                        </Divider>
+                                        <Radio.Group
+                                            ref={RefSessions}
+                                            size="small"
+                                            defaultValue="TOUTES"
+                                            onChange={(e) => {
+                                                changeFiltres({
+                                                    e: e.target.value,
+                                                    cat: "sessions"
+                                                });
+                                            }}
+                                        >
+                                            <Radio.Button value="TOUTES">
+                                                Toutes
+                                            </Radio.Button>
+                                            <Radio.Button value="NORMALE">
+                                                Norm.
+                                            </Radio.Button>
+                                            <Radio.Button value="REMPLACEMENT">
+                                                Rempl.
+                                            </Radio.Button>
+                                            <Radio.Button value="SECOURS">
+                                                Secours
+                                            </Radio.Button>
+                                        </Radio.Group>
+                                        <Divider
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            Années
+                                        </Divider>
+                                        <Slider
+                                            ref={RefAnnees}
+                                            range
+                                            style={{
+                                                marginLeft: "6%",
+                                                marginRight: "6%"
+                                            }}
+                                            marks={{
+                                                [elementsCoches
+                                                    .annees[0]]: elementsCoches.annees[0].toString(),
+                                                [elementsCoches.annees[
+                                                    elementsCoches.annees
+                                                        .length - 1
+                                                ]]: [
+                                                    elementsCoches.annees[
+                                                        elementsCoches.annees
+                                                            .length - 1
+                                                    ]
+                                                ].toString()
+                                            }}
+                                            max={2019}
+                                            min={1996}
+                                            tooltipVisible={false}
+                                            step={1}
+                                            defaultValue={[1996, 2019]}
+                                            onChange={(
+                                                e:
+                                                    | [number, number]
+                                                    | SliderValue
+                                            ) =>
+                                                changeFiltres({
+                                                    e,
+                                                    cat: "annees"
+                                                })
+                                            }
+                                        />
+                                        <Divider
+                                            style={{ marginTop: "40px" }}
+                                        />
+                                        <Button
+                                            onClick={() => {
+                                                RefNotions.current.rcSelect!.state.value = [];
+                                                RefAuteurs.current.rcSelect.state.value = [];
+                                                RefSeries.current.rcSelect.state.value = [];
+                                                RefDestinations.current.rcSelect.state.value = [];
+                                                RefSessions.current.state.value =
+                                                    "TOUTES";
+                                                RefAnnees.current.rcSlider.state.bounds = [
+                                                    1996,
+                                                    2019
+                                                ];
+                                                setFiltres(false);
+                                                setIdSujet(1);
+                                                setSujets([]);
 
-                                    setElementsCoches(initialState);
-                                }}
-                                size="small"
-                                style={{
-                                    marginBottom: "10px",
-                                    backgroundColor: "#e2e0d8",
-                                    borderColor: "#919191"
-                                }}
-                                block
-                            >
-                                Réinitialiser les filtres
-                                <Icon type="reload" />
-                            </Button>
-                            <Button
-                                size="large"
-                                style={{
-                                    backgroundColor: "rgba(255,255,255,0.1)",
-                                    borderColor: "rgba(0,0,0,0.3)"
-                                }}
-                                block
-                                onClick={() => RechercheFiltres2()}
-                            >
-                                <Icon type="search" />
-                                Recherche
-                            </Button>
-                        </Tabs.TabPane>
-                    </Tabs>
-                </ConteneurFiltres>
+                                                setElementsCoches(initialState);
+                                            }}
+                                            size="small"
+                                            style={{
+                                                marginBottom: "10px",
+                                                backgroundColor: "#e2e0d8",
+                                                borderColor: "#919191"
+                                            }}
+                                            block
+                                        >
+                                            Réinitialiser les filtres
+                                            <Icon type="reload" />
+                                        </Button>
+                                        <Button
+                                            size="large"
+                                            style={{
+                                                backgroundColor:
+                                                    "rgba(255,255,255,0.1)",
+                                                borderColor: "rgba(0,0,0,0.3)"
+                                            }}
+                                            block
+                                            onClick={() => RechercheFiltres()}
+                                        >
+                                            <Icon type="search" />
+                                            Recherche
+                                        </Button>
+                                    </Tabs.TabPane>
+                                    {
+                                        // NOTE FILTRES EXPRESSION
+                                    }
+                                    <Tabs.TabPane
+                                        tab={
+                                            <span>
+                                                <Icon type="search" />
+                                                EXPRESSION
+                                            </span>
+                                        }
+                                        key="2"
+                                    >
+                                        <div style={{ fontWeight: "bold" }}>
+                                            Recherche :
+                                        </div>
+                                        <Input
+                                            style={{
+                                                backgroundColor:
+                                                    "rgba(255,255,255,0.1)",
+                                                borderColor: "rgba(0,0,0,0.3)",
+                                                marginTop: "10px",
+                                                marginBottom: "10px"
+                                            }}
+                                            placeholder="un ou plusieurs mots, expression"
+                                            onChange={(val) =>
+                                                setElementsCoches({
+                                                    ...elementsCoches,
+                                                    recherche: val.target.value
+                                                })
+                                            }
+                                        ></Input>
+                                        <Radio.Group
+                                            defaultValue={1}
+                                            onChange={(val) =>
+                                                typeRecherche(val)
+                                            }
+                                        >
+                                            <Radio style={radioStyle} value={1}>
+                                                Expression exacte
+                                                <Icon
+                                                    type="question-circle"
+                                                    style={{
+                                                        color: "grey",
+                                                        marginLeft: "5px"
+                                                    }}
+                                                />
+                                            </Radio>
+                                            <Radio style={radioStyle} value={2}>
+                                                Tous les mots
+                                                <Icon
+                                                    type="question-circle"
+                                                    style={{
+                                                        color: "grey",
+                                                        marginLeft: "5px"
+                                                    }}
+                                                />
+                                            </Radio>
+                                            <Radio style={radioStyle} value={3}>
+                                                Un des mots
+                                                <Icon
+                                                    type="question-circle"
+                                                    style={{
+                                                        color: "grey",
+                                                        marginLeft: "5px"
+                                                    }}
+                                                />
+                                            </Radio>
+                                        </Radio.Group>
+                                        <Divider
+                                            style={{ marginTop: "40px" }}
+                                        />
+                                        <Button
+                                            onClick={() => {
+                                                RefNotions.current.rcSelect!.state.value = [];
+                                                RefAuteurs.current.rcSelect.state.value = [];
+                                                RefSeries.current.rcSelect.state.value = [];
+                                                RefDestinations.current.rcSelect.state.value = [];
+                                                RefSessions.current.state.value =
+                                                    "TOUTES";
+                                                RefAnnees.current.rcSlider.state.bounds = [
+                                                    1996,
+                                                    2019
+                                                ];
+                                                setFiltres(false);
+                                                setIdSujet(1);
+                                                setSujets([]);
 
+                                                setElementsCoches(initialState);
+                                            }}
+                                            size="small"
+                                            style={{
+                                                marginBottom: "10px",
+                                                backgroundColor: "#e2e0d8",
+                                                borderColor: "#919191"
+                                            }}
+                                            block
+                                        >
+                                            Réinitialiser les filtres
+                                            <Icon type="reload" />
+                                        </Button>
+                                        <Button
+                                            size="large"
+                                            style={{
+                                                backgroundColor:
+                                                    "rgba(255,255,255,0.1)",
+                                                borderColor: "rgba(0,0,0,0.3)"
+                                            }}
+                                            block
+                                            onClick={() => RechercheFiltres2()}
+                                        >
+                                            <Icon type="search" />
+                                            Recherche
+                                        </Button>
+                                    </Tabs.TabPane>
+                                </Tabs>
+                            </ConteneurFiltres>
+                        </div>
+                    )}
+                </Transition>
                 {
                     //!SECTION
                 }
@@ -910,101 +1047,74 @@ const Sujets = () => {
                 {
                     //SECTION Sujet
                 }
-                <ConteneurSuivPrec>
-                    <Button
-                        style={{
-                            width: "150px",
-                            backgroundColor: "#e2e0d8",
-                            borderColor: "#919191"
+                <Transition in={ine} timeout={duration2} appear enter>
+                    {(state2) => (
+                        <ConteneurSuivPrec
+                            style={{
+                                ...defaultStyle2,
+                                ...transitionStyles2[state2]
+                            }}
+                        >
+                            <Button
+                                style={{
+                                    width: "150px",
+                                    backgroundColor: "#e2e0d8",
+                                    borderColor: "#919191"
+                                }}
+                                onClick={() => {
+                                    SwitchSujet("-");
+                                }}
+                            >
+                                Sujet précédent
+                            </Button>
+                            <NombreSujets>{`${
+                                filtres
+                                    ? nbResultats > 0
+                                        ? idSujet + 1
+                                        : 0
+                                    : idSujet
+                            } / ${nbResultats}`}</NombreSujets>
+                            <Button
+                                style={{
+                                    width: "150px",
+                                    backgroundColor: "#e2e0d8",
+                                    borderColor: "#919191"
+                                }}
+                                onClick={() => {
+                                    SwitchSujet("+");
+                                }}
+                            >
+                                Sujet suivant
+                            </Button>
+                        </ConteneurSuivPrec>
+                    )}
+                </Transition>
+
+                {nbResultats > 0 && state && (
+                    <Transition
+                        in={!loading}
+                        timeout={{
+                            appear: 200,
+                            enter: 50,
+                            exit: 200
                         }}
-                        onClick={() => SwitchSujet("-")}
+                        appear
+                        enter
+                        mountOnEnter
+                        unmountOnExit
                     >
-                        Sujet précédent
-                    </Button>
-                    <NombreSujets>{`${
-                        filtres ? (nbResultats > 0 ? idSujet + 1 : 0) : idSujet
-                    } / ${nbResultats}`}</NombreSujets>
-                    <Button
-                        style={{
-                            width: "150px",
-                            backgroundColor: "#e2e0d8",
-                            borderColor: "#919191"
-                        }}
-                        onClick={() => SwitchSujet("+")}
-                    >
-                        Sujet suivant
-                    </Button>
-                </ConteneurSuivPrec>
-                {nbResultats > 0 && (
-                    <ConteneurSujet>
-                        <Sujet>
-                            <TitreNotions>
-                                <Titre>1</Titre>
-                                <Notions>
-                                    {state ? state.Notions1.join(" ") : ""}
-                                </Notions>
-                            </TitreNotions>
-                            <ReactQuill
-                                ref={refQuill1}
-                                value={state ? state.Sujet1 : ""}
-                                modules={{ toolbar: false }}
-                                readOnly
-                                theme="bubble"
-                            />
-                        </Sujet>
-                        <Sujet>
-                            <TitreNotions>
-                                <Titre>2</Titre>
-                                <Notions>
-                                    {state ? state.Notions2.join(" ") : ""}
-                                </Notions>
-                            </TitreNotions>
-                            <CorpsSujet>
-                                <ReactQuill
-                                    ref={refQuill2}
-                                    value={state ? state.Sujet2 : ""}
-                                    modules={{ toolbar: false }}
-                                    readOnly
-                                    theme="bubble"
-                                />
-                            </CorpsSujet>
-                        </Sujet>
-                        <Sujet>
-                            <TitreNotions>
-                                <Titre>3</Titre>
-                                <Notions>
-                                    {state ? state.Notions3.join(" ") : ""}
-                                </Notions>
-                            </TitreNotions>
-                            <CorpsSujet>
-                                <ReactQuill
-                                    ref={refQuill3}
-                                    value={state ? state.Sujet3 : ""}
-                                    modules={{ toolbar: false }}
-                                    readOnly
-                                    theme="bubble"
-                                />
-                            </CorpsSujet>
-                        </Sujet>
-                        <Details>
-                            <PartieGauche>
-                                <Etiquette>{state ? state.id : ""}</Etiquette>
-                                <Etiquette>
-                                    {state ? state.Annee : ""}
-                                </Etiquette>
-                                <Etiquette>
-                                    {state ? state.Serie : ""}
-                                </Etiquette>
-                                <Etiquette>
-                                    {state ? state.Destination.join(" / ") : ""}
-                                </Etiquette>
-                                <Etiquette>
-                                    {state ? state.Session : ""}
-                                </Etiquette>
-                                <Etiquette>{state ? state.Code : ""}</Etiquette>
-                            </PartieGauche>
-                        </Details>
-                    </ConteneurSujet>
+                        {(state2) => (
+                            <div
+                                style={{
+                                    height: "100%",
+                                    ...defaultStyle2,
+                                    ...transitionStyles2[state2]
+                                }}
+                            >
+                                <AffichageSujet state={state} />
+                            </div>
+                        )}
+                    </Transition>
                 )}
                 {nbResultats === 0 && (
                     <div
@@ -1022,6 +1132,73 @@ const Sujets = () => {
                 }
             </PartieD>
         </Conteneur>
+    );
+};
+
+const AffichageSujet: React.FC<any> = (props) => {
+    const { state } = props;
+    const refQuill1: any = useRef(null);
+    const refQuill2: any = useRef(null);
+    const refQuill3: any = useRef(null);
+
+    return (
+        <ConteneurSujet {...props.style}>
+            <Sujet>
+                <TitreNotions>
+                    <Titre>1</Titre>
+                    <Notions>{state ? state.Notions1.join(" ") : ""}</Notions>
+                </TitreNotions>
+                <ReactQuill
+                    ref={refQuill1}
+                    value={state ? state.Sujet1 : ""}
+                    modules={{ toolbar: false }}
+                    readOnly
+                    theme="bubble"
+                />
+            </Sujet>
+            <Sujet>
+                <TitreNotions>
+                    <Titre>2</Titre>
+                    <Notions>{state ? state.Notions2.join(" ") : ""}</Notions>
+                </TitreNotions>
+                <CorpsSujet>
+                    <ReactQuill
+                        ref={refQuill2}
+                        value={state ? state.Sujet2 : ""}
+                        modules={{ toolbar: false }}
+                        readOnly
+                        theme="bubble"
+                    />
+                </CorpsSujet>
+            </Sujet>
+            <Sujet>
+                <TitreNotions>
+                    <Titre>3</Titre>
+                    <Notions>{state ? state.Notions3.join(" ") : ""}</Notions>
+                </TitreNotions>
+                <CorpsSujet>
+                    <ReactQuill
+                        ref={refQuill3}
+                        value={state ? state.Sujet3 : ""}
+                        modules={{ toolbar: false }}
+                        readOnly
+                        theme="bubble"
+                    />
+                </CorpsSujet>
+            </Sujet>
+            <Details>
+                <PartieGauche>
+                    <Etiquette>{state ? state.id : ""}</Etiquette>
+                    <Etiquette>{state ? state.Annee : ""}</Etiquette>
+                    <Etiquette>{state ? state.Serie : ""}</Etiquette>
+                    <Etiquette>
+                        {state ? state.Destination.join(" / ") : ""}
+                    </Etiquette>
+                    <Etiquette>{state ? state.Session : ""}</Etiquette>
+                    <Etiquette>{state ? state.Code : ""}</Etiquette>
+                </PartieGauche>
+            </Details>
+        </ConteneurSujet>
     );
 };
 

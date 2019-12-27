@@ -63,7 +63,7 @@ const ConteneurListe = styled.div`
     flex-direction: column;
     margin-left: 40px;
     height: 90%;
-    overflow: auto;
+    overflow: hidden;
     padding-right: 10px;
     width: 270px;
 `;
