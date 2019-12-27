@@ -366,6 +366,7 @@ const BlocDeco = styled.div`
 `;
 
 const MenuConnecte: React.FC<any> = ({ user, userDispatch }) => {
+    const [cookies, , removeCookie] = useCookies();
     return (
         <ConteneurMenu>
             <BlocAvatar>
@@ -397,7 +398,14 @@ const MenuConnecte: React.FC<any> = ({ user, userDispatch }) => {
                 <Chiffre>0</Chiffre>
                 <Texte>Notifications</Texte>
             </BlocMessages>
-            <BlocDeco onMouseDown={() => userDispatch({ type: "REMOVE" })}>
+            <BlocDeco
+                onMouseDown={() => {
+                    removeCookie("token", {
+                        domain: ".phidbac.fr"
+                    });
+                    userDispatch({ type: "REMOVE" });
+                }}
+            >
                 Déconnexion
             </BlocDeco>
         </ConteneurMenu>
