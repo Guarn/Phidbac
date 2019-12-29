@@ -1,12 +1,12 @@
-import React, { useEffect, FormEvent } from "react";
+import React, { useEffect, FormEvent, useContext } from "react";
 import { Button, Form, Input, Icon, Checkbox } from "antd";
 import "./Login.css";
 import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
-import { Action } from "../reducers";
+import { Action } from "../../../reducers";
+import { userContext } from "../../../App";
 
 export interface Login_PROPS {
-    userDispatch: (arg0: Action) => void;
     form: any;
 }
 
@@ -22,7 +22,7 @@ export type formError = {
 };
 
 const Login = (props: Login_PROPS) => {
-    const { userDispatch } = props;
+    const [user, userDispatch] = useContext(userContext);
     const [, setCookie] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
 

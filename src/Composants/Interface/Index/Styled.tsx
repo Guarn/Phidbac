@@ -82,6 +82,24 @@ const RadioButton = styled(Radio.Button)`
     background-color: rgba(0, 0, 0, 0);
 `;
 
+const LienAdmin = styled.div`
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    right: 0px;
+    top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 50%;
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 3px;
+    }
+`;
+
 export const Styled = {
     Conteneur,
     ConteneurLettres,
@@ -93,5 +111,6 @@ export const Styled = {
     ConteneurListe,
     RadioButton,
     ConteneurDescription,
-    BlocLettre
+    BlocLettre,
+    LienAdmin
 };

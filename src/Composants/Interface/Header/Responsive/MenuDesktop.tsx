@@ -39,7 +39,7 @@ const BoutonHome = styled.div`
 `;
 
 const Desktop = () => {
-    const [redActive, setRedActive] = React.useState(false);
+    const [redActive, setRedActive] = React.useState<boolean>(false);
     const [page, setPage] = React.useState("");
 
     let changementPage = (UrlPage: string) => {

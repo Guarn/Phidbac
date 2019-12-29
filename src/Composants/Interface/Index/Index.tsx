@@ -2,11 +2,12 @@ import * as React from "react";
 import styled from "styled-components";
 import "./Index.css";
 import Axios from "../../Fonctionnels/Axios";
-import { Popover, Radio } from "antd";
+import { Popover, Radio, Icon } from "antd";
 import Slate from "../../Fonctionnels/Slate";
 import { Styled } from "./Styled";
 import { Link, Events, scrollSpy, Element } from "react-scroll";
 import { Transition } from "react-transition-group";
+import { userContext } from "../../../App";
 
 interface elementProps {
     selected: boolean;
@@ -309,6 +310,8 @@ interface DescriptionIndexI {
  */
 
 const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
+    const [user, userDispatch] = React.useContext(userContext);
+
     const [state, setState] = React.useState<stateI>({
         Cours: [],
         lettre: "",
@@ -351,6 +354,20 @@ const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
                                 : ""
                         }}
                     >
+                        {user.connecte &&
+                            user.grade === "Administrateur" &&
+                            index === 0 && (
+                                <Styled.LienAdmin
+                                    onMouseDown={() => {
+                                        window.open(
+                                            `http://192.168.0.85:3001/Index/Gestion#${state.id}`,
+                                            "_blank"
+                                        );
+                                    }}
+                                >
+                                    <Icon type="edit" />
+                                </Styled.LienAdmin>
+                            )}
                         {element.image && (
                             <Popover
                                 placement="bottom"

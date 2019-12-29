@@ -1,12 +1,19 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, {
+    useEffect,
+    useReducer,
+    useState,
+    useContext,
+    Dispatch
+} from "react";
 import { Icon, Popover, Form, Modal } from "antd";
 import Login from "./Login";
-import { userReducer, userInit, Action } from "../reducers";
 import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import { Desktop, Tablet, Mobile } from "../../../responsive";
 import { Transition } from "react-transition-group";
+import { userContext } from "../../../App";
+import { Action } from "../../../reducers";
 
 const LienCo = styled.div`
     color: #1890ff;
@@ -23,10 +30,10 @@ const LienCo = styled.div`
 
 export interface Lien_PROPS {
     removeCookie: () => void;
-    userDispatch: (arg0: Action) => void;
 }
 
 const Lien = (props: Lien_PROPS) => {
+    const [user, userDispatch] = useContext(userContext);
     return (
         <div
             style={{
@@ -46,7 +53,7 @@ const Lien = (props: Lien_PROPS) => {
             <LienCo
                 onClick={() => {
                     props.removeCookie();
-                    props.userDispatch({ type: "REMOVE" });
+                    userDispatch({ type: "REMOVE" });
                 }}
             >
                 Se déconnecter
@@ -68,7 +75,7 @@ const transitionStyles: any = {
 };
 
 const Header = () => {
-    const [user, userDispatch] = useReducer(userReducer, userInit);
+    const [user, userDispatch] = useContext(userContext);
     const [cookies, , removeCookie] = useCookies();
     const [connexionDisplay, setConnexionDisplay] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
@@ -122,7 +129,7 @@ const Header = () => {
                                 >
                                     <MenuConnecte
                                         user={user}
-                                        userDispatch={(val: Action) =>
+                                        userDispatch={(val: any) =>
                                             userDispatch(val)
                                         }
                                     />
@@ -159,9 +166,6 @@ const Header = () => {
                                     removeCookie("token", {
                                         domain: ".phidbac.fr"
                                     })
-                                }
-                                userDispatch={(val: Action) =>
-                                    userDispatch(val)
                                 }
                             />
                         }
@@ -200,9 +204,6 @@ const Header = () => {
                                     removeCookie("token", {
                                         domain: ".phidbac.fr"
                                     })
-                                }
-                                userDispatch={(val: Action) =>
-                                    userDispatch(val)
                                 }
                             />
                         }
