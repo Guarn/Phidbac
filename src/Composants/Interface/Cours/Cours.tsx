@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { Timeline, Icon } from "antd";
 import "./Cours.css";
+import { userContext } from "../../../App";
 
 const Conteneur = styled.div`
     height: 100%;
@@ -58,91 +59,97 @@ const Dot = styled.div<DotProps>`
 `;
 
 const Cours = () => {
+    const [user, userDispatch] = React.useContext(userContext);
     return (
         <Conteneur>
-            <Timeline>
-                <Timeline.Item
-                    dot={
-                        <Icon
-                            type="check-circle"
-                            theme="twoTone"
-                            twoToneColor="#85E27B"
-                            style={{ fontSize: "25px" }}
-                        />
-                    }
-                >
-                    <ConteneurCours>
-                        <Description>
-                            <TitreEtape>
-                                Etudier un programme de notions
-                            </TitreEtape>
-                            <DescriptionEtape>
-                                Les leçons ne traitent pas les notions une par
-                                une, dans des chapitres séparés (un chapitre =
-                                une notion, jusqu'à épuisement…), comme le font
-                                certains sites, certains manuels, parfois
-                                certains cours.
-                            </DescriptionEtape>
-                        </Description>
+            {user.connecte && (
+                <Timeline>
+                    <Timeline.Item
+                        dot={
+                            <Icon
+                                type="check-circle"
+                                theme="twoTone"
+                                twoToneColor="#85E27B"
+                                style={{ fontSize: "25px" }}
+                            />
+                        }
+                    >
+                        <ConteneurCours>
+                            <Description>
+                                <TitreEtape>
+                                    Etudier un programme de notions
+                                </TitreEtape>
+                                <DescriptionEtape>
+                                    Les leçons ne traitent pas les notions une
+                                    par une, dans des chapitres séparés (un
+                                    chapitre = une notion, jusqu'à épuisement…),
+                                    comme le font certains sites, certains
+                                    manuels, parfois certains cours.
+                                </DescriptionEtape>
+                            </Description>
 
-                        <Details>Terminé le 21/12</Details>
-                    </ConteneurCours>
-                </Timeline.Item>
-                <Timeline.Item dot={<Dot color="lightblue" />}>
-                    <ConteneurCours>
-                        <Description>
-                            <TitreEtape>
-                                Etudier un programme de notions
-                            </TitreEtape>
-                            <DescriptionEtape>
-                                Les leçons ne traitent pas les notions une par
-                                une, dans des chapitres séparés (un chapitre =
-                                une notion, jusqu'à épuisement…), comme le font
-                                certains sites, certains manuels, parfois
-                                certains cours.
-                            </DescriptionEtape>
-                        </Description>
+                            <Details>Terminé le 21/12</Details>
+                        </ConteneurCours>
+                    </Timeline.Item>
+                    <Timeline.Item dot={<Dot color="lightblue" />}>
+                        <ConteneurCours>
+                            <Description>
+                                <TitreEtape>
+                                    Etudier un programme de notions
+                                </TitreEtape>
+                                <DescriptionEtape>
+                                    Les leçons ne traitent pas les notions une
+                                    par une, dans des chapitres séparés (un
+                                    chapitre = une notion, jusqu'à épuisement…),
+                                    comme le font certains sites, certains
+                                    manuels, parfois certains cours.
+                                </DescriptionEtape>
+                            </Description>
 
-                        <Details>En cours (19%)</Details>
-                    </ConteneurCours>
-                </Timeline.Item>
-                <Timeline.Item dot={<Dot />}>
-                    <ConteneurCours>
-                        <Description>
-                            <TitreEtape>
-                                Etudier un programme de notions
-                            </TitreEtape>
-                            <DescriptionEtape>
-                                Les leçons ne traitent pas les notions une par
-                                une, dans des chapitres séparés (un chapitre =
-                                une notion, jusqu'à épuisement…), comme le font
-                                certains sites, certains manuels, parfois
-                                certains cours.
-                            </DescriptionEtape>
-                        </Description>
+                            <Details>En cours (19%)</Details>
+                        </ConteneurCours>
+                    </Timeline.Item>
+                    <Timeline.Item dot={<Dot />}>
+                        <ConteneurCours>
+                            <Description>
+                                <TitreEtape>
+                                    Etudier un programme de notions
+                                </TitreEtape>
+                                <DescriptionEtape>
+                                    Les leçons ne traitent pas les notions une
+                                    par une, dans des chapitres séparés (un
+                                    chapitre = une notion, jusqu'à épuisement…),
+                                    comme le font certains sites, certains
+                                    manuels, parfois certains cours.
+                                </DescriptionEtape>
+                            </Description>
 
-                        <Details>Semaine 22</Details>
-                    </ConteneurCours>
-                </Timeline.Item>
-                <Timeline.Item dot={<Dot />}>
-                    <ConteneurCours>
-                        <Description>
-                            <TitreEtape>
-                                Etudier un programme de notions
-                            </TitreEtape>
-                            <DescriptionEtape>
-                                Les leçons ne traitent pas les notions une par
-                                une, dans des chapitres séparés (un chapitre =
-                                une notion, jusqu'à épuisement…), comme le font
-                                certains sites, certains manuels, parfois
-                                certains cours.
-                            </DescriptionEtape>
-                        </Description>
+                            <Details>Semaine 22</Details>
+                        </ConteneurCours>
+                    </Timeline.Item>
+                    <Timeline.Item dot={<Dot />}>
+                        <ConteneurCours>
+                            <Description>
+                                <TitreEtape>
+                                    Etudier un programme de notions
+                                </TitreEtape>
+                                <DescriptionEtape>
+                                    Les leçons ne traitent pas les notions une
+                                    par une, dans des chapitres séparés (un
+                                    chapitre = une notion, jusqu'à épuisement…),
+                                    comme le font certains sites, certains
+                                    manuels, parfois certains cours.
+                                </DescriptionEtape>
+                            </Description>
 
-                        <Details>Semaine 23</Details>
-                    </ConteneurCours>
-                </Timeline.Item>
-            </Timeline>
+                            <Details>Semaine 23</Details>
+                        </ConteneurCours>
+                    </Timeline.Item>
+                </Timeline>
+            )}
+            {!user.connecte && (
+                <div>Vous n'avez pas la permission de consulter cette page</div>
+            )}
         </Conteneur>
     );
 };
