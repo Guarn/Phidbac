@@ -351,7 +351,8 @@ const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
                         }}
                     >
                         {user.connecte &&
-                            user.grade === "Administrateur" &&
+                            (user.grade === "Administrateur" ||
+                                user.grade === "Visiteur") &&
                             index === 0 && (
                                 <Styled.LienAdmin
                                     onMouseDown={() => {
