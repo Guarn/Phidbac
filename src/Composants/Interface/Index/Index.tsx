@@ -217,8 +217,6 @@ const ListeIndex: React.FC<ListeIndexI> = ({ id, setId }) => {
     const [filtre, setFiltre] = React.useState<filtres>("tous");
 
     React.useEffect(() => {
-        console.log(filtre);
-
         Axios.get("/Indexes").then((rep) => {
             setState(rep.data);
         });
@@ -282,9 +280,7 @@ const ListeIndex: React.FC<ListeIndexI> = ({ id, setId }) => {
 };
 
 const ChoixFiltre: React.FC<any> = ({ setFiltre }) => {
-    React.useEffect(() => {
-        console.log("Choix Filtre");
-    }, []);
+    React.useEffect(() => {}, []);
     return (
         <Radio.Group
             defaultValue="tous"
