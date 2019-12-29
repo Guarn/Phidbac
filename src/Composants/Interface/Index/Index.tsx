@@ -360,7 +360,7 @@ const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
                                 <Styled.LienAdmin
                                     onMouseDown={() => {
                                         window.open(
-                                            `http://admin.phidbac.fr/Index/Gestion#${state.id}`,
+                                            `http://phidbac.fr:3001/Index/Gestion#${state.id}`,
                                             "_blank"
                                         );
                                     }}
