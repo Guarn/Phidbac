@@ -15,7 +15,7 @@ const SlateJs = (props) => {
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
                 readOnly={true}
-                style={{ userSelect: "text" }}
+                style={{ userSelect: "text", width: "100%" }}
             />
         </Slate>
     );
@@ -30,18 +30,10 @@ const Element = ({ attributes, children, element }) => {
                         textAlign: element.align,
                         marginLeft: element.marginLeft,
                         marginTop: "0px",
-                        marginBottom: "0px",
-                        display: "flex"
+                        marginBottom: "0px"
                     }}
                     {...attributes}
                 >
-                    <div
-                        style={{
-                            backgroundColor: "rgba(0,0,0,0.2)",
-                            width: "6px",
-                            marginRight: "30px"
-                        }}
-                    />
                     {children}
                 </div>
             );

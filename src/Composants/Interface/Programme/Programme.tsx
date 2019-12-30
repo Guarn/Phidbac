@@ -8,7 +8,9 @@ import { animateScroll, Element } from "react-scroll";
 import TableMatiere from "./TableMatiere";
 import { Transition } from "react-transition-group";
 import "./Programme.css";
-export interface Programme {}
+export interface Programme {
+    id: number;
+}
 interface State {
     Cours: any;
     Titre: any;
@@ -55,7 +57,7 @@ const ConteneurSlate = styled.div`
     transition: all 0.2s;
 `;
 
-const Programme: React.FC<Programme> = () => {
+const Programme: React.FC<Programme> = ({ id }) => {
     const [state, setState] = React.useState<State>({
         Cours: [],
         Description: "",
@@ -69,7 +71,7 @@ const Programme: React.FC<Programme> = () => {
     const [TabMatiere, setTabMat] = React.useState(false);
     React.useEffect(() => {
         if (state.Titre === "") {
-            Axios.get("/Cours/1").then((rep) => {
+            Axios.get(`/Cours/${id}`).then((rep) => {
                 setState({
                     Titre: rep.data.Titre,
                     Description: rep.data.Description,
@@ -153,6 +155,10 @@ const Programme: React.FC<Programme> = () => {
                                                 element.options.paddingBottom +
                                                 "px",
                                             fontFamily: "Century Gothic",
+                                            display:
+                                                element.type === "citation"
+                                                    ? "flex"
+                                                    : "t",
                                             fontSize: "16px",
                                             minHeight: element.image
                                                 ? element.imageOptions.height +
@@ -304,11 +310,35 @@ const Programme: React.FC<Programme> = () => {
                                                 </div>
                                             </Popover>
                                         )}
-                                        <Slate
-                                            index={index}
-                                            value={element.value}
-                                            readOnly={true}
-                                        />
+                                        {element.type === "citation" && (
+                                            <div
+                                                style={{
+                                                    width: "100%",
+                                                    display: "flex"
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        backgroundColor:
+                                                            "rgba(0,0,0,0.2)",
+                                                        minWidth: "6px",
+                                                        marginRight: "30px"
+                                                    }}
+                                                />
+                                                <Slate
+                                                    index={index}
+                                                    value={element.value}
+                                                    readOnly={false}
+                                                />
+                                            </div>
+                                        )}
+                                        {element.type !== "citation" && (
+                                            <Slate
+                                                index={index}
+                                                value={element.value}
+                                                readOnly={false}
+                                            />
+                                        )}
                                     </ConteneurSlate>
                                 </Element>
                             );

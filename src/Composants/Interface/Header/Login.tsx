@@ -35,9 +35,13 @@ const Login = (props: Login_PROPS) => {
                     password: values.password
                 })
                     .then((rep) => {
+                        let dateExp = new Date(Date.now());
+                        dateExp.setDate(365);
+
                         setCookie("token", "Bearer " + rep.data.token, {
                             path: "/",
-                            domain: ".phidbac.fr"
+                            domain: ".phidbac.fr",
+                            expires: dateExp
                         });
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })

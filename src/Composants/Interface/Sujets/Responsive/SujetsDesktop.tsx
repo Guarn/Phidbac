@@ -63,6 +63,7 @@ const ConteneurSujet = styled.div`
     margin-left: 12.5%;
     overflow: auto;
     padding-right: 10px;
+    user-select: text;
 `;
 
 const NombreSujets = styled.div`

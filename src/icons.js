@@ -11,6 +11,7 @@ export { default as CloseOutline } from "@ant-design/icons/lib/outline/CloseOutl
 export { default as CheckOutline } from "@ant-design/icons/lib/outline/CheckOutline";
 export { default as ReloadOutline } from "@ant-design/icons/lib/outline/ReloadOutline";
 export { default as SearchOutline } from "@ant-design/icons/lib/outline/SearchOutline";
+export { default as ArrowLeftOutline } from "@ant-design/icons/lib/outline/ArrowLeftOutline";
 
 export { default as QuestionCircleOutline } from "@ant-design/icons/lib/outline/QuestionCircleOutline";
 export { default as QuestionOutline } from "@ant-design/icons/lib/outline/QuestionOutline";
