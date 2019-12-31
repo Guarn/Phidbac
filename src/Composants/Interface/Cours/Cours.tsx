@@ -6,6 +6,7 @@ import { userContext } from "../../../App";
 import Axios from "../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import Programme from "../Programme/Programme";
+import { useHistory } from "react-router";
 
 const Conteneur = styled.div`
     height: 100%;
@@ -110,6 +111,13 @@ type coursT = {
     position: number;
 };
 
+type progT = {
+    progression: number;
+    idUser: number;
+    idCours: number;
+    updatedAt: string;
+};
+
 const duration = 200;
 const defaultStyle = {
     transition: `all ${duration}ms `,
@@ -122,18 +130,123 @@ const transitionStyles: any = {
     exited: { opacity: 0 }
 };
 
+const Progression: React.FC<any> = ({ tab, idCours }) => {
+    let newTab = tab ? tab.filter((el: any) => el.idCours === idCours) : [];
+    if (tab && idCours) {
+        if (newTab.length === 0) {
+            return <div>Non commencé</div>;
+        } else {
+            if (newTab[0].progression < 100 && newTab[0].progression > 0) {
+                return (
+                    <div>{"En cours (" + newTab[0].progression + " %)"}</div>
+                );
+            }
+            if (newTab[0].progression === 100) {
+                let newTab = tab.filter((el: any) => el.idCours === idCours);
+                let date = newTab[0].updatedAt
+                    .split("T")[0]
+                    .split("-")
+                    .reverse()
+                    .join("/");
+                return <div>Terminé le {date}</div>;
+            }
+            return newTab[0].progression;
+        }
+    } else {
+        return 0;
+    }
+};
+
+const SelIcone: React.FC<any> = ({ tab, idCours }) => {
+    let newTab = tab ? tab.filter((el: any) => el.idCours === idCours) : [];
+    if (tab && idCours) {
+        if (newTab.length === 0) {
+            return <Dot color="salmon" />;
+        } else {
+            if (newTab[0].progression < 100 && newTab[0].progression > 0) {
+                return <Dot color="lightblue" />;
+            }
+            if (newTab[0].progression === 100) {
+                return (
+                    <Icon
+                        type="check-circle"
+                        theme="twoTone"
+                        twoToneColor="#85E27B"
+                        style={{ fontSize: "16px" }}
+                    />
+                );
+            }
+            return newTab[0].progression;
+        }
+    } else {
+        return 0;
+    }
+};
+
+const ProgressionGenerale: React.FC<any> = ({ tab, nbCours }) => {
+    let newTab = tab ? tab.filter((el: any) => el.progression === 100) : [];
+    return (
+        <div>
+            <span style={{ fontWeight: "bold" }}>
+                {tab.length > 0
+                    ? Math.round((100 / nbCours) * newTab.length) + "%"
+                    : "0%"}
+            </span>{" "}
+            du programme terminés
+        </div>
+    );
+};
+
+const ProgressIcone: React.FC<any> = ({ tab, idCours, tt }) => {
+    let newTab = tab ? tab.filter((el: any) => el.idCours === idCours) : [];
+    if (tab && idCours) {
+        if (newTab.length === 0) {
+            return (
+                <Tooltip placement="bottom" title={tt}>
+                    <IcoProgress color="#FF8E9D" />
+                </Tooltip>
+            );
+        } else {
+            if (newTab[0].progression < 100 && newTab[0].progression > 0) {
+                return (
+                    <Tooltip placement="bottom" title={tt}>
+                        <IcoProgress color="#BFE4F5" />
+                    </Tooltip>
+                );
+            }
+            if (newTab[0].progression === 100) {
+                return (
+                    <Tooltip placement="bottom" title={tt}>
+                        <IcoProgress color="#85E27B" />
+                    </Tooltip>
+                );
+            }
+            return newTab[0].progression;
+        }
+    } else {
+        return 0;
+    }
+};
+
 const Cours = () => {
     const [user, userDispatch] = React.useContext(userContext);
     const [state, setState] = React.useState<coursT[]>([]);
+    const [progress, setProgress] = React.useState<progT[]>([]);
     const [lecture, setLecture] = React.useState(false);
     const [id, setId] = React.useState(0);
 
     React.useEffect(() => {
-        Axios.get("/Cours").then((rep) => setState(rep.data));
-    }, []);
+        if (state.length === 0 && progress.length === 0) {
+            Axios.get("/Cours").then((rep) => setState(rep.data));
+        }
+        Axios.get(`/progression`).then((rep) => {
+            setProgress(rep.data);
+        });
+    }, [lecture]);
+
     return (
         <Conteneur>
-            {lecture && (
+            {lecture && user.connecte && (
                 <div
                     style={{
                         position: "relative",
@@ -169,7 +282,7 @@ const Cours = () => {
                     <Programme id={id} />
                 </div>
             )}
-            {!lecture && (
+            {!lecture && user.connecte && (
                 <Transition
                     appear
                     enter
@@ -185,47 +298,21 @@ const Cours = () => {
                                 ...transitionStyles[state3]
                             }}
                         >
-                            <div>
-                                <span style={{ fontWeight: "bold" }}>17%</span>{" "}
-                                du programme terminés
-                            </div>
+                            <ProgressionGenerale
+                                tab={progress}
+                                nbCours={state.length}
+                            />
                             <ConteneurIcoProgress>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#85E27B" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#85E27B" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#BFE4F5" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Semaine 21">
-                                    <IcoProgress color="#FF8E9D" />
-                                </Tooltip>
+                                {state.map((element, index) => {
+                                    return (
+                                        <ProgressIcone
+                                            key={`Icone - ${index}`}
+                                            tab={progress}
+                                            idCours={state[index].id}
+                                            tt={element.Titre}
+                                        />
+                                    );
+                                })}
                             </ConteneurIcoProgress>
                         </ConteneurProgression>
                     )}
@@ -256,11 +343,9 @@ const Cours = () => {
                                                 ...transitionStyles[state3]
                                             }}
                                             dot={
-                                                <Icon
-                                                    type="check-circle"
-                                                    theme="twoTone"
-                                                    twoToneColor="#85E27B"
-                                                    style={{ fontSize: "16px" }}
+                                                <SelIcone
+                                                    tab={progress}
+                                                    idCours={state[index].id}
                                                 />
                                             }
                                         >
@@ -280,7 +365,12 @@ const Cours = () => {
                                                 </Description>
 
                                                 <Details>
-                                                    Terminé le 21/12
+                                                    <Progression
+                                                        tab={progress}
+                                                        idCours={
+                                                            state[index].id
+                                                        }
+                                                    />
                                                 </Details>
                                             </ConteneurCours>
                                         </Timeline.Item>

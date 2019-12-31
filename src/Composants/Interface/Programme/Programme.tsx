@@ -8,6 +8,7 @@ import { animateScroll, Element } from "react-scroll";
 import TableMatiere from "./TableMatiere";
 import { Transition } from "react-transition-group";
 import "./Programme.css";
+import { userContext } from "../../../App";
 export interface Programme {
     id: number;
 }
@@ -58,17 +59,21 @@ const ConteneurSlate = styled.div`
 `;
 
 const Programme: React.FC<Programme> = ({ id }) => {
+    const [user, userDispatch] = React.useContext(userContext);
     const [state, setState] = React.useState<State>({
         Cours: [],
         Description: "",
         Titre: ""
     });
 
+    const [indexLu, setIndexLu] = React.useState(0);
+
     const location = useLocation();
     let loc = React.useMemo(() => location.hash.replace("#", ""), [
         location.hash
     ]);
     const [TabMatiere, setTabMat] = React.useState(false);
+
     React.useEffect(() => {
         if (state.Titre === "") {
             Axios.get(`/Cours/${id}`).then((rep) => {
@@ -97,7 +102,7 @@ const Programme: React.FC<Programme> = ({ id }) => {
                     });
             }
         }
-    }, [state, loc]);
+    });
     return (
         <Conteneur>
             <Transition
@@ -113,6 +118,34 @@ const Programme: React.FC<Programme> = ({ id }) => {
                         id="ScrollConteneur"
                         className="element"
                         width={781}
+                        onScroll={(e: any) => {
+                            let elementIndexLu = document.getElementById(
+                                `element-${indexLu}`
+                            );
+                            let elementConteneurScroll = document.getElementById(
+                                `ScrollConteneur`
+                            );
+
+                            if (
+                                elementIndexLu &&
+                                elementConteneurScroll &&
+                                elementConteneurScroll.getBoundingClientRect()
+                                    .height +
+                                    110 >
+                                    elementIndexLu.getBoundingClientRect()
+                                        .top &&
+                                indexLu < state.Cours.length
+                            ) {
+                                Axios.post(`/Progression/${id}`, {
+                                    progression: Math.round(
+                                        (100 / (state.Cours.length - 1)) *
+                                            indexLu
+                                    )
+                                });
+                                if (indexLu < state.Cours.length - 1)
+                                    setIndexLu((c) => c + 1);
+                            }
+                        }}
                         style={{
                             ...defaultStyle,
                             ...transitionStyles[state2]
