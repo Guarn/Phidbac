@@ -134,6 +134,14 @@ const Leaf = ({ attributes, children, leaf }) => {
         children = <u>{children}</u>;
     }
 
+    if (leaf.times) {
+        children = (
+            <span style={{ fontFamily: "Times New Roman", fontSize: "115%" }}>
+                {children}
+            </span>
+        );
+    }
+
     return (
         <span
             style={{
