@@ -132,8 +132,8 @@ const Leaf = ({ attributes, children, leaf }) => {
         children = <em>{children}</em>;
     }
 
-    if (leaf.underlined) {
-        children = <u>{children}</u>;
+    if (leaf.sup) {
+        children = <sup>{children}</sup>;
     }
 
     if (leaf.times) {

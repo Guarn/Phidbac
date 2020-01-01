@@ -117,7 +117,7 @@ const Programme: React.FC<Programme> = ({ id }) => {
                     <ConteneurGlobal
                         id="ScrollConteneur"
                         className="element"
-                        width={781}
+                        width={847}
                         onScroll={(e: any) => {
                             let elementIndexLu = document.getElementById(
                                 `element-${indexLu}`
