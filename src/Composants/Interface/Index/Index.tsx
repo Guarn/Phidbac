@@ -305,7 +305,7 @@ interface DescriptionIndexI {
  * @id Index sélectionné
  */
 
-const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
+export const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
     const [user, userDispatch] = React.useContext(userContext);
 
     const [state, setState] = React.useState<stateI>({

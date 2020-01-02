@@ -1,8 +1,11 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Editable, withReact, Slate } from "slate-react";
 import { createEditor } from "slate";
+import { DescriptionIndex } from "../Interface/Index/Index";
 
 import "./Slate.css";
+import { Tooltip, Popover, Modal } from "antd";
+import Programme from "../Interface/Programme/Programme";
 
 const SlateJs = (props) => {
     const renderElement = useCallback((props) => <Element {...props} />, []);
@@ -88,20 +91,71 @@ const Element = ({ attributes, children, element }) => {
         case "numbered-list":
             return <ol {...attributes}>{children}</ol>;
         case "link":
-            return (
-                <a
-                    {...attributes}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={
-                        element.url.charAt(0) === "h"
-                            ? element.url
-                            : "http://" + element.url
-                    }
-                >
-                    {children}
-                </a>
-            );
+            console.log(element);
+            switch (element.select) {
+                case "web":
+                    return (
+                        <Popover
+                            overlayClassName="Pop-LienWeb"
+                            content={
+                                <div style={{ display: "flex" }}>
+                                    <div
+                                        style={{
+                                            color: "white",
+                                            fontWeight: "bold"
+                                        }}
+                                    >
+                                        WEB
+                                    </div>
+                                    <div
+                                        style={{
+                                            color: "white",
+                                            marginLeft: "5px",
+                                            marginRight: "5px"
+                                        }}
+                                    >
+                                        |
+                                    </div>
+                                    <div
+                                        style={{
+                                            color: "white"
+                                        }}
+                                    >
+                                        {element.value}
+                                    </div>
+                                </div>
+                            }
+                        >
+                            <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={element.value}
+                                {...attributes}
+                            >
+                                {children}
+                            </a>
+                        </Popover>
+                    );
+                case "index":
+                    return (
+                        <OpenModal
+                            type="index"
+                            element={element}
+                            attributes={attributes}
+                            children={children}
+                        />
+                    );
+                case "cours":
+                    return (
+                        <OpenModal
+                            type="cours"
+                            element={element}
+                            attributes={attributes}
+                            children={children}
+                        />
+                    );
+            }
+            return <a {...attributes}>{children}</a>;
         default:
             return (
                 <p
@@ -161,3 +215,77 @@ const Leaf = ({ attributes, children, leaf }) => {
 };
 
 export default SlateJs;
+
+const OpenModal = ({ type, attributes, children, element }) => {
+    const [modalShow, setModalShow] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
+    return (
+        <Popover
+            visible={showTooltip}
+            overlayClassName="Pop-LienWeb"
+            content={
+                <div style={{ display: "flex" }}>
+                    <div
+                        style={{
+                            color: "white",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        {type.toUpperCase()}
+                    </div>
+                    <div
+                        style={{
+                            color: "white",
+                            marginLeft: "5px",
+                            marginRight: "5px"
+                        }}
+                    >
+                        |
+                    </div>
+                    <div
+                        style={{
+                            color: "white"
+                        }}
+                    >
+                        {element.value}
+                    </div>
+                </div>
+            }
+        >
+            <a
+                {...attributes}
+                onMouseOver={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+                onMouseDown={() => setModalShow(true)}
+            >
+                {children}
+            </a>
+            <Modal
+                visible={modalShow}
+                onCancel={() => setModalShow(false)}
+                onOk={() => setModalShow(false)}
+                footer={null}
+                closable={false}
+                width={type === "cours" ? "1000px" : "600px"}
+            >
+                <div
+                    style={{
+                        overflow: "auto",
+                        maxHeight: "60vh",
+                        paddingRight: "20px"
+                    }}
+                >
+                    {type === "index" && (
+                        <DescriptionIndex id={element.value} />
+                    )}
+                    {type === "cours" && (
+                        <Programme
+                            id={element.value}
+                            paragraphe={element.paragraphe}
+                        />
+                    )}
+                </div>
+            </Modal>
+        </Popover>
+    );
+};

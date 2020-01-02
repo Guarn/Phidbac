@@ -11,6 +11,7 @@ import "./Programme.css";
 import { userContext } from "../../../App";
 export interface Programme {
     id: number;
+    paragraphe?: number;
 }
 interface State {
     Cours: any;
@@ -58,7 +59,7 @@ const ConteneurSlate = styled.div`
     transition: all 0.2s;
 `;
 
-const Programme: React.FC<Programme> = ({ id }) => {
+const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
     const [user, userDispatch] = React.useContext(userContext);
     const [state, setState] = React.useState<State>({
         Cours: [],
@@ -86,9 +87,16 @@ const Programme: React.FC<Programme> = ({ id }) => {
             });
         } else {
             let el1: HTMLElement | null = document.getElementById("element-0");
+            let el1Bis: HTMLElement | null = document.getElementById(
+                "element1-0"
+            );
             let el2: HTMLElement | null = document.getElementById(
                 `element-${loc}`
             );
+            let el3: HTMLElement | null = document.getElementById(
+                `element1-${paragraphe}`
+            );
+
             if (loc !== "") {
                 let elBase: number | null = el1
                     ? el1.getBoundingClientRect().top
@@ -100,6 +108,12 @@ const Programme: React.FC<Programme> = ({ id }) => {
                     animateScroll.scrollTo(elLien - elBase, {
                         containerId: "ScrollConteneur"
                     });
+            }
+            if (paragraphe) {
+                setTabMat(false);
+                if (el3) {
+                    el3.scrollIntoView();
+                }
             }
         }
     });
@@ -115,7 +129,7 @@ const Programme: React.FC<Programme> = ({ id }) => {
             >
                 {(state2) => (
                     <ConteneurGlobal
-                        id="ScrollConteneur"
+                        id={paragraphe ? "ScrollConteneur1" : "ScrollConteneur"}
                         className="element"
                         width={847}
                         onScroll={(e: any) => {
@@ -154,9 +168,21 @@ const Programme: React.FC<Programme> = ({ id }) => {
                         {state.Cours.map((element: any, index: number) => {
                             return (
                                 <Element
-                                    id={`element-${index}`}
-                                    name={`element-${index}`}
-                                    key={`element-${index}`}
+                                    id={
+                                        paragraphe
+                                            ? `element1-${index}`
+                                            : `element-${index}`
+                                    }
+                                    name={
+                                        paragraphe
+                                            ? `element1-${index}`
+                                            : `element-${index}`
+                                    }
+                                    key={
+                                        paragraphe
+                                            ? `element1-${index}`
+                                            : `element-${index}`
+                                    }
                                     className="element"
                                 >
                                     <ConteneurSlate
