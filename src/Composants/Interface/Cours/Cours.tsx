@@ -270,7 +270,8 @@ const Cours = () => {
                                 onMouseDown={() => setLecture(false)}
                                 style={{
                                     position: "absolute",
-                                    top: "0px",
+                                    top: "-10px",
+                                    left: "110px",
                                     ...defaultStyle,
                                     ...transitionStyles[state3]
                                 }}

@@ -91,7 +91,6 @@ const Element = ({ attributes, children, element }) => {
         case "numbered-list":
             return <ol {...attributes}>{children}</ol>;
         case "link":
-            console.log(element);
             switch (element.select) {
                 case "web":
                     return (
@@ -101,7 +100,7 @@ const Element = ({ attributes, children, element }) => {
                                 <div style={{ display: "flex" }}>
                                     <div
                                         style={{
-                                            color: "white",
+                                            color: "orange",
                                             fontWeight: "bold"
                                         }}
                                     >
@@ -219,6 +218,7 @@ export default SlateJs;
 const OpenModal = ({ type, attributes, children, element }) => {
     const [modalShow, setModalShow] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
+
     return (
         <Popover
             visible={showTooltip}
@@ -227,7 +227,7 @@ const OpenModal = ({ type, attributes, children, element }) => {
                 <div style={{ display: "flex" }}>
                     <div
                         style={{
-                            color: "white",
+                            color: "orange",
                             fontWeight: "bold"
                         }}
                     >
@@ -247,7 +247,7 @@ const OpenModal = ({ type, attributes, children, element }) => {
                             color: "white"
                         }}
                     >
-                        {element.value}
+                        {element.nom}
                     </div>
                 </div>
             }

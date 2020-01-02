@@ -27,7 +27,7 @@ const ConteneurGlobal = styled.div<WidthProps>`
     margin-top: 30px;
     padding-right: 30px;
     position: relative;
-    margin-left: 10%;
+    padding-left: 10%;
     height: 95%;
 `;
 interface SelectedProps {
@@ -51,12 +51,29 @@ const Conteneur = styled.div`
     display: flex;
     justify-content: center;
 `;
-
+const PuceLien = styled.div`
+    opacity: 0;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 20px;
+    width: 20px;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: salmon;
+    transform: translate3d(-50px, 0, 0);
+`;
 const ConteneurSlate = styled.div`
     position: relative;
     box-sizing: border-box;
     border: 1px dashed transparent;
     transition: all 0.2s;
+    &:hover ${PuceLien} {
+        opacity: 1;
+    }
 `;
 
 const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
@@ -222,9 +239,15 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                                             minHeight: element.image
                                                 ? element.imageOptions.height +
                                                   "px"
-                                                : ""
+                                                : "",
+                                            position: "relative"
                                         }}
                                     >
+                                        {user.connecte &&
+                                            (user.grade === "Administrateur" ||
+                                                user.grade === "Visiteur") && (
+                                                <PuceLien>{index}</PuceLien>
+                                            )}
                                         {element.image && (
                                             <Popover
                                                 placement="bottom"

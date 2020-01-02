@@ -13,3 +13,8 @@
     background-color: #5e5e5e;
     padding: 0px;
 }
+
+.Pop-LienWeb > .ant-popover-content > .ant-popover-arrow {
+    border-right-color: #5e5e5e;
+    border-bottom-color: #5e5e5e;
+}
