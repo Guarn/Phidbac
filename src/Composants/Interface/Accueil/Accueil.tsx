@@ -35,7 +35,7 @@ const Accueil = () => {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>Phidbac : La philosophie du bac</title>
-                <link rel="canonical" href="http://phidbac.fr" />
+                <link rel="canonical" href="https://phidbac.fr" />
             </Helmet>
             <PartieG />
             <Desktop>

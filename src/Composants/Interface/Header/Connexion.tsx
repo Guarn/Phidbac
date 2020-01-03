@@ -384,7 +384,7 @@ const MenuConnecte: React.FC<any> = ({ user, userDispatch }) => {
                 </IconeSimple>
                 <IconeSimple
                     onMouseDown={() =>
-                        window.open("http://admin.phidbac.fr", "_blank")
+                        window.open("https://phidbac.fr:3001", "_blank")
                     }
                 >
                     <Icon type="setting" />

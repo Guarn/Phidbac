@@ -357,7 +357,7 @@ export const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
                                 <Styled.LienAdmin
                                     onMouseDown={() => {
                                         window.open(
-                                            `http://phidbac.fr:3001/Index/Gestion#${state.id}`,
+                                            `https://phidbac.fr:3001/Index/Gestion#${state.id}`,
                                             "_blank"
                                         );
                                     }}
