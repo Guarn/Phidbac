@@ -7,6 +7,7 @@ import Axios from "../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import Programme from "../Programme/Programme";
 import { useHistory } from "react-router";
+import { Helmet } from "react-helmet";
 
 const Conteneur = styled.div`
     height: 100%;
@@ -246,6 +247,11 @@ const Cours = () => {
 
     return (
         <Conteneur>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Phidbac : Liste des cours</title>
+                <link rel="canonical" href="http://phidbac.fr" />
+            </Helmet>
             {lecture && user.connecte && (
                 <div
                     style={{

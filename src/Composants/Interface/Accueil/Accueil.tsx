@@ -4,6 +4,7 @@ import { ReactComponent as Logo } from "../../../Assets/LOG.svg";
 import PartieG from "./PartieG";
 import { Desktop, Tablet } from "../../../responsive";
 import { Transition } from "react-transition-group";
+import { Helmet } from "react-helmet";
 
 //SECTION STYLED-COMPONENTS
 
@@ -31,6 +32,11 @@ const transitionStyles: any = {
 const Accueil = () => {
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Phidbac : La philosophie du bac</title>
+                <link rel="canonical" href="http://phidbac.fr" />
+            </Helmet>
             <PartieG />
             <Desktop>
                 <PartieD>
