@@ -45,7 +45,7 @@ const Lien = (props: Lien_PROPS) => {
                 <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="http://admin.phidbac.fr"
+                    href="https://phidbac.fr:3001"
                 >
                     Administration
                 </a>
