@@ -128,6 +128,8 @@ const Programme: React.FC<ProgrammeI> = ({
                             );
 
                             if (
+                                id !== 1 &&
+                                tableMatiereShow &&
                                 elementIndexLu &&
                                 elementConteneurScroll &&
                                 elementConteneurScroll.getBoundingClientRect()
