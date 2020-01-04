@@ -7,6 +7,7 @@ const Conteneur = styled.div`
     flex-direction: column;
     margin-left: 20px;
     margin-top: 50px;
+    font-size: 14px;
 `;
 
 const Titre = styled.h2`

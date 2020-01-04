@@ -7,6 +7,7 @@ import Axios from "../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import Programme from "../Programme/Programme";
 import { Helmet } from "react-helmet";
+import { useCookies } from "react-cookie";
 
 const Conteneur = styled.div`
     height: 100%;
@@ -234,13 +235,16 @@ const Cours = () => {
     const [progress, setProgress] = React.useState<progT[]>([]);
     const [lecture, setLecture] = React.useState(false);
     const [id, setId] = React.useState(0);
+    const [cookies] = useCookies();
 
     React.useEffect(() => {
-        if (state.length === 0 && progress.length === 0) {
+        if (state.length === 0 && progress.length === 0 && user.connecte) {
             Axios.get("/Cours").then((rep) => setState(rep.data));
-            Axios.get(`/progression`).then((rep) => {
-                setProgress(rep.data);
-            });
+            if (cookies.token) {
+                Axios.get(`/progression`).then((rep) => {
+                    setProgress(rep.data);
+                });
+            }
         }
     });
 

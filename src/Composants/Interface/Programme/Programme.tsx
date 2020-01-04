@@ -8,6 +8,7 @@ import TableMatiere from "./TableMatiere";
 import { Transition } from "react-transition-group";
 import "./Programme.css";
 import { userContext } from "../../../App";
+import { useCookies } from "react-cookie";
 
 export interface ProgrammeI {
     id: number;
@@ -56,6 +57,7 @@ const Programme: React.FC<ProgrammeI> = ({
         Description: "",
         Titre: ""
     });
+    const [cookies] = useCookies();
 
     const [indexLu, setIndexLu] = React.useState(0);
 
@@ -129,6 +131,8 @@ const Programme: React.FC<ProgrammeI> = ({
 
                             if (
                                 id !== 1 &&
+                                cookies.token &&
+                                user.connecte &&
                                 tableMatiereShow &&
                                 elementIndexLu &&
                                 elementConteneurScroll &&

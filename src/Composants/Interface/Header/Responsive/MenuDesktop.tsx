@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import ico from "../../../../Assets/ICONE-PHI.jpg";
 import styled from "styled-components";
 import Connexion from "../Connexion";
+import { userContext } from "../../../../App";
 
 const ConteneurLiensPage = styled.div`
     height: 80px;
@@ -41,6 +42,7 @@ const BoutonHome = styled.div`
 const Desktop = () => {
     const [redActive, setRedActive] = React.useState<boolean>(false);
     const [page, setPage] = React.useState("");
+    const [user] = React.useContext(userContext);
 
     let changementPage = (UrlPage: string) => {
         setPage(UrlPage);
@@ -59,12 +61,16 @@ const Desktop = () => {
                 <BoutonPage onClick={() => changementPage("/Sujets")}>
                     Sujets
                 </BoutonPage>
-                <BoutonPage onClick={() => changementPage("/Cours")}>
-                    Cours
-                </BoutonPage>
-                <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
-                    Exercices
-                </BoutonPage>
+                {user.connecte && (
+                    <BoutonPage onClick={() => changementPage("/Cours")}>
+                        Cours
+                    </BoutonPage>
+                )}
+                {user.connecte && (
+                    <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                        Exercices
+                    </BoutonPage>
+                )}
                 <BoutonPage onClick={() => changementPage("/Index")}>
                     Index
                 </BoutonPage>
