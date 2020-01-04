@@ -22,15 +22,30 @@ const El0 = styled.div`
 `;
 
 const El1 = styled.div`
-    margin-left: 8px;
+    margin-left: 15px;
+    &:hover {
+        font-weight: bold;
+    }
 `;
 
 const El2 = styled.div`
-    margin-left: 16px;
+    margin-left: 30px;
+    &:hover {
+        font-weight: bold;
+    }
 `;
 
 const El3 = styled.div`
-    margin-left: 24px;
+    margin-left: 45px;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+const El4 = styled.div`
+    margin-left: 60px;
+    &:hover {
+        font-weight: bold;
+    }
 `;
 
 type GlobalLinkT = {
@@ -113,6 +128,17 @@ const TableMatiere: React.FC<any> = ({ cours }) => {
                                     <El3 key={`TABMAT-${index}`}>
                                         {element.TableMatiere.value}
                                     </El3>
+                                </GlobalLink>
+                            );
+                        case "4":
+                            return (
+                                <GlobalLink
+                                    key={`TABMAT-${index}`}
+                                    index={index}
+                                >
+                                    <El4 key={`TABMAT-${index}`}>
+                                        {element.TableMatiere.value}
+                                    </El4>
                                 </GlobalLink>
                             );
 
