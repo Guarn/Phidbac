@@ -3,7 +3,6 @@ import { Button, Form, Input, Icon, Checkbox } from "antd";
 import "./Login.css";
 import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
-import { Action } from "../../../reducers";
 import { userContext } from "../../../App";
 
 export interface Login_PROPS {
@@ -22,7 +21,7 @@ export type formError = {
 };
 
 const Login = (props: Login_PROPS) => {
-    const [user, userDispatch] = useContext(userContext);
+    const [, userDispatch] = useContext(userContext);
     const [, setCookie] = useCookies();
     const { getFieldDecorator, validateFields } = props.form;
 
@@ -38,12 +37,12 @@ const Login = (props: Login_PROPS) => {
                         let dateExp = new Date(Date.now());
                         dateExp.setDate(365);
 
+                        userDispatch({ type: "UPDATE", user: rep.data });
                         setCookie("token", "Bearer " + rep.data.token, {
                             path: "/",
                             domain: ".phidbac.fr",
                             expires: dateExp
                         });
-                        userDispatch({ type: "UPDATE", user: rep.data });
                     })
                     .catch((err) => console.log(err));
             }

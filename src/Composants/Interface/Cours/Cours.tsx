@@ -6,7 +6,6 @@ import { userContext } from "../../../App";
 import Axios from "../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import Programme from "../Programme/Programme";
-import { useHistory } from "react-router";
 import { Helmet } from "react-helmet";
 
 const Conteneur = styled.div`
@@ -230,7 +229,7 @@ const ProgressIcone: React.FC<any> = ({ tab, idCours, tt }) => {
 };
 
 const Cours = () => {
-    const [user, userDispatch] = React.useContext(userContext);
+    const [user] = React.useContext(userContext);
     const [state, setState] = React.useState<coursT[]>([]);
     const [progress, setProgress] = React.useState<progT[]>([]);
     const [lecture, setLecture] = React.useState(false);
@@ -239,18 +238,18 @@ const Cours = () => {
     React.useEffect(() => {
         if (state.length === 0 && progress.length === 0) {
             Axios.get("/Cours").then((rep) => setState(rep.data));
+            Axios.get(`/progression`).then((rep) => {
+                setProgress(rep.data);
+            });
         }
-        Axios.get(`/progression`).then((rep) => {
-            setProgress(rep.data);
-        });
-    }, [lecture]);
+    });
 
     return (
         <Conteneur>
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>Phidbac : Liste des cours</title>
-                <link rel="canonical" href="http://phidbac.fr" />
+                <link rel="canonical" href="https://www.phidbac.fr" />
             </Helmet>
             {lecture && user.connecte && (
                 <div
@@ -286,7 +285,7 @@ const Cours = () => {
                             </Button>
                         )}
                     </Transition>
-                    <Programme id={id} />
+                    <Programme id={id} tableMatiereShow />
                 </div>
             )}
             {!lecture && user.connecte && (

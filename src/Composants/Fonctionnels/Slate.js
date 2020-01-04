@@ -4,7 +4,7 @@ import { createEditor } from "slate";
 import { DescriptionIndex } from "../Interface/Index/Index";
 
 import "./Slate.css";
-import { Tooltip, Popover, Modal } from "antd";
+import { Popover, Modal } from "antd";
 import Programme from "../Interface/Programme/Programme";
 
 const SlateJs = (props) => {
@@ -153,8 +153,10 @@ const Element = ({ attributes, children, element }) => {
                             children={children}
                         />
                     );
+                default:
+                    return <a {...attributes}>{children}</a>;
             }
-            return <a {...attributes}>{children}</a>;
+
         default:
             return (
                 <p
@@ -282,6 +284,7 @@ const OpenModal = ({ type, attributes, children, element }) => {
                         <Programme
                             id={element.value}
                             paragraphe={element.paragraphe}
+                            tableMatiereShow={false}
                         />
                     )}
                 </div>

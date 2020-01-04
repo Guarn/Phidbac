@@ -65,7 +65,6 @@ const ConteneurListe = styled.div`
     height: 90%;
     overflow: hidden;
     padding-right: 10px;
-    width: 270px;
 `;
 
 const BlocLettre = styled.div`

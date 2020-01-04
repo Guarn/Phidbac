@@ -1,10 +1,4 @@
-import React, {
-    useEffect,
-    useReducer,
-    useState,
-    useContext,
-    Dispatch
-} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Icon, Popover, Form, Modal } from "antd";
 import Login from "./Login";
 import Axios from "../../Fonctionnels/Axios";
@@ -33,7 +27,7 @@ export interface Lien_PROPS {
 }
 
 const Lien = (props: Lien_PROPS) => {
-    const [user, userDispatch] = useContext(userContext);
+    const [, userDispatch] = useContext(userContext);
     return (
         <div
             style={{
@@ -81,18 +75,19 @@ const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
 
     useEffect(() => {
-        if (Object.keys(cookies).length >= 1) {
+        if (cookies.token) {
             if (!user.connecte) {
                 Axios.get("/p")
                     .then((rep) => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
                     .catch((err) => {
-                        console.log(err.response);
+                        removeCookie("token");
+                        userDispatch({ type: "REMOVE" });
                     });
             }
         }
-    }, [user.connecte, cookies, removeCookie]);
+    });
 
     return (
         <>
@@ -162,11 +157,7 @@ const Header = () => {
                         placement="bottomRight"
                         content={
                             <Lien
-                                removeCookie={() =>
-                                    removeCookie("token", {
-                                        domain: ".phidbac.fr"
-                                    })
-                                }
+                                removeCookie={() => removeCookie("token", {})}
                             />
                         }
                     >
@@ -199,13 +190,7 @@ const Header = () => {
                         trigger="click"
                         placement="bottomRight"
                         content={
-                            <Lien
-                                removeCookie={() =>
-                                    removeCookie("token", {
-                                        domain: ".phidbac.fr"
-                                    })
-                                }
-                            />
+                            <Lien removeCookie={() => removeCookie("token")} />
                         }
                     >
                         <span style={{ color: "orange" }}>
@@ -366,7 +351,7 @@ const BlocDeco = styled.div`
 `;
 
 const MenuConnecte: React.FC<any> = ({ user, userDispatch }) => {
-    const [cookies, , removeCookie] = useCookies();
+    const [, , removeCookie] = useCookies();
     return (
         <ConteneurMenu>
             <BlocAvatar>
@@ -400,9 +385,7 @@ const MenuConnecte: React.FC<any> = ({ user, userDispatch }) => {
             </BlocMessages>
             <BlocDeco
                 onMouseDown={() => {
-                    removeCookie("token", {
-                        domain: ".phidbac.fr"
-                    });
+                    removeCookie("token");
                     userDispatch({ type: "REMOVE" });
                 }}
             >

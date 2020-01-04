@@ -454,18 +454,11 @@ const Sujets = () => {
             let unst2 = refQuill2.current.makeUnprivilegedEditor(editor2);
             let editor3 = refQuill3.current.getEditor();
             let unst3 = refQuill3.current.makeUnprivilegedEditor(editor3);
-            let temp1: any = sujets[idSujet].Sujet1Naked;
-            let temp2: any = sujets[idSujet].Sujet2Naked;
-            let temp3: any = sujets[idSujet].Sujet3Naked;
-            let longueur;
-            let index;
-            let nleChaine;
 
             let texte = elementsCoches.recherche;
             let reg = new RegExp(texte, "gi");
             let regex = reg,
-                result,
-                indices = [];
+                result;
             while ((result = regex.exec(unst1.getText()))) {
                 editor1.formatText(
                     result.index,
@@ -490,19 +483,6 @@ const Sujets = () => {
                     "yellow"
                 );
             }
-            if (indices.length > 0) {
-                if (texte !== "") {
-                    let resultat = state.match(reg);
-                    if (resultat && resultat[0].length > 0) {
-                        longueur = resultat["0"].length;
-                        index = resultat["index"];
-                        nleChaine =
-                            '><span style="background-color:yellow;"' +
-                            resultat[0] +
-                            "</span>";
-                    }
-                }
-            }
         }
         if (
             elementsCoches.recherche !== "" &&
@@ -516,18 +496,10 @@ const Sujets = () => {
             let unst2 = refQuill2.current.makeUnprivilegedEditor(editor2);
             let editor3 = refQuill3.current.getEditor();
             let unst3 = refQuill3.current.makeUnprivilegedEditor(editor3);
-            let temp1: any = sujets[idSujet].Sujet1Naked;
-            let temp2: any = sujets[idSujet].Sujet2Naked;
-            let temp3: any = sujets[idSujet].Sujet3Naked;
-            let longueur;
-            let index;
-            let nleChaine;
 
             let texte = elementsCoches.recherche.split(" ");
             let reg;
-            let regex = reg,
-                result,
-                indices = [];
+            let result;
             texte.map((el, index) => {
                 reg = new RegExp(texte[index], "gi");
                 while ((result = reg.exec(unst1.getText()))) {
@@ -554,19 +526,7 @@ const Sujets = () => {
                         "yellow"
                     );
                 }
-                if (indices.length > 0) {
-                    if (texte.length > 0) {
-                        let resultat = state.match(reg);
-                        if (resultat && resultat[0].length > 0) {
-                            longueur = resultat[`${index}`].length;
-                            index = resultat["index"];
-                            nleChaine =
-                                '><span style="background-color:yellow;"' +
-                                resultat[0] +
-                                "</span>";
-                        }
-                    }
-                }
+
                 return null;
             });
         }
@@ -1112,7 +1072,12 @@ const Sujets = () => {
                                     ...transitionStyles2[state2]
                                 }}
                             >
-                                <AffichageSujet state={state} />
+                                <AffichageSujet
+                                    state={state}
+                                    refQuill1={refQuill1}
+                                    refQuill2={refQuill2}
+                                    refQuill3={refQuill3}
+                                />
                             </div>
                         )}
                     </Transition>
@@ -1136,14 +1101,15 @@ const Sujets = () => {
     );
 };
 
-const AffichageSujet: React.FC<any> = (props) => {
-    const { state } = props;
-    const refQuill1: any = useRef(null);
-    const refQuill2: any = useRef(null);
-    const refQuill3: any = useRef(null);
-
+const AffichageSujet: React.FC<any> = ({
+    refQuill1,
+    refQuill2,
+    refQuill3,
+    state,
+    style
+}) => {
     return (
-        <ConteneurSujet {...props.style}>
+        <ConteneurSujet {...style}>
             <Sujet>
                 <TitreNotions>
                     <Titre>1</Titre>

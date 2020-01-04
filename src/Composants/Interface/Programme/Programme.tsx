@@ -1,37 +1,28 @@
 import * as React from "react";
-import styled from "styled-components";
+import * as Styled from "./Programme.styled";
 import Axios from "../../Fonctionnels/Axios";
 import Slate from "../../Fonctionnels/Slate";
 import { useLocation } from "react-router";
-import { Popover } from "antd";
 import { animateScroll, Element } from "react-scroll";
 import TableMatiere from "./TableMatiere";
 import { Transition } from "react-transition-group";
 import "./Programme.css";
 import { userContext } from "../../../App";
-export interface Programme {
+
+export interface ProgrammeI {
     id: number;
     paragraphe?: number;
+    tableMatiereShow?: Boolean;
 }
-interface State {
+
+export type CoursT = {
     Cours: any;
-    Titre: any;
-    Description: any;
-}
-interface WidthProps {
-    width: number;
-}
-const ConteneurGlobal = styled.div<WidthProps>`
-    width: ${(props) => props.width + "px"};
-    overflow: auto;
-    margin-top: 30px;
-    padding-right: 30px;
-    position: relative;
-    padding-left: 10%;
-    height: 95%;
-`;
-interface SelectedProps {
-    selected: boolean;
+};
+
+export interface CoursI {
+    Cours: CoursT[];
+    Titre: String;
+    Description: String;
 }
 
 const duration = 200;
@@ -45,40 +36,22 @@ const transitionStyles: any = {
     exiting: { opacity: 0 },
     exited: { opacity: 0 }
 };
-const Conteneur = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-`;
-const PuceLien = styled.div`
-    opacity: 0;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 20px;
-    width: 20px;
-    border-radius: 5px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: salmon;
-    transform: translate3d(-50px, 0, 0);
-`;
-const ConteneurSlate = styled.div`
-    position: relative;
-    box-sizing: border-box;
-    border: 1px dashed transparent;
-    transition: all 0.2s;
-    &:hover ${PuceLien} {
-        opacity: 1;
-    }
-`;
 
-const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
-    const [user, userDispatch] = React.useContext(userContext);
-    const [state, setState] = React.useState<State>({
+/**
+ * Affichage d'un cours, soit sur la page programme/épreuves, soit dans la page cours,
+ * soit dans  un lien/tooltip, auquel cas le numéro de paragraphe vers lequel scroll est requis.
+ * @param id Int | Id du cours à afficher
+ * @param paragraphe Int | (optionnel) Numéro de paragraphe vers lequel scroll au chargement.
+ * @param tableMatiereShow Boolean | (optionnel) Affichage de  la table des matieres
+ */
+
+const Programme: React.FC<ProgrammeI> = ({
+    id,
+    paragraphe,
+    tableMatiereShow
+}) => {
+    const [user] = React.useContext(userContext);
+    const [cours, setCours] = React.useState<CoursI>({
         Cours: [],
         Description: "",
         Titre: ""
@@ -90,30 +63,27 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
     let loc = React.useMemo(() => location.hash.replace("#", ""), [
         location.hash
     ]);
-    const [TabMatiere, setTabMat] = React.useState(false);
 
     React.useEffect(() => {
-        if (state.Titre === "") {
+        // Fetch du cours si pas téléchargé
+        if (cours.Titre === "") {
             Axios.get(`/Cours/${id}`).then((rep) => {
-                setState({
+                setCours({
                     Titre: rep.data.Titre,
                     Description: rep.data.Description,
                     Cours: JSON.parse(rep.data.Contenu)
                 });
-                setTabMat(true);
             });
         } else {
             let el1: HTMLElement | null = document.getElementById("element-0");
-            let el1Bis: HTMLElement | null = document.getElementById(
-                "element1-0"
-            );
+
             let el2: HTMLElement | null = document.getElementById(
                 `element-${loc}`
             );
             let el3: HTMLElement | null = document.getElementById(
                 `element1-${paragraphe}`
             );
-
+            // Scroll automatique si hash url externe avec #Num_Paragraphe
             if (loc !== "") {
                 let elBase: number | null = el1
                     ? el1.getBoundingClientRect().top
@@ -126,8 +96,8 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                         containerId: "ScrollConteneur"
                     });
             }
+            // Scroll automatique si cours appelé dans un Tooltip
             if (paragraphe) {
-                setTabMat(false);
                 if (el3) {
                     el3.scrollIntoView();
                 }
@@ -135,7 +105,7 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
         }
     });
     return (
-        <Conteneur>
+        <Styled.Conteneur>
             <Transition
                 appear
                 enter
@@ -145,7 +115,7 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                 timeout={{ appear: 200, enter: 200, exit: 200 }}
             >
                 {(state2) => (
-                    <ConteneurGlobal
+                    <Styled.ConteneurGlobal
                         id={paragraphe ? "ScrollConteneur1" : "ScrollConteneur"}
                         className="element"
                         width={847}
@@ -165,15 +135,15 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                                     110 >
                                     elementIndexLu.getBoundingClientRect()
                                         .top &&
-                                indexLu < state.Cours.length
+                                indexLu < cours.Cours.length
                             ) {
                                 Axios.post(`/Progression/${id}`, {
                                     progression: Math.round(
-                                        (100 / (state.Cours.length - 1)) *
+                                        (100 / (cours.Cours.length - 1)) *
                                             indexLu
                                     )
                                 });
-                                if (indexLu < state.Cours.length - 1)
+                                if (indexLu < cours.Cours.length - 1)
                                     setIndexLu((c) => c + 1);
                             }
                         }}
@@ -182,7 +152,7 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                             ...transitionStyles[state2]
                         }}
                     >
-                        {state.Cours.map((element: any, index: number) => {
+                        {cours.Cours.map((element: any, index: number) => {
                             return (
                                 <Element
                                     id={
@@ -202,7 +172,7 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                                     }
                                     className="element"
                                 >
-                                    <ConteneurSlate
+                                    <Styled.ConteneurSlate
                                         style={{
                                             backgroundColor:
                                                 element.options.backgroundColor,
@@ -243,154 +213,88 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                                             position: "relative"
                                         }}
                                     >
-                                        {user.connecte &&
+                                        {// Affichage du numéro de Bloc en fonction du grade de l'utilisateur
+                                        user.connecte &&
                                             (user.grade === "Administrateur" ||
                                                 user.grade === "Visiteur") && (
-                                                <PuceLien>{index}</PuceLien>
+                                                <Styled.PuceLien>
+                                                    {index}
+                                                </Styled.PuceLien>
                                             )}
-                                        {element.image && (
-                                            <Popover
-                                                placement="bottom"
-                                                content={
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            flexDirection:
-                                                                "row",
-                                                            alignItems:
-                                                                "center",
-                                                            margin: "-10px",
-                                                            maxWidth: "400px"
-                                                        }}
-                                                    >
-                                                        {element.imageOptions
-                                                            .lienActif && (
-                                                            <div
-                                                                style={{
-                                                                    borderRight:
-                                                                        "1px solid rgba(0,0,0,0.1)",
-                                                                    padding:
-                                                                        "5px",
-                                                                    marginRight:
-                                                                        "10px",
-                                                                    fontWeight:
-                                                                        "bold",
-                                                                    maxWidth:
-                                                                        "200px"
-                                                                }}
-                                                            >
-                                                                {
-                                                                    element
-                                                                        .imageOptions
-                                                                        .lienType
-                                                                }
-                                                            </div>
-                                                        )}
-                                                        {
-                                                            element.imageOptions
-                                                                .legende
-                                                        }
-                                                    </div>
-                                                }
+                                        {// Gestion de l'affichage d'une image dans un  bloc Slate
+                                        element.image && (
+                                            <div
+                                                style={{
+                                                    float:
+                                                        element.imageOptions
+                                                            .align === "center"
+                                                            ? "none"
+                                                            : element
+                                                                  .imageOptions
+                                                                  .align,
+                                                    display: "flex",
+
+                                                    justifyContent: "center",
+                                                    zIndex: -1,
+
+                                                    marginLeft:
+                                                        element.imageOptions
+                                                            .marginLeft,
+                                                    marginRight:
+                                                        element.imageOptions
+                                                            .marginRight,
+                                                    marginBottom:
+                                                        element.imageOptions
+                                                            .marginBottom
+                                                }}
                                             >
                                                 <div
                                                     style={{
-                                                        float:
+                                                        height:
                                                             element.imageOptions
-                                                                .align ===
-                                                            "center"
-                                                                ? "none"
-                                                                : element
-                                                                      .imageOptions
-                                                                      .align,
-                                                        display: "flex",
-
-                                                        justifyContent:
-                                                            "center",
-                                                        zIndex: -1,
-
-                                                        marginLeft:
+                                                                .height + "px",
+                                                        width:
                                                             element.imageOptions
-                                                                .marginLeft,
-                                                        marginRight:
-                                                            element.imageOptions
-                                                                .marginRight,
-                                                        marginBottom:
-                                                            element.imageOptions
-                                                                .marginBottom
+                                                                .width + "px",
+                                                        cursor: element
+                                                            .imageOptions
+                                                            .lienActif
+                                                            ? "pointer"
+                                                            : "arrow"
                                                     }}
                                                 >
-                                                    <div
+                                                    <img
                                                         style={{
-                                                            height:
+                                                            height: "inherit",
+                                                            width: "inherit",
+                                                            paddingBottom:
+                                                                "10px",
+                                                            paddingLeft:
                                                                 element
                                                                     .imageOptions
-                                                                    .height +
-                                                                "px",
-                                                            width:
+                                                                    .align ===
+                                                                "right"
+                                                                    ? "10px"
+                                                                    : "0px",
+                                                            paddingRight:
                                                                 element
                                                                     .imageOptions
-                                                                    .width +
-                                                                "px",
-                                                            cursor: element
-                                                                .imageOptions
-                                                                .lienActif
-                                                                ? "pointer"
-                                                                : "arrow"
+                                                                    .align ===
+                                                                "left"
+                                                                    ? "10px"
+                                                                    : "0px"
                                                         }}
-                                                    >
-                                                        <img
-                                                            style={{
-                                                                height:
-                                                                    "inherit",
-                                                                width:
-                                                                    "inherit",
-                                                                paddingBottom:
-                                                                    "10px",
-                                                                paddingLeft:
-                                                                    element
-                                                                        .imageOptions
-                                                                        .align ===
-                                                                    "right"
-                                                                        ? "10px"
-                                                                        : "0px",
-                                                                paddingRight:
-                                                                    element
-                                                                        .imageOptions
-                                                                        .align ===
-                                                                    "left"
-                                                                        ? "10px"
-                                                                        : "0px"
-                                                            }}
-                                                            src={
-                                                                element
-                                                                    .imageOptions
-                                                                    .src
-                                                            }
-                                                            alt={
-                                                                element
-                                                                    .imageOptions
-                                                                    .legende
-                                                            }
-                                                            onMouseDown={() => {
-                                                                if (
-                                                                    element
-                                                                        .imageOptions
-                                                                        .lienActif
-                                                                ) {
-                                                                    window.open(
-                                                                        "http://" +
-                                                                            element
-                                                                                .imageOptions
-                                                                                .lien,
-                                                                        "_blank"
-                                                                    );
-                                                                }
-                                                            }}
-                                                        />
-                                                    </div>
+                                                        src={
+                                                            element.imageOptions
+                                                                .src
+                                                        }
+                                                        alt={
+                                                            element.imageOptions
+                                                                .legende
+                                                        }
+                                                    />
                                                 </div>
-                                            </Popover>
+                                            </div>
                                         )}
                                         {element.type === "citation" && (
                                             <div
@@ -421,32 +325,16 @@ const Programme: React.FC<Programme> = ({ id, paragraphe }) => {
                                                 readOnly={false}
                                             />
                                         )}
-                                    </ConteneurSlate>
+                                    </Styled.ConteneurSlate>
                                 </Element>
                             );
                         })}
-                    </ConteneurGlobal>
+                    </Styled.ConteneurGlobal>
                 )}
             </Transition>
-            <Transition
-                appear
-                enter
-                mountOnEnter
-                unmountOnExit
-                in={TabMatiere}
-                timeout={{ appear: 500, enter: 500, exit: 200 }}
-            >
-                {(state3) => (
-                    <TableMatiere
-                        style={{
-                            ...defaultStyle,
-                            ...transitionStyles[state3]
-                        }}
-                        state={state}
-                    />
-                )}
-            </Transition>
-        </Conteneur>
+
+            {tableMatiereShow && <TableMatiere cours={cours} />}
+        </Styled.Conteneur>
     );
 };
 export default Programme;

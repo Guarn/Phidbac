@@ -1,7 +1,8 @@
-import React, { useContext, createContext, Dispatch } from "react";
+import React, { createContext, Dispatch } from "react";
 import "./App.css";
 import * as Styled from "./App.Styled";
 import { Switch, Route } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 import Menu from "./Composants/Interface/Header/Menu";
 import { Desktop } from "./responsive";
 import Accueil from "./Composants/Interface/Accueil/Accueil";
@@ -10,6 +11,7 @@ import Programme from "./Composants/Interface/Programme/Programme";
 import Cours from "./Composants/Interface/Cours/Cours";
 import Index from "./Composants/Interface/Index/Index";
 import { userReducer, userInit, Action, State } from "./reducers";
+import { theme } from "./Shared/Styled";
 
 export const userContext = createContext<[State, Dispatch<Action>]>(
     {} as [State, Dispatch<Action>]
@@ -19,30 +21,32 @@ const App = () => {
     const [user, userDispatch] = React.useReducer(userReducer, userInit);
 
     return (
-        <Styled.ConteneurGlobal>
-            <userContext.Provider value={[user, userDispatch]}>
-                <Styled.ConteneurHeader>
-                    <Menu />
-                </Styled.ConteneurHeader>
-                <Styled.ConteneurContenu>
-                    <Switch>
-                        <Route exact path="/" component={Accueil} />
-                        <Route path="/Sujets" component={Sujets} />
-                        <Route path="/Programme">
-                            <Programme id={1} />
-                        </Route>
-                        <Route path="/Cours" component={Cours} />
-                        <Route path="/Index" component={Index} />
-                    </Switch>
-                </Styled.ConteneurContenu>
+        <ThemeProvider theme={theme}>
+            <Styled.ConteneurGlobal>
+                <userContext.Provider value={[user, userDispatch]}>
+                    <Styled.ConteneurHeader>
+                        <Menu />
+                    </Styled.ConteneurHeader>
+                    <Styled.ConteneurContenu>
+                        <Switch>
+                            <Route exact path="/" component={Accueil} />
+                            <Route path="/Sujets" component={Sujets} />
+                            <Route path="/Programme">
+                                <Programme id={1} tableMatiereShow />
+                            </Route>
+                            <Route path="/Cours" component={Cours} />
+                            <Route path="/Index" component={Index} />
+                        </Switch>
+                    </Styled.ConteneurContenu>
 
-                <Desktop>
-                    <Styled.ConteneurFooter>
-                        Copyright 2019
-                    </Styled.ConteneurFooter>
-                </Desktop>
-            </userContext.Provider>
-        </Styled.ConteneurGlobal>
+                    <Desktop>
+                        <Styled.ConteneurFooter>
+                            Copyright 2019
+                        </Styled.ConteneurFooter>
+                    </Desktop>
+                </userContext.Provider>
+            </Styled.ConteneurGlobal>
+        </ThemeProvider>
     );
 };
 

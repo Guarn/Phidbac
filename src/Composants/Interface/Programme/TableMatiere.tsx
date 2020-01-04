@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link, Events, scrollSpy } from "react-scroll";
 
@@ -33,15 +33,37 @@ const El3 = styled.div`
     margin-left: 24px;
 `;
 
-const TableMatiere = (props: any) => {
-    const [state] = useState(props.state);
+type GlobalLinkT = {
+    index: Number;
+};
 
+const GlobalLink: React.FC<GlobalLinkT> = ({ index, children }) => {
+    return (
+        <Link
+            activeClass="active"
+            to={`element-${index}`}
+            spy={true}
+            smooth={true}
+            duration={350}
+            containerId="ScrollConteneur"
+        >
+            {children}
+        </Link>
+    );
+};
+
+/**
+ * Génération de la table des matières d'un cours. Cette valeur est stockée lors
+ * de la création d'un cours et intégrée  à la valeur SlateJs.
+ * @param cours Définition d'un cours avec Titre, description et valeur SlateJs
+ */
+const TableMatiere: React.FC<any> = ({ cours }) => {
     useEffect(() => {
         Events.scrollEvent.register("begin", function() {});
 
         Events.scrollEvent.register("end", function() {});
 
-        scrollSpy.update(); 
+        scrollSpy.update();
 
         return () => {
             Events.scrollEvent.remove("begin");
@@ -50,85 +72,60 @@ const TableMatiere = (props: any) => {
     });
     return (
         <Conteneur>
-            {state.Cours.map((element: any, index: number) => {
+            {cours.Cours.map((element: any, index: Number) => {
                 if (element.TableMatiere.actif) {
                     switch (element.TableMatiere.type) {
                         case "titre":
                             return (
-                                <Link
+                                <GlobalLink
                                     key={`TABMAT-${index}`}
-                                    activeClass="active"
-                                    to={`element-${index}`}
-                                    spy={true}
-                                    smooth={true}
-                                    duration={350}
-                                    containerId="ScrollConteneur"
+                                    index={index}
                                 >
                                     <Titre>{element.TableMatiere.value}</Titre>
-                                </Link>
+                                </GlobalLink>
                             );
                         case "1":
                             return (
-                                <Link
+                                <GlobalLink
                                     key={`TABMAT-${index}`}
-                                    activeClass="active"
-                                    to={`element-${index}`}
-                                    spy={true}
-                                    smooth={true}
-                                    duration={350}
-                                    containerId="ScrollConteneur"
+                                    index={index}
                                 >
                                     <El1>{element.TableMatiere.value}</El1>
-                                </Link>
+                                </GlobalLink>
                             );
                         case "2":
                             return (
-                                <Link
+                                <GlobalLink
                                     key={`TABMAT-${index}`}
-                                    activeClass="active"
-                                    to={`element-${index}`}
-                                    spy={true}
-                                    smooth={true}
-                                    duration={350}
-                                    containerId="ScrollConteneur"
+                                    index={index}
                                 >
                                     <El2 key={`TABMAT-${index}`}>
                                         {element.TableMatiere.value}
                                     </El2>
-                                </Link>
+                                </GlobalLink>
                             );
                         case "3":
                             return (
-                                <Link
+                                <GlobalLink
                                     key={`TABMAT-${index}`}
-                                    activeClass="active"
-                                    to={`element-${index}`}
-                                    spy={true}
-                                    smooth={true}
-                                    duration={350}
-                                    containerId="ScrollConteneur"
+                                    index={index}
                                 >
                                     <El3 key={`TABMAT-${index}`}>
                                         {element.TableMatiere.value}
                                     </El3>
-                                </Link>
+                                </GlobalLink>
                             );
 
                         default:
                             return (
-                                <Link
+                                <GlobalLink
                                     key={`TABMAT-${index}`}
-                                    activeClass="active"
-                                    to={`element-${index}`}
-                                    spy={true}
-                                    smooth={true}
-                                    duration={350}
-                                    containerId="ScrollConteneur"
+                                    index={index}
                                 >
                                     <El0 key={`TABMAT-${index}`}>
                                         {element.TableMatiere.value}
                                     </El0>
-                                </Link>
+                                </GlobalLink>
                             );
                     }
                 }
