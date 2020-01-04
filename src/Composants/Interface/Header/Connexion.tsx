@@ -82,7 +82,7 @@ const Header = () => {
                         userDispatch({ type: "UPDATE", user: rep.data });
                     })
                     .catch((err) => {
-                        removeCookie("token");
+                        removeCookie("token", { domain: ".phidbac.fr" });
                         userDispatch({ type: "REMOVE" });
                     });
             }
@@ -157,7 +157,11 @@ const Header = () => {
                         placement="bottomRight"
                         content={
                             <Lien
-                                removeCookie={() => removeCookie("token", {})}
+                                removeCookie={() =>
+                                    removeCookie("token", {
+                                        domain: ".phidbac.fr"
+                                    })
+                                }
                             />
                         }
                     >
@@ -385,7 +389,7 @@ const MenuConnecte: React.FC<any> = ({ user, userDispatch }) => {
             </BlocMessages>
             <BlocDeco
                 onMouseDown={() => {
-                    removeCookie("token");
+                    removeCookie("token", { domain: ".phidbac.fr" });
                     userDispatch({ type: "REMOVE" });
                 }}
             >
