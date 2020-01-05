@@ -77,11 +77,10 @@ export type WidthProps = {
 export const ConteneurGlobal = styled.div<WidthProps>`
     width: ${(props) => props.width + "px"};
     overflow: auto;
-    margin-top: 30px;
     padding-right: 30px;
     position: relative;
     padding-left: 10%;
-    height: calc(100% - 30px);
+    height: 100%;
 `;
 
 export const ConteneurImage = styled.div<ConteneurSlateI>`

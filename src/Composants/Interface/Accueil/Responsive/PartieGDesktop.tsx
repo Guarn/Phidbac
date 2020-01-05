@@ -14,32 +14,28 @@ const Phi = styled.span`
 const TexteTitre = styled.div`
     width: 100%;
     font-size: 5vw;
-    padding-left: 100px;
     z-index: 100;
     position: relative;
 `;
 
-const TexteContenu = styled.p`
-    padding-left: 100px;
+const TexteContenu = styled.div`
     text-align: justify;
     z-index: 100;
     position: relative;
 `;
-const TexteContenuFooter = styled.p`
+const TexteContenuFooter = styled.div`
     text-align: justify;
     position: relative;
-    padding-left: 100px;
     z-index: 100;
 `;
 
 const ConteneurCat = styled.div`
-    height: 180px;
+    height: 160px;
     z-index: 100;
     position: relative;
 `;
 
 const TitreCat = styled.div`
-    margin-left: 100px;
     &:hover {
         color: orange;
         cursor: pointer;
@@ -61,37 +57,56 @@ const SousConteneurDescription = styled.div`
 
 const DescriptionCat = styled.div`
     position: absolute;
-    margin-left: 125px;
     width: 400px;
     text-align: justify;
     z-index: 100;
 `;
 
-
-
 const PartieGDesktop = () => {
     const [descriptionAff, setDescriptionAff] = React.useState(false);
     const [numDescription, setnumDescription] = React.useState(0);
     return (
-        <>
-            
-            <div>
-                <TexteTitre>
-                    <Phi>φ</Phi>d<Phi>'</Phi>
-                    bac
-                    <Phi>'</Phi>!
-                </TexteTitre>
-                <TexteContenu>
-                    « <Phi>φ</Phi> », c’est la lettre grecque phi, <br />
-                    <Phi>bac</Phi>
-                    , c’est le bac. <br />
-                    <Phi>φ</Phi>d<Phi>'</Phi>
-                    bac
-                    <Phi>'</Phi>! c’est la philosophie du bac.
-                </TexteContenu>
+        <div
+            style={{
+                display: "flex",
+                marginLeft: "5vw",
+                flexDirection: "column",
+                width: "40vw"
+            }}
+        >
+            <TexteTitre>
+                <Phi>φ</Phi>d<Phi>'</Phi>
+                bac
+                <Phi>'</Phi>!
+            </TexteTitre>
+            <div style={{ display: "flex" }}>
+                <div
+                    style={{
+                        width: "2px",
+                        backgroundColor: "rgba(0,0,0,0.2)",
+                        marginRight: "10px",
+                        zIndex: 100,
+                        position: "relative"
+                    }}
+                />
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column"
+                    }}
+                >
+                    <TexteContenu>
+                        « <Phi>φ</Phi> », c’est la lettre grecque phi, <br />
+                        <Phi>bac</Phi>
+                        , c’est le bac. <br />
+                        <Phi>φ</Phi>d<Phi>'</Phi>
+                        bac
+                        <Phi>'</Phi>! c’est la philosophie du bac.
+                    </TexteContenu>
+                </div>
             </div>
-            <div>
-                <TexteContenu>
+            <div style={{ marginTop: "60px" }}>
+                <TexteContenu style={{ marginBottom: "20px" }}>
                     <Phi>φ</Phi>d<Phi>'</Phi>
                     bac
                     <Phi>'</Phi>! (désormais, ce sera φ’ tout court) propose de
@@ -245,12 +260,12 @@ const PartieGDesktop = () => {
                     revanche, vous devez vous identifier pour accéder aux autres
                     ressources : leçons, exercices, étude d’œuvres, index.
                 </TexteContenuFooter>
-                <TexteContenu>
+                <TexteContenu style={{ marginTop: "20px" }}>
                     <Phi>φ'</Phi> vous souhaite un bon travail, couronné de
                     succès !
                 </TexteContenu>
             </div>
-        </>
+        </div>
     );
 };
 export default PartieGDesktop;

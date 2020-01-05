@@ -12,6 +12,7 @@ import Cours from "./Composants/Interface/Cours/Cours";
 import Index from "./Composants/Interface/Index/Index";
 import { userReducer, userInit, Action, State } from "./reducers";
 import { theme } from "./Shared/Styled";
+import { HelmetProvider } from "react-helmet-async";
 
 /**
  * Reducer de gestion de connection de l'utilisateur
@@ -24,32 +25,34 @@ const App = () => {
     const [user, userDispatch] = React.useReducer(userReducer, userInit);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Styled.ConteneurGlobal>
-                <userContext.Provider value={[user, userDispatch]}>
-                    <Styled.ConteneurHeader>
-                        <Menu />
-                    </Styled.ConteneurHeader>
-                    <Styled.ConteneurContenu>
-                        <Switch>
-                            <Route exact path="/" component={Accueil} />
-                            <Route path="/Sujets" component={Sujets} />
-                            <Route path="/Programme">
-                                <Programme id={1} tableMatiereShow />
-                            </Route>
-                            <Route path="/Cours" component={Cours} />
-                            <Route path="/Index" component={Index} />
-                        </Switch>
-                    </Styled.ConteneurContenu>
+        <HelmetProvider>
+            <ThemeProvider theme={theme}>
+                <Styled.ConteneurGlobal>
+                    <userContext.Provider value={[user, userDispatch]}>
+                        <Styled.ConteneurHeader>
+                            <Menu />
+                        </Styled.ConteneurHeader>
+                        <Styled.ConteneurContenu>
+                            <Switch>
+                                <Route exact path="/" component={Accueil} />
+                                <Route path="/Sujets" component={Sujets} />
+                                <Route path="/Programme">
+                                    <Programme id={1} tableMatiereShow />
+                                </Route>
+                                <Route path="/Cours" component={Cours} />
+                                <Route path="/Index" component={Index} />
+                            </Switch>
+                        </Styled.ConteneurContenu>
 
-                    <Desktop>
-                        <Styled.ConteneurFooter>
-                            Copyright 2019
-                        </Styled.ConteneurFooter>
-                    </Desktop>
-                </userContext.Provider>
-            </Styled.ConteneurGlobal>
-        </ThemeProvider>
+                        <Desktop>
+                            <Styled.ConteneurFooter>
+                                Copyright 2019
+                            </Styled.ConteneurFooter>
+                        </Desktop>
+                    </userContext.Provider>
+                </Styled.ConteneurGlobal>
+            </ThemeProvider>
+        </HelmetProvider>
     );
 };
 

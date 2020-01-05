@@ -24,7 +24,7 @@ const { Option } = Select;
 const Conteneur = styled.div`
     display: flex;
     height: 100%;
-    width: 100%;
+    max-width: 1450px;
 `;
 const PartieG = styled.div`
     flex: 1;
@@ -34,12 +34,12 @@ const PartieG = styled.div`
     justify-content: center;
 `;
 const PartieD = styled.div`
-    flex: 2;
+    flex: 3;
     display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    width: 100%;
+    justify-content: center;
+    align-items: center;
     z-index: 20;
+    max-height: 100%;
 `;
 const ConteneurFiltres = styled.div`
     position: relative;
@@ -48,19 +48,24 @@ const ConteneurFiltres = styled.div`
     padding: 20px;
     padding-top: 5px;
     background-color: #e2e0d8;
+    overflow: auto;
     z-index: 200;
+    max-height: 80vh;
 `;
 
 const ConteneurSuivPrec = styled.div`
-    margin-left: calc(50% - 225px);
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    flex-direction: column;
     z-index: 2;
-    margin-bottom: 20px;
+    margin: 30px;
 `;
 const ConteneurSujet = styled.div`
-    height: 90%;
-    width: 75%;
-    margin-left: 12.5%;
+    max-height: 100%;
+    max-width: 800px;
+    flex: 4;
     overflow: auto;
     padding-right: 10px;
     user-select: text;
@@ -68,9 +73,9 @@ const ConteneurSujet = styled.div`
 
 const NombreSujets = styled.div`
     width: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
 `;
 
 const Carre = styled.div`
@@ -102,7 +107,8 @@ const Sujet = styled.div`
     flex-direction: column;
     border: 1px solid rgba(0, 0, 0, 0.16);
     background-color: #eeeeee;
-    margin-top: 5px;
+    margin-top: 15px;
+    margin-left: 6px;
 `;
 const TitreNotions = styled.div`
     display: flex;
@@ -141,6 +147,7 @@ const Etiquette = styled.div`
     text-align: center;
     margin: auto;
     margin-right: 10px;
+    margin-bottom: 6px;
     padding: 5px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-top: none;
@@ -263,7 +270,6 @@ const Sujets = () => {
     const [elementsCoches, setElementsCoches] = useState<ElementsCochesI>(
         initialState
     );
-
     //!SECTION
 
     //SECTION FONCTIONS
@@ -278,7 +284,7 @@ const Sujets = () => {
                 } else {
                     setState(sujets[idSujet + 1]);
                     setIdSujet(idSujet + 1);
-                    setLoading(false);
+                    setLoading(true);
                 }
             }
             if (val === "-") {
@@ -288,26 +294,26 @@ const Sujets = () => {
                 } else {
                     setState(sujets[idSujet - 1]);
                     setIdSujet(idSujet - 1);
-                    setLoading(false);
+                    setLoading(true);
                 }
             }
         } else {
             if (val === "+") {
                 if (idSujet === nbResultats) {
                     setIdSujet(1);
-                    setLoading(false);
+                    setLoading(true);
                 } else {
                     setIdSujet(idSujet + 1);
-                    setLoading(false);
+                    setLoading(true);
                 }
             }
             if (val === "-") {
                 if (idSujet === 1) {
                     setIdSujet(nbResultats);
-                    setLoading(false);
+                    setLoading(true);
                 } else {
                     setIdSujet(idSujet - 1);
-                    setLoading(false);
+                    setLoading(true);
                 }
             }
         }
@@ -409,6 +415,7 @@ const Sujets = () => {
         // ANCHOR Premier affichage ou filtres0
         if (sujets.length === 0) {
             Axios.get(`/sujets/t/${idSujet}`).then((rep) => {
+                console.log("1");
                 if (
                     rep.data.Count > 0 &&
                     idSujet <= rep.data.Count &&
@@ -426,6 +433,8 @@ const Sujets = () => {
         } else {
             // ANCHOR Si Resultats > 0
             if (nbResultats > 0 && !filtres) {
+                console.log("2");
+
                 Axios.get(`/sujets/t/${idSujet}`).then((rep) => {
                     if (
                         rep.data.Count > 0 &&
@@ -563,15 +572,35 @@ const Sujets = () => {
         entered: { opacity: 1, transform: "translate3d(0px,0px,0)" }
     };
     const defaultStyle2 = {
-        transition: `all ${duration2}ms `,
+        transition: `all ${duration2}ms `
+    };
+
+    const transitionStyles3: any = {
+        entering: { opacity: 0 },
+        entered: { opacity: 1 }
+    };
+    const defaultStyle3 = {
+        transition: `all 200ms`,
         opacity: 0
     };
 
     const transitionStyles2: any = {
-        entering: { opacity: 0 },
-        entered: { opacity: 1 },
-        exiting: { opacity: 1 },
-        exited: { opacity: 0 }
+        entering: {
+            filter: "blur(4px)",
+            transform: "scale(0.9)",
+            opacity: 1
+        },
+        entered: {
+            filter: "blur(0px)",
+            opacity: 1,
+            transform: "scale(1)"
+        },
+
+        exited: {
+            filter: "blur(4px)",
+            transform: "scale(0.9)",
+            opacity: 1
+        }
     };
 
     return (
@@ -589,7 +618,7 @@ const Sujets = () => {
                     mountOnEnter
                     in={true}
                     timeout={{
-                        appear: 50,
+                        appear: 200,
                         enter: 200
                     }}
                 >
@@ -1008,20 +1037,28 @@ const Sujets = () => {
                 {
                     //SECTION Sujet
                 }
-                <Transition in={ine} timeout={duration2} appear enter>
+                <Transition
+                    in={true}
+                    timeout={{ appear: 400, enter: 400, exit: 0 }}
+                    appear
+                    enter
+                    mountOnEnter
+                >
                     {(state2) => (
                         <ConteneurSuivPrec
                             style={{
-                                ...defaultStyle2,
-                                ...transitionStyles2[state2]
+                                ...defaultStyle3,
+                                ...transitionStyles3[state2]
                             }}
                         >
                             <Button
                                 style={{
-                                    width: "150px",
+                                    width: "170px",
                                     backgroundColor: "#e2e0d8",
-                                    borderColor: "#919191"
+                                    borderColor: "#919191",
+                                    transform: "translateX(-20px)"
                                 }}
+                                icon="arrow-left"
                                 onClick={() => {
                                     SwitchSujet("-");
                                 }}
@@ -1037,15 +1074,17 @@ const Sujets = () => {
                             } / ${nbResultats}`}</NombreSujets>
                             <Button
                                 style={{
-                                    width: "150px",
+                                    width: "170px",
                                     backgroundColor: "#e2e0d8",
-                                    borderColor: "#919191"
+                                    borderColor: "#919191",
+                                    transform: "translateX(20px)"
                                 }}
                                 onClick={() => {
                                     SwitchSujet("+");
                                 }}
                             >
                                 Sujet suivant
+                                <Icon type="arrow-right" />
                             </Button>
                         </ConteneurSuivPrec>
                     )}
@@ -1055,19 +1094,22 @@ const Sujets = () => {
                     <Transition
                         in={!loading}
                         timeout={{
-                            appear: 200,
-                            enter: 50,
-                            exit: 200
+                            appear: 0,
+                            enter: 100,
+                            exit: 0
                         }}
                         appear
                         enter
                         mountOnEnter
-                        unmountOnExit
                     >
                         {(state2) => (
                             <div
                                 style={{
                                     height: "100%",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    position: "relative",
                                     ...defaultStyle2,
                                     ...transitionStyles2[state2]
                                 }}

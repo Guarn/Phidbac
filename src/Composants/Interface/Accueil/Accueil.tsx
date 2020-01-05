@@ -4,7 +4,7 @@ import { ReactComponent as Logo } from "../../../Assets/LOG.svg";
 import PartieG from "./PartieG";
 import { Desktop, Tablet } from "../../../responsive";
 import { Transition } from "react-transition-group";
-
+import { Helmet } from "react-helmet-async";
 //SECTION STYLED-COMPONENTS
 
 const PartieD = styled.div`
@@ -31,6 +31,15 @@ const transitionStyles: any = {
 const Accueil = () => {
     return (
         <>
+            <Helmet>
+                <title>Phidbac, la philosophie du bac</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="description"
+                    content="Préparation de A à Z à l'épreuve de philosophie du nouveau bac (Juin 2021). Plus de 1100 sujets du Bac, des cours, des exercices, et un index complet des auteurs/notions/termes."
+                />
+                <link rel="canonical" href="https://www.phidbac.fr/" />
+            </Helmet>
             <PartieG />
             <Desktop>
                 <PartieD>
