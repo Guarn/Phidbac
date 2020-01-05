@@ -6,7 +6,6 @@ import { userContext } from "../../../App";
 import Axios from "../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import Programme from "../Programme/Programme";
-import { Helmet } from "react-helmet";
 import { useCookies } from "react-cookie";
 
 const Conteneur = styled.div`
@@ -250,11 +249,6 @@ const Cours = () => {
 
     return (
         <Conteneur>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>Phidbac : Liste des cours</title>
-                <link rel="canonical" href="https://www.phidbac.fr" />
-            </Helmet>
             {lecture && user.connecte && (
                 <div
                     style={{

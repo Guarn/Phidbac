@@ -70,7 +70,7 @@ const GlobalLink: React.FC<GlobalLinkT> = ({ index, children }) => {
 
 /**
  * Génération de la table des matières d'un cours. Cette valeur est stockée lors
- * de la création d'un cours et intégrée  à la valeur SlateJs.
+ * de la création d'un cours et intégrée à la valeur SlateJs.
  * @param cours Définition d'un cours avec Titre, description et valeur SlateJs
  */
 const TableMatiere: React.FC<any> = ({ cours }) => {
@@ -88,7 +88,7 @@ const TableMatiere: React.FC<any> = ({ cours }) => {
     });
     return (
         <Conteneur>
-            {cours.Cours.map((element: any, index: Number) => {
+            {cours.Contenu.map((element: any, index: Number) => {
                 if (element.TableMatiere.actif) {
                     switch (element.TableMatiere.type) {
                         case "titre":

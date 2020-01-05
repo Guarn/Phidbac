@@ -9,7 +9,6 @@ export const ConteneurGlobal = styled.div`
     display: grid;
     grid-template-rows: 80px calc(100% - 160px) 80px;
     font-family: century-gothic, sans-serif;
-    font-display: optional;
     overflow: hidden;
 `;
 

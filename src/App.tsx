@@ -13,6 +13,9 @@ import Index from "./Composants/Interface/Index/Index";
 import { userReducer, userInit, Action, State } from "./reducers";
 import { theme } from "./Shared/Styled";
 
+/**
+ * Reducer de gestion de connection de l'utilisateur
+ */
 export const userContext = createContext<[State, Dispatch<Action>]>(
     {} as [State, Dispatch<Action>]
 );

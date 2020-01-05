@@ -3,7 +3,7 @@ export type State = {
     prenom?: string;
     nom?: string;
     email?: string;
-    grade?: string;
+    grade?: "Administrateur" | "Visiteur" | "Eleve";
 };
 
 export type Action =
@@ -14,7 +14,7 @@ export type Action =
               prenom: string;
               nom: string;
               email: string;
-              grade: string;
+              grade: "Administrateur" | "Visiteur" | "Eleve";
               connecte: boolean;
           };
       };

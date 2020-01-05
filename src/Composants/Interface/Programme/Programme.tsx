@@ -13,17 +13,48 @@ import { useCookies } from "react-cookie";
 export interface ProgrammeI {
     id: number;
     paragraphe?: number;
-    tableMatiereShow?: Boolean;
+    tableMatiereShow?: boolean;
 }
 
-export type CoursT = {
-    Cours: any;
-};
+export interface ContenuCoursI {
+    value: any[];
+    type: string;
+    TableMatiere?: {
+        actif: boolean;
+        value: string;
+        titre: boolean;
+        position: number;
+    };
+    options?: {
+        marginTop: number;
+        marginBottom: number;
+        marginLeft: number;
+        marginRight: number;
+        backgroundColor: string;
+        paddingTop: number;
+        paddingLeft: number;
+        paddingRight: number;
+        paddingBottom: number;
+    };
+    imageOptions?: {
+        align: "left" | "right" | "center";
+        height: number;
+        width: number;
+        legende: string;
+        ratioActif: boolean;
+        ratio: number;
+        lienActif: boolean;
+        lienType: string;
+        src: string;
+    };
+    image?: boolean;
+}
 
 export interface CoursI {
-    Cours: CoursT[];
-    Titre: String;
-    Description: String;
+    Contenu: ContenuCoursI[];
+    Titre: string;
+    Description: string;
+    type: "Cours" | "Exercice" | "PageUnique";
 }
 
 const duration = 200;
@@ -41,9 +72,11 @@ const transitionStyles: any = {
 /**
  * Affichage d'un cours, soit sur la page programme/épreuves, soit dans la page cours,
  * soit dans  un lien/tooltip, auquel cas le numéro de paragraphe vers lequel scroll est requis.
+ * C'est le paramètre @paragraphe qui permet de définir si le cours sera affiché dans un tooltip
+ * ou normalement.
  * @param id Int | Id du cours à afficher
  * @param paragraphe Int | (optionnel) Numéro de paragraphe vers lequel scroll au chargement.
- * @param tableMatiereShow Boolean | (optionnel) Affichage de  la table des matieres
+ * @param tableMatiereShow Boolean | (optionnel) Affichage de la table des matieres
  */
 
 const Programme: React.FC<ProgrammeI> = ({
@@ -53,9 +86,10 @@ const Programme: React.FC<ProgrammeI> = ({
 }) => {
     const [user] = React.useContext(userContext);
     const [cours, setCours] = React.useState<CoursI>({
-        Cours: [],
+        Contenu: [],
+        Titre: "",
         Description: "",
-        Titre: ""
+        type: "Cours"
     });
     const [cookies] = useCookies();
 
@@ -73,7 +107,8 @@ const Programme: React.FC<ProgrammeI> = ({
                 setCours({
                     Titre: rep.data.Titre,
                     Description: rep.data.Description,
-                    Cours: JSON.parse(rep.data.Contenu)
+                    Contenu: JSON.parse(rep.data.Contenu),
+                    type: rep.data.type
                 });
             });
         } else {
@@ -141,15 +176,15 @@ const Programme: React.FC<ProgrammeI> = ({
                                     110 >
                                     elementIndexLu.getBoundingClientRect()
                                         .top &&
-                                indexLu < cours.Cours.length
+                                indexLu < cours.Contenu.length
                             ) {
                                 Axios.post(`/Progression/${id}`, {
                                     progression: Math.round(
-                                        (100 / (cours.Cours.length - 1)) *
+                                        (100 / (cours.Contenu.length - 1)) *
                                             indexLu
                                     )
                                 });
-                                if (indexLu < cours.Cours.length - 1)
+                                if (indexLu < cours.Contenu.length - 1)
                                     setIndexLu((c) => c + 1);
                             }
                         }}
@@ -158,183 +193,85 @@ const Programme: React.FC<ProgrammeI> = ({
                             ...transitionStyles[state2]
                         }}
                     >
-                        {cours.Cours.map((element: any, index: number) => {
-                            return (
-                                <Element
-                                    id={
-                                        paragraphe
-                                            ? `element1-${index}`
-                                            : `element-${index}`
-                                    }
-                                    name={
-                                        paragraphe
-                                            ? `element1-${index}`
-                                            : `element-${index}`
-                                    }
-                                    key={
-                                        paragraphe
-                                            ? `element1-${index}`
-                                            : `element-${index}`
-                                    }
-                                    className="element"
-                                >
-                                    <Styled.ConteneurSlate
-                                        style={{
-                                            backgroundColor:
-                                                element.options.backgroundColor,
-                                            marginTop:
-                                                element.options.marginTop +
-                                                "px",
-                                            marginBottom:
-                                                element.options.marginBottom +
-                                                "px",
-                                            marginLeft:
-                                                element.options.marginLeft +
-                                                "px",
-                                            paddingLeft:
-                                                element.options.paddingLeft +
-                                                "px",
-                                            marginRight:
-                                                element.options.marginRight +
-                                                "px",
-                                            paddingRight:
-                                                element.options.paddingRight +
-                                                "px",
-                                            paddingTop:
-                                                element.options.paddingTop +
-                                                "px",
-                                            paddingBottom:
-                                                element.options.paddingBottom +
-                                                "px",
-                                            fontFamily: "Century Gothic",
-                                            display:
-                                                element.type === "citation"
-                                                    ? "flex"
-                                                    : "t",
-                                            fontSize: "16px",
-                                            minHeight: element.image
-                                                ? element.imageOptions.height +
-                                                  "px"
-                                                : "",
-                                            position: "relative"
-                                        }}
+                        {cours.Contenu.map(
+                            (element: ContenuCoursI, index: number) => {
+                                return (
+                                    <Element
+                                        id={
+                                            paragraphe
+                                                ? `element1-${index}`
+                                                : `element-${index}`
+                                        }
+                                        name={
+                                            paragraphe
+                                                ? `element1-${index}`
+                                                : `element-${index}`
+                                        }
+                                        key={
+                                            paragraphe
+                                                ? `element1-${index}`
+                                                : `element-${index}`
+                                        }
+                                        className="element"
                                     >
-                                        {// Affichage du numéro de Bloc en fonction du grade de l'utilisateur
-                                        user.connecte &&
-                                            (user.grade === "Administrateur" ||
-                                                user.grade === "Visiteur") && (
-                                                <Styled.PuceLien>
-                                                    {index}
-                                                </Styled.PuceLien>
-                                            )}
-                                        {// Gestion de l'affichage d'une image dans un  bloc Slate
-                                        element.image && (
-                                            <div
-                                                style={{
-                                                    float:
+                                        <Styled.ConteneurSlate
+                                            options={element.options}
+                                            imageOptions={element.imageOptions}
+                                            type={element.type}
+                                            image={element.image}
+                                        >
+                                            {// Affichage du numéro de Bloc en fonction du grade de l'utilisateur
+                                            user.connecte &&
+                                                (user.grade ===
+                                                    "Administrateur" ||
+                                                    user.grade ===
+                                                        "Visiteur") && (
+                                                    <Styled.PuceLien>
+                                                        {index}
+                                                    </Styled.PuceLien>
+                                                )}
+                                            {// Gestion de l'affichage d'une image dans un  bloc Slate
+                                            element.image && (
+                                                <Styled.ConteneurImage
+                                                    imageOptions={
                                                         element.imageOptions
-                                                            .align === "center"
-                                                            ? "none"
-                                                            : element
-                                                                  .imageOptions
-                                                                  .align,
-                                                    display: "flex",
-
-                                                    justifyContent: "center",
-                                                    zIndex: -1,
-
-                                                    marginLeft:
-                                                        element.imageOptions
-                                                            .marginLeft,
-                                                    marginRight:
-                                                        element.imageOptions
-                                                            .marginRight,
-                                                    marginBottom:
-                                                        element.imageOptions
-                                                            .marginBottom
-                                                }}
-                                            >
-                                                <div
-                                                    style={{
-                                                        height:
-                                                            element.imageOptions
-                                                                .height + "px",
-                                                        width:
-                                                            element.imageOptions
-                                                                .width + "px",
-                                                        cursor: element
-                                                            .imageOptions
-                                                            .lienActif
-                                                            ? "pointer"
-                                                            : "arrow"
-                                                    }}
+                                                    }
                                                 >
-                                                    <img
-                                                        style={{
-                                                            height: "inherit",
-                                                            width: "inherit",
-                                                            paddingBottom:
-                                                                "10px",
-                                                            paddingLeft:
-                                                                element
-                                                                    .imageOptions
-                                                                    .align ===
-                                                                "right"
-                                                                    ? "10px"
-                                                                    : "0px",
-                                                            paddingRight:
-                                                                element
-                                                                    .imageOptions
-                                                                    .align ===
-                                                                "left"
-                                                                    ? "10px"
-                                                                    : "0px"
-                                                        }}
-                                                        src={
+                                                    <Styled.TailleImage
+                                                        imageOptions={
                                                             element.imageOptions
-                                                                .src
                                                         }
-                                                        alt={
-                                                            element.imageOptions
-                                                                .legende
-                                                        }
+                                                    >
+                                                        <Styled.BlocImage
+                                                            imageOptions={
+                                                                element.imageOptions
+                                                            }
+                                                        />
+                                                    </Styled.TailleImage>
+                                                </Styled.ConteneurImage>
+                                            )}
+                                            {element.type === "citation" && (
+                                                <Styled.BlocCitation>
+                                                    <Styled.BarreCitation />
+                                                    <Slate
+                                                        index={index}
+                                                        value={element.value}
+                                                        readOnly={false}
                                                     />
-                                                </div>
-                                            </div>
-                                        )}
-                                        {element.type === "citation" && (
-                                            <div
-                                                style={{
-                                                    width: "100%",
-                                                    display: "flex"
-                                                }}
-                                            >
-                                                <div
-                                                    style={{
-                                                        backgroundColor:
-                                                            "rgba(0,0,0,0.2)",
-                                                        minWidth: "6px",
-                                                        marginRight: "30px"
-                                                    }}
-                                                />
+                                                </Styled.BlocCitation>
+                                            )}
+                                            {element.type !== "citation" && (
                                                 <Slate
                                                     index={index}
                                                     value={element.value}
                                                     readOnly={false}
                                                 />
-                                            </div>
-                                        )}
-                                        {element.type !== "citation" && (
-                                            <Slate
-                                                index={index}
-                                                value={element.value}
-                                                readOnly={false}
-                                            />
-                                        )}
-                                    </Styled.ConteneurSlate>
-                                </Element>
-                            );
-                        })}
+                                            )}
+                                        </Styled.ConteneurSlate>
+                                    </Element>
+                                );
+                            }
+                        )}
                     </Styled.ConteneurGlobal>
                 )}
             </Transition>
