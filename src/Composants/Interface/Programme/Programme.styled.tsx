@@ -1,10 +1,15 @@
 import styled from "styled-components";
 
-export const Conteneur = styled.div`
+export interface ConteneurI {
+    decalage: boolean;
+}
+
+export const Conteneur = styled.div<ConteneurI>`
     width: 100%;
-    height: 100%;
+    height: ${(props) => (props.decalage ? "calc(100%  - 40px)" : "100%")};
     display: flex;
     justify-content: center;
+    margin-top: ${(props) => (props.decalage ? "40px" : "0px")};
 `;
 export const PuceLien = styled.div`
     opacity: 0;

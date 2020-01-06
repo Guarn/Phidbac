@@ -142,7 +142,12 @@ const Programme: React.FC<ProgrammeI> = ({
         }
     });
     return (
-        <Styled.Conteneur>
+        <Styled.Conteneur
+            decalage={
+                location.pathname.substring(0, 6) === "/Cours" &&
+                !!tableMatiereShow
+            }
+        >
             <Transition
                 appear
                 enter

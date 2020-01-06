@@ -410,12 +410,9 @@ const Sujets = () => {
     //SECTION USEEFFECT
 
     useEffect(() => {
-        if (!ine) setIn(true);
-
         // ANCHOR Premier affichage ou filtres0
         if (sujets.length === 0) {
             Axios.get(`/sujets/t/${idSujet}`).then((rep) => {
-                console.log("1");
                 if (
                     rep.data.Count > 0 &&
                     idSujet <= rep.data.Count &&
@@ -433,8 +430,6 @@ const Sujets = () => {
         } else {
             // ANCHOR Si Resultats > 0
             if (nbResultats > 0 && !filtres) {
-                console.log("2");
-
                 Axios.get(`/sujets/t/${idSujet}`).then((rep) => {
                     if (
                         rep.data.Count > 0 &&
@@ -555,6 +550,7 @@ const Sujets = () => {
                 setMenu(state);
             });
         }
+        setLoading(false);
     }, [idSujet]);
 
     //!SECTION
@@ -586,20 +582,14 @@ const Sujets = () => {
 
     const transitionStyles2: any = {
         entering: {
-            filter: "blur(4px)",
-            transform: "scale(0.9)",
-            opacity: 1
+            opacity: 0
         },
         entered: {
-            filter: "blur(0px)",
-            opacity: 1,
-            transform: "scale(1)"
+            opacity: 1
         },
 
         exited: {
-            filter: "blur(4px)",
-            transform: "scale(0.9)",
-            opacity: 1
+            opacity: 0
         }
     };
 
