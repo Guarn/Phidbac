@@ -1,9 +1,7 @@
 import * as React from "react";
-import { Desktop, Tablet, Mobile } from "../../../responsive";
+import { Desktop } from "../../../responsive";
 
 const SujetsDesktop = React.lazy(() => import("./Responsive/SujetsDesktop"));
-const SujetsTablet = React.lazy(() => import("./Responsive/SujetsTablet"));
-const SujetsMobile = React.lazy(() => import("./Responsive/SujetsMobile"));
 
 const Sujets = () => {
     return (
@@ -11,12 +9,6 @@ const Sujets = () => {
             <Desktop>
                 <SujetsDesktop />
             </Desktop>
-            <Tablet>
-                <SujetsTablet />
-            </Tablet>
-            <Mobile>
-                <SujetsMobile />
-            </Mobile>
         </React.Suspense>
     );
 };

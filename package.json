@@ -33,8 +33,7 @@
         "slate": "^0.53.0",
         "slate-react": "^0.53.0",
         "styled-components": "^4.4.0",
-        "typescript": "~3.7.2",
-        "why-did-you-update": "^1.0.6"
+        "typescript": "~3.7.2"
     },
     "scripts": {
         "start": "react-app-rewired start",

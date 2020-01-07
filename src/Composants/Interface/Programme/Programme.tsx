@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useContext } from "react";
 import * as Styled from "./Programme.styled";
 import Axios from "../../Fonctionnels/Axios";
 import Slate from "../../Fonctionnels/Slate";
@@ -84,8 +84,8 @@ const Programme: React.FC<ProgrammeI> = ({
     paragraphe,
     tableMatiereShow
 }) => {
-    const [user] = React.useContext(userContext);
-    const [cours, setCours] = React.useState<CoursI>({
+    const [user] = useContext(userContext);
+    const [cours, setCours] = useState<CoursI>({
         Contenu: [],
         Titre: "",
         Description: "",
