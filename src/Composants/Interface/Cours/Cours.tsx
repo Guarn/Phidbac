@@ -95,11 +95,10 @@ const ConteneurTimeline = styled.div`
     padding-right: 50px;
     padding-left: 200px;
     display: flex;
+    height: calc(100% - 48px);
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding-top: 20px;
-    margin-top: 20px;
+    margin-top: 30px;
 `;
 
 type coursT = {
