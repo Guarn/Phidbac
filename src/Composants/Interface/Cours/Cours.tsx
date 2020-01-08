@@ -7,6 +7,7 @@ import Axios from "../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import Programme from "../Programme/Programme";
 import { useCookies } from "react-cookie";
+import { useLocation, useHistory } from "react-router";
 
 const Conteneur = styled.div`
     height: 100%;
@@ -234,9 +235,19 @@ const Cours = () => {
     const [lecture, setLecture] = React.useState(false);
     const [id, setId] = React.useState(0);
     const [cookies] = useCookies();
+    const location = useLocation();
+    const history = useHistory();
 
     React.useEffect(() => {
-        if (state.length === 0 && progress.length === 0 && user.connecte) {
+        if (parseInt(location.pathname.substring(7).split("-")[0])) {
+            setLecture(true);
+            setId(parseInt(location.pathname.substring(7).split("-")[0]));
+        }
+        if (!parseInt(location.pathname.substring(7).split("-")[0])) {
+            setLecture(false);
+        }
+
+        if (state.length === 0 && progress.length === 0 && !lecture) {
             Axios.get("/Cours").then((rep) => setState(rep.data));
             if (cookies.token) {
                 Axios.get(`/progression`).then((rep) => {
@@ -244,11 +255,17 @@ const Cours = () => {
                 });
             }
         }
-    });
+    }, [
+        location.pathname,
+        state.length,
+        progress.length,
+        lecture,
+        cookies.token
+    ]);
 
     return (
         <Conteneur>
-            {lecture && user.connecte && (
+            {lecture && (
                 <div
                     style={{
                         position: "relative",
@@ -269,7 +286,7 @@ const Cours = () => {
                             <Button
                                 type="ghost"
                                 icon="arrow-left"
-                                onMouseDown={() => setLecture(false)}
+                                onMouseDown={() => history.push("/cours")}
                                 style={{
                                     position: "absolute",
                                     top: "-10px",
@@ -384,31 +401,69 @@ const Cours = () => {
                     </Timeline>
                 </ConteneurTimeline>
             )}
-            {!user.connecte && (
-                <Transition
-                    appear
-                    enter
-                    mountOnEnter
-                    unmountOnExit
-                    in={true}
-                    timeout={{
-                        appear: 200,
-                        enter: 200,
-                        exit: 200
-                    }}
-                >
-                    {(state3) => (
-                        <div
-                            style={{
-                                ...defaultStyle,
-                                ...transitionStyles[state3]
-                            }}
-                        >
-                            Vous n'avez pas la permission de consulter cette
-                            page
-                        </div>
-                    )}
-                </Transition>
+            {!user.connecte && !lecture && (
+                <ConteneurTimeline>
+                    <Timeline>
+                        {state.map((element, index) => {
+                            return (
+                                <Transition
+                                    key={`Cours-${index}`}
+                                    appear
+                                    enter
+                                    mountOnEnter
+                                    unmountOnExit
+                                    in={true}
+                                    timeout={{
+                                        appear: 200 * index,
+                                        enter: 0,
+                                        exit: 200
+                                    }}
+                                >
+                                    {(state3) => (
+                                        <Timeline.Item
+                                            style={{
+                                                ...defaultStyle,
+                                                ...transitionStyles[state3]
+                                            }}
+                                            dot={
+                                                <SelIcone
+                                                    tab={progress}
+                                                    idCours={state[index].id}
+                                                />
+                                            }
+                                        >
+                                            <ConteneurCours
+                                                onMouseDown={() => {
+                                                    history.push(
+                                                        `/cours/${
+                                                            element.id
+                                                        }-${element.Titre.replace(
+                                                            / /g,
+                                                            "-"
+                                                        )}`
+                                                    );
+                                                }}
+                                            >
+                                                <Description>
+                                                    <TitreEtape>
+                                                        {element.Titre}
+                                                    </TitreEtape>
+                                                    <DescriptionEtape>
+                                                        {element.Description}
+                                                    </DescriptionEtape>
+                                                </Description>
+
+                                                <Details>
+                                                    {`Semaine ${index + 1}`}
+                                                </Details>
+                                            </ConteneurCours>
+                                        </Timeline.Item>
+                                    )}
+                                </Transition>
+                            );
+                        })}
+                    </Timeline>
+                </ConteneurTimeline>
             )}
         </Conteneur>
     );

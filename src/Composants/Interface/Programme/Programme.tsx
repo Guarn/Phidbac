@@ -144,7 +144,8 @@ const Programme: React.FC<ProgrammeI> = ({
     return (
         <Styled.Conteneur
             decalage={
-                location.pathname.substring(0, 6) === "/Cours" &&
+                location.pathname.substring(0, 6) === "/cours" &&
+                location.pathname.substring(7) !== "" &&
                 !!tableMatiereShow
             }
         >

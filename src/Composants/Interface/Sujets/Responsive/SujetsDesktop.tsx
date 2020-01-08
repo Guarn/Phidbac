@@ -625,9 +625,9 @@ const PartieFiltres = () => {
                                     }}
                                     size="small"
                                     style={{
-                                        marginBottom: "10px",
                                         backgroundColor: "#e2e0d8",
-                                        borderColor: "#919191"
+                                        borderColor: "#919191",
+                                        height: "30px"
                                     }}
                                     block
                                 >
