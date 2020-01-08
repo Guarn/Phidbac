@@ -5,6 +5,7 @@ export const Conteneur = styled.div`
     display: flex;
     height: 100%;
     max-width: 1450px;
+    width: 100%;
 `;
 export const PartieG = styled.div`
     flex: 1;
@@ -14,18 +15,19 @@ export const PartieG = styled.div`
     justify-content: center;
 `;
 export const PartieD = styled.div`
-    flex: 3;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: flex-start;
     z-index: 20;
     max-height: 100%;
+    width: 100%;
 `;
 export const ConteneurFiltres = styled.div`
     position: relative;
     width: 320px;
     border: 1px solid rgba(0, 0, 0, 0.16);
     padding: 20px;
+    margin-left: 10px;
     padding-top: 5px;
     background-color: #e2e0d8;
     overflow: auto;
@@ -37,18 +39,18 @@ export const ConteneurSuivPrec = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1;
     flex-direction: column;
     z-index: 2;
     margin: 30px;
+    width: 170px;
 `;
 export const ConteneurSujet = styled.div`
     max-height: 100%;
-    max-width: 800px;
-    flex: 4;
     overflow: auto;
     padding-right: 10px;
     user-select: text;
+    max-width: 800px;
+    width: 100%;
 `;
 
 export const NombreSujets = styled.div`
@@ -142,6 +144,7 @@ export const radioStyle = {
 export const TransitionAffichage = styled.div`
     height: 100%;
     display: flex;
+    flex: 2;
     justify-content: center;
     align-items: center;
     position: relative;

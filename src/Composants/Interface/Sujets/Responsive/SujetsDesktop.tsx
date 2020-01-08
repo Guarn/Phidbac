@@ -31,31 +31,25 @@ import { Helmet } from "react-helmet-async";
 //!SECTION
 const { Option } = Select;
 
-const duration2 = 200;
-const defaultStyle2 = {
-    transition: `all ${duration2}ms `
-};
 const duration = 200;
-const defaultStyle = {
-    transition: `all ${duration2}ms `,
-    opacity: 0
+
+const styleFiltres = {
+    transition: `all ${400}ms `,
+    opacity: 0,
+    transform: "translateY(-20px)"
 };
 
-const transitionStyles: any = {
-    entering: { opacity: 0 },
-    entered: { opacity: 1 }
+const transitionFiltres: any = {
+    entering: { opacity: 0, transform: "translateY(-20px)" },
+    entered: { opacity: 1, transform: "translateY(0px)" }
 };
 
-const transitionStyles3: any = {
-    entering: { opacity: 0 },
-    entered: { opacity: 1 }
-};
-const defaultStyle3 = {
-    transition: `all 200ms`,
-    opacity: 0
+const styleSujet = {
+    opacity: 0,
+    transition: `all 100ms `
 };
 
-const transitionStyles2: any = {
+const transitionSujet: any = {
     entering: {
         opacity: 0
     },
@@ -68,6 +62,15 @@ const transitionStyles2: any = {
     }
 };
 
+const transitionSuivPrec: any = {
+    entering: { opacity: 0 },
+    entered: { opacity: 1 }
+};
+const styleSuivPrec = {
+    transition: `all ${duration}ms`,
+    opacity: 0
+};
+
 const stateContext = createContext<[StateI, Dispatch<Action>]>(
     {} as [StateI, Dispatch<Action>]
 );
@@ -75,6 +78,7 @@ const stateContext = createContext<[StateI, Dispatch<Action>]>(
 const Sujets = () => {
     const [state, setState] = useReducer(sujetReducer, initialState);
     const { nbSujets } = state.listeSujets;
+    const { loading } = state;
     const location = useLocation();
 
     useEffect(() => {
@@ -182,7 +186,7 @@ const Sujets = () => {
                 return null;
             });
         }*/
-    }, []);
+    }, [location.pathname]);
 
     //!SECTION
 
@@ -191,12 +195,15 @@ const Sujets = () => {
             <Styled.Conteneur>
                 <Styled.Carre />
                 <Styled.Cercle />
-                <Styled.PartieG>
-                    <PartieFiltres />
-                </Styled.PartieG>
                 <Styled.PartieD>
+                    <PartieFiltres />
                     <SuivPrec />
                     {nbSujets !== 0 && <AffichageSujet />}
+                    {nbSujets === 0 && !loading && (
+                        <Styled.ConteneurSujet style={{ textAlign: "center" }}>
+                            Aucun résultat ne correspond à ces critères.
+                        </Styled.ConteneurSujet>
+                    )}
                 </Styled.PartieD>
             </Styled.Conteneur>
         </stateContext.Provider>
@@ -219,10 +226,12 @@ const AffichageSujet = () => {
     const refQuill3 = useRef(null);
 
     useEffect(() => {
-        Axios.get(`/sujets/t/${sujets[id - 1].id}`).then((rep) => {
-            setSujetAffiche(rep.data.rows);
-            setState({ type: "Loading", value: false });
-        });
+        if (id !== 0) {
+            Axios.get(`/sujets/t/${sujets[id - 1].id}`).then((rep) => {
+                setSujetAffiche(rep.data.rows);
+                setState({ type: "Loading", value: false });
+            });
+        }
     }, [id, sujets, setState]);
 
     return (
@@ -243,18 +252,18 @@ const AffichageSujet = () => {
                 in={!loading}
                 timeout={{
                     appear: 0,
-                    enter: 100,
+                    enter: 0,
                     exit: 0
                 }}
                 appear
                 enter
                 mountOnEnter
             >
-                {(state2) => (
+                {(params) => (
                     <Styled.TransitionAffichage
                         style={{
-                            ...defaultStyle2,
-                            ...transitionStyles2[state2]
+                            ...styleSujet,
+                            ...transitionSujet[params]
                         }}
                     >
                         <Styled.ConteneurSujet>
@@ -384,16 +393,16 @@ const PartieFiltres = () => {
             mountOnEnter
             in={true}
             timeout={{
-                appear: 200,
-                enter: 200
+                appear: 0,
+                enter: 0
             }}
         >
             {(params) => (
                 <div
                     style={{
                         position: "relative",
-                        ...defaultStyle,
-                        ...transitionStyles[params]
+                        ...styleFiltres,
+                        ...transitionFiltres[params]
                     }}
                 >
                     <Styled.ConteneurFiltres>
@@ -642,6 +651,7 @@ const PartieFiltres = () => {
                                     Recherche :
                                 </div>
                                 <Input
+                                    value={filtres.recherche}
                                     style={{
                                         backgroundColor:
                                             "rgba(255,255,255,0.1)",
@@ -699,6 +709,21 @@ const PartieFiltres = () => {
                                 </Radio.Group>
                                 <Divider style={{ marginTop: "40px" }} />
                                 <Button
+                                    onMouseDown={() => {
+                                        Axios.get("/sujets/sujetscount").then(
+                                            (rep) => {
+                                                setState({
+                                                    type: "FetchSujet",
+                                                    value: rep.data.rows,
+                                                    count: rep.data.count
+                                                });
+                                                setState({
+                                                    type: "ChangementID",
+                                                    value: 1
+                                                });
+                                            }
+                                        );
+                                    }}
                                     size="small"
                                     style={{
                                         marginBottom: "10px",
@@ -755,13 +780,13 @@ const SuivPrec = () => {
     useEffect(() => {}, [id, nbSujets]);
 
     const SwitchSujet = (val: "+" | "-") => {
-        if (val === "+") {
+        if (val === "+" && id !== 0) {
             setState({
                 type: "ChangementID",
                 value: id === nbSujets ? 1 : id + 1 // Si dernier sujet de la liste, retour au début.
             });
         }
-        if (val === "-") {
+        if (val === "-" && id !== 0) {
             setState({
                 type: "ChangementID",
                 value: id === 1 ? nbSujets : id - 1 // Si premier sujet de la liste, dernier sujet.
@@ -772,16 +797,16 @@ const SuivPrec = () => {
     return (
         <Transition
             in={true}
-            timeout={{ appear: 400, enter: 400, exit: 0 }}
+            timeout={{ appear: 0, enter: 0, exit: 0 }}
             appear
             enter
             mountOnEnter
         >
-            {(state2) => (
+            {(params) => (
                 <Styled.ConteneurSuivPrec
                     style={{
-                        ...defaultStyle3,
-                        ...transitionStyles3[state2]
+                        ...styleSuivPrec,
+                        ...transitionSuivPrec[params]
                     }}
                 >
                     <Styled.BoutonLeft

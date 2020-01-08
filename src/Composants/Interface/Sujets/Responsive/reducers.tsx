@@ -126,8 +126,11 @@ export const sujetReducer = (state: StateI, action: Action) => {
                     sujets: action.sujets,
                     nbSujets: action.nbSujets
                 },
-                sujetVisible: { ...state.sujetVisible, id: 1 },
-                loading: true,
+                sujetVisible: {
+                    ...state.sujetVisible,
+                    id: action.nbSujets === 0 ? 0 : 1
+                },
+                loading: action.nbSujets === 0 ? false : true,
                 filtres: { ...state.filtres }
             };
 
