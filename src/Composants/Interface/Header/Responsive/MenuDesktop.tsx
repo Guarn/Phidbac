@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import ico from "../../../../Assets/ICONE-PHI.jpg";
 import styled from "styled-components";
 import Connexion from "../Connexion";
@@ -41,6 +41,7 @@ const BoutonHome = styled.div`
 const Desktop = () => {
     const [redActive, setRedActive] = React.useState<boolean>(false);
     const [page, setPage] = React.useState("");
+    const history = useHistory();
 
     let changementPage = (UrlPage: string) => {
         setPage(UrlPage);
@@ -59,7 +60,7 @@ const Desktop = () => {
                 <BoutonPage onClick={() => changementPage("/Sujets")}>
                     Sujets
                 </BoutonPage>
-                <BoutonPage onClick={() => changementPage("/Cours")}>
+                <BoutonPage onClick={() => history.push("/cours")}>
                     Cours
                 </BoutonPage>
 

@@ -286,7 +286,7 @@ const Cours = () => {
                             <Button
                                 type="ghost"
                                 icon="arrow-left"
-                                onMouseDown={() => history.push("/cours")}
+                                onMouseDown={() => history.push("/cours/Liste")}
                                 style={{
                                     position: "absolute",
                                     top: "-10px",
@@ -371,8 +371,14 @@ const Cours = () => {
                                         >
                                             <ConteneurCours
                                                 onMouseDown={() => {
-                                                    setId(element.id);
-                                                    setLecture(true);
+                                                    history.push(
+                                                        `/cours/${
+                                                            element.id
+                                                        }-${element.Titre.replace(
+                                                            / /g,
+                                                            "-"
+                                                        )}`
+                                                    );
                                                 }}
                                             >
                                                 <Description>

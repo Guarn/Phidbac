@@ -5,7 +5,8 @@ import React, {
     createContext,
     useContext,
     Dispatch,
-    useState
+    useState,
+    FC
 } from "react";
 import * as Styled from "./SujetsDesktop.styled";
 import {
@@ -24,7 +25,14 @@ import { useLocation } from "react-router-dom";
 import ReactQuill from "react-quill";
 import Axios from "../../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
-import { sujetReducer, initialState, StateI, Action, SujetI } from "./reducers";
+import {
+    sujetReducer,
+    initialState,
+    StateI,
+    Action,
+    SujetI,
+    EnonceI
+} from "./reducers";
 import { RadioChangeEvent } from "antd/lib/radio";
 import { Helmet } from "react-helmet-async";
 
@@ -210,6 +218,8 @@ const Sujets = () => {
     );
 };
 
+export default Sujets;
+
 /**
  *  Gère l'affichage des 3 énoncés.
  *
@@ -219,11 +229,9 @@ const AffichageSujet = () => {
     const [state, setState] = useContext(stateContext);
     const { id } = state.sujetVisible;
     const { loading } = state;
-    const { sujets } = state.listeSujets;
+    const { sujets, nbSujets } = state.listeSujets;
+    const { filtres, actif } = state.filtres;
     const [sujetAffiche, setSujetAffiche] = useState<SujetI>({} as SujetI);
-    const refQuill1 = useRef(null);
-    const refQuill2 = useRef(null);
-    const refQuill3 = useRef(null);
 
     useEffect(() => {
         if (id !== 0) {
@@ -232,7 +240,7 @@ const AffichageSujet = () => {
                 setState({ type: "Loading", value: false });
             });
         }
-    }, [id, sujets, setState]);
+    }, [id, sujets, nbSujets, actif]);
 
     return (
         <>
@@ -267,58 +275,27 @@ const AffichageSujet = () => {
                         }}
                     >
                         <Styled.ConteneurSujet>
-                            <Styled.Sujet>
-                                <Styled.TitreNotions>
-                                    <Styled.Titre>1</Styled.Titre>
-                                    <Styled.Notions>
-                                        {sujetAffiche?.Notions1?.join(" ") ??
-                                            ""}
-                                    </Styled.Notions>
-                                </Styled.TitreNotions>
-                                <ReactQuill
-                                    ref={refQuill1}
-                                    value={sujetAffiche?.Sujet1 ?? ""}
-                                    modules={{ toolbar: false }}
-                                    readOnly
-                                    theme="bubble"
-                                />
-                            </Styled.Sujet>
-                            <Styled.Sujet>
-                                <Styled.TitreNotions>
-                                    <Styled.Titre>2</Styled.Titre>
-                                    <Styled.Notions>
-                                        {sujetAffiche?.Notions2?.join(" ") ??
-                                            ""}
-                                    </Styled.Notions>
-                                </Styled.TitreNotions>
-                                <Styled.CorpsSujet>
-                                    <ReactQuill
-                                        ref={refQuill2}
-                                        value={sujetAffiche?.Sujet2 ?? ""}
-                                        modules={{ toolbar: false }}
-                                        readOnly
-                                        theme="bubble"
-                                    />
-                                </Styled.CorpsSujet>
-                            </Styled.Sujet>
-                            <Styled.Sujet>
-                                <Styled.TitreNotions>
-                                    <Styled.Titre>3</Styled.Titre>
-                                    <Styled.Notions>
-                                        {sujetAffiche?.Notions3?.join(" ") ??
-                                            ""}
-                                    </Styled.Notions>
-                                </Styled.TitreNotions>
-                                <Styled.CorpsSujet>
-                                    <ReactQuill
-                                        ref={refQuill3}
-                                        value={sujetAffiche?.Sujet3 ?? ""}
-                                        modules={{ toolbar: false }}
-                                        readOnly
-                                        theme="bubble"
-                                    />
-                                </Styled.CorpsSujet>
-                            </Styled.Sujet>
+                            <Enonce
+                                numSujet={1}
+                                texte={sujetAffiche.Sujet1}
+                                notions={sujetAffiche.Notions1}
+                                filtres={filtres}
+                                actif={state.filtres.actif}
+                            />
+                            <Enonce
+                                numSujet={2}
+                                texte={sujetAffiche.Sujet2}
+                                notions={sujetAffiche.Notions2}
+                                filtres={filtres}
+                                actif={state.filtres.actif}
+                            />
+                            <Enonce
+                                numSujet={3}
+                                texte={sujetAffiche.Sujet3}
+                                notions={sujetAffiche.Notions3}
+                                filtres={filtres}
+                                actif={state.filtres.actif}
+                            />
                             <Styled.Details>
                                 <Styled.PartieGauche>
                                     <Styled.Etiquette>
@@ -349,7 +326,53 @@ const AffichageSujet = () => {
     );
 };
 
-export default Sujets;
+const Enonce: React.FC<EnonceI> = ({
+    numSujet,
+    texte,
+    notions,
+    filtres,
+    actif
+}) => {
+    const refQuill: any = useRef();
+
+    useEffect(() => {
+        if (filtres.recherche !== "" && actif) {
+            let editor = refQuill.current.getEditor();
+            let unst = refQuill.current.makeUnprivilegedEditor(editor);
+            let tabRecherche = filtres.recherche.trim().split(" ");
+            tabRecherche.map((item) => {
+                let reg = new RegExp(item.trim(), "gi");
+                let regex = reg,
+                    result;
+                while ((result = regex.exec(unst.getText()))) {
+                    editor.formatText(
+                        result.index,
+                        item.trim().length,
+                        "background-color",
+                        "yellow"
+                    );
+                }
+            });
+        }
+    });
+    return (
+        <Styled.Sujet>
+            <Styled.TitreNotions>
+                <Styled.Titre>{numSujet}</Styled.Titre>
+                <Styled.Notions>{notions.join(" ") ?? ""}</Styled.Notions>
+            </Styled.TitreNotions>
+            <Styled.CorpsSujet>
+                <ReactQuill
+                    ref={refQuill}
+                    value={texte}
+                    modules={{ toolbar: false }}
+                    readOnly
+                    theme="bubble"
+                />
+            </Styled.CorpsSujet>
+        </Styled.Sujet>
+    );
+};
 
 /**
  * Gestion des filtres asssociés à la recherche de sujet.

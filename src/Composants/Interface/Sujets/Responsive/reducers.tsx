@@ -31,7 +31,7 @@ export interface ElementsCochesI {
 }
 
 export interface StateI {
-    sujetVisible: { id: number };
+    sujetVisible: { id: number; sujet: SujetI };
     listeSujets: {
         sujets: ListeSujetsI[];
         nbSujets: number;
@@ -40,6 +40,7 @@ export interface StateI {
     filtres: {
         menu?: MenuFiltreI;
         filtres: ElementsCochesI;
+        actif: boolean;
     };
 }
 export interface MenuFiltreI {
@@ -81,10 +82,18 @@ const initialFiltresState = {
 
 export const initialState: StateI = {
     loading: true,
-    sujetVisible: { id: 1 },
-    filtres: { filtres: initialFiltresState },
+    sujetVisible: { id: 1, sujet: {} as SujetI },
+    filtres: { filtres: initialFiltresState, actif: false },
     listeSujets: { nbSujets: 0, sujets: [] }
 };
+
+export interface EnonceI {
+    numSujet: number;
+    texte: string;
+    notions: string[];
+    filtres: ElementsCochesI;
+    actif: boolean;
+}
 
 export const sujetReducer = (state: StateI, action: Action) => {
     switch (action.type) {
@@ -100,7 +109,11 @@ export const sujetReducer = (state: StateI, action: Action) => {
             return {
                 ...state,
                 listeSujets: { nbSujets: action.count, sujets: action.value },
-                filtres: { ...state.filtres, filtres: initialFiltresState }
+                filtres: {
+                    ...state.filtres,
+                    filtres: initialFiltresState,
+                    actif: false
+                }
             };
         case "FetchMenu":
             return {
@@ -131,7 +144,7 @@ export const sujetReducer = (state: StateI, action: Action) => {
                     id: action.nbSujets === 0 ? 0 : 1
                 },
                 loading: action.nbSujets === 0 ? false : true,
-                filtres: { ...state.filtres }
+                filtres: { ...state.filtres, actif: true }
             };
 
         default:
