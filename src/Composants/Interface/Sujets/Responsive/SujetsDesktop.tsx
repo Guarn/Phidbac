@@ -20,11 +20,13 @@ import {
 } from "antd";
 import "react-quill/dist/quill.snow.css";
 import "../Sujets.css";
+import { useLocation } from "react-router-dom";
 import ReactQuill from "react-quill";
 import Axios from "../../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import { sujetReducer, initialState, StateI, Action, SujetI } from "./reducers";
 import { RadioChangeEvent } from "antd/lib/radio";
+import { Helmet } from "react-helmet-async";
 
 //!SECTION
 const { Option } = Select;
@@ -73,6 +75,7 @@ const stateContext = createContext<[StateI, Dispatch<Action>]>(
 const Sujets = () => {
     const [state, setState] = useReducer(sujetReducer, initialState);
     const { nbSujets } = state.listeSujets;
+    const location = useLocation();
 
     useEffect(() => {
         Axios.get("/menu").then((rep) => {
@@ -85,6 +88,12 @@ const Sujets = () => {
                 count: rep.data.count
             });
         });
+        if (location.pathname.substring(8)) {
+            setState({
+                type: "ChangementID",
+                value: parseInt(location.pathname.substring(8))
+            });
+        }
         /*
         if (
             elementsCoches.recherche !== "" &&
@@ -217,100 +226,117 @@ const AffichageSujet = () => {
     }, [id, sujets, setState]);
 
     return (
-        <Transition
-            in={!loading}
-            timeout={{
-                appear: 0,
-                enter: 100,
-                exit: 0
-            }}
-            appear
-            enter
-            mountOnEnter
-        >
-            {(state2) => (
-                <Styled.TransitionAffichage
-                    style={{
-                        ...defaultStyle2,
-                        ...transitionStyles2[state2]
-                    }}
-                >
-                    <Styled.ConteneurSujet>
-                        <Styled.Sujet>
-                            <Styled.TitreNotions>
-                                <Styled.Titre>1</Styled.Titre>
-                                <Styled.Notions>
-                                    {sujetAffiche?.Notions1?.join(" ") ?? ""}
-                                </Styled.Notions>
-                            </Styled.TitreNotions>
-                            <ReactQuill
-                                ref={refQuill1}
-                                value={sujetAffiche?.Sujet1 ?? ""}
-                                modules={{ toolbar: false }}
-                                readOnly
-                                theme="bubble"
-                            />
-                        </Styled.Sujet>
-                        <Styled.Sujet>
-                            <Styled.TitreNotions>
-                                <Styled.Titre>2</Styled.Titre>
-                                <Styled.Notions>
-                                    {sujetAffiche?.Notions2?.join(" ") ?? ""}
-                                </Styled.Notions>
-                            </Styled.TitreNotions>
-                            <Styled.CorpsSujet>
+        <>
+            <Helmet>
+                <title>{`Sujet ${sujetAffiche?.id} de philosophie : ${sujetAffiche?.Code} / ${sujetAffiche?.Annee}`}</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="description"
+                    content={`Sujet présenté en ${sujetAffiche?.Annee}, en série ${sujetAffiche?.Serie} et session ${sujetAffiche?.Session}, en ${sujetAffiche?.Destination}`}
+                />
+                <link
+                    rel="canonical"
+                    href={`https://www.phidbac.fr/Sujets/${sujetAffiche?.id}`}
+                />
+            </Helmet>
+            <Transition
+                in={!loading}
+                timeout={{
+                    appear: 0,
+                    enter: 100,
+                    exit: 0
+                }}
+                appear
+                enter
+                mountOnEnter
+            >
+                {(state2) => (
+                    <Styled.TransitionAffichage
+                        style={{
+                            ...defaultStyle2,
+                            ...transitionStyles2[state2]
+                        }}
+                    >
+                        <Styled.ConteneurSujet>
+                            <Styled.Sujet>
+                                <Styled.TitreNotions>
+                                    <Styled.Titre>1</Styled.Titre>
+                                    <Styled.Notions>
+                                        {sujetAffiche?.Notions1?.join(" ") ??
+                                            ""}
+                                    </Styled.Notions>
+                                </Styled.TitreNotions>
                                 <ReactQuill
-                                    ref={refQuill2}
-                                    value={sujetAffiche?.Sujet2 ?? ""}
+                                    ref={refQuill1}
+                                    value={sujetAffiche?.Sujet1 ?? ""}
                                     modules={{ toolbar: false }}
                                     readOnly
                                     theme="bubble"
                                 />
-                            </Styled.CorpsSujet>
-                        </Styled.Sujet>
-                        <Styled.Sujet>
-                            <Styled.TitreNotions>
-                                <Styled.Titre>3</Styled.Titre>
-                                <Styled.Notions>
-                                    {sujetAffiche?.Notions3?.join(" ") ?? ""}
-                                </Styled.Notions>
-                            </Styled.TitreNotions>
-                            <Styled.CorpsSujet>
-                                <ReactQuill
-                                    ref={refQuill3}
-                                    value={sujetAffiche?.Sujet3 ?? ""}
-                                    modules={{ toolbar: false }}
-                                    readOnly
-                                    theme="bubble"
-                                />
-                            </Styled.CorpsSujet>
-                        </Styled.Sujet>
-                        <Styled.Details>
-                            <Styled.PartieGauche>
-                                <Styled.Etiquette>
-                                    {sujetAffiche?.id ?? ""}
-                                </Styled.Etiquette>
-                                <Styled.Etiquette>
-                                    {sujetAffiche?.Annee ?? ""}
-                                </Styled.Etiquette>
-                                <Styled.Etiquette>
-                                    {sujetAffiche?.Serie ?? ""}
-                                </Styled.Etiquette>
-                                <Styled.Etiquette>
-                                    {sujetAffiche?.Destination ?? ""}
-                                </Styled.Etiquette>
-                                <Styled.Etiquette>
-                                    {sujetAffiche?.Session ?? ""}
-                                </Styled.Etiquette>
-                                <Styled.Etiquette>
-                                    {sujetAffiche?.Code ?? ""}
-                                </Styled.Etiquette>
-                            </Styled.PartieGauche>
-                        </Styled.Details>
-                    </Styled.ConteneurSujet>
-                </Styled.TransitionAffichage>
-            )}
-        </Transition>
+                            </Styled.Sujet>
+                            <Styled.Sujet>
+                                <Styled.TitreNotions>
+                                    <Styled.Titre>2</Styled.Titre>
+                                    <Styled.Notions>
+                                        {sujetAffiche?.Notions2?.join(" ") ??
+                                            ""}
+                                    </Styled.Notions>
+                                </Styled.TitreNotions>
+                                <Styled.CorpsSujet>
+                                    <ReactQuill
+                                        ref={refQuill2}
+                                        value={sujetAffiche?.Sujet2 ?? ""}
+                                        modules={{ toolbar: false }}
+                                        readOnly
+                                        theme="bubble"
+                                    />
+                                </Styled.CorpsSujet>
+                            </Styled.Sujet>
+                            <Styled.Sujet>
+                                <Styled.TitreNotions>
+                                    <Styled.Titre>3</Styled.Titre>
+                                    <Styled.Notions>
+                                        {sujetAffiche?.Notions3?.join(" ") ??
+                                            ""}
+                                    </Styled.Notions>
+                                </Styled.TitreNotions>
+                                <Styled.CorpsSujet>
+                                    <ReactQuill
+                                        ref={refQuill3}
+                                        value={sujetAffiche?.Sujet3 ?? ""}
+                                        modules={{ toolbar: false }}
+                                        readOnly
+                                        theme="bubble"
+                                    />
+                                </Styled.CorpsSujet>
+                            </Styled.Sujet>
+                            <Styled.Details>
+                                <Styled.PartieGauche>
+                                    <Styled.Etiquette>
+                                        {sujetAffiche?.id ?? ""}
+                                    </Styled.Etiquette>
+                                    <Styled.Etiquette>
+                                        {sujetAffiche?.Annee ?? ""}
+                                    </Styled.Etiquette>
+                                    <Styled.Etiquette>
+                                        {sujetAffiche?.Serie ?? ""}
+                                    </Styled.Etiquette>
+                                    <Styled.Etiquette>
+                                        {sujetAffiche?.Destination ?? ""}
+                                    </Styled.Etiquette>
+                                    <Styled.Etiquette>
+                                        {sujetAffiche?.Session ?? ""}
+                                    </Styled.Etiquette>
+                                    <Styled.Etiquette>
+                                        {sujetAffiche?.Code ?? ""}
+                                    </Styled.Etiquette>
+                                </Styled.PartieGauche>
+                            </Styled.Details>
+                        </Styled.ConteneurSujet>
+                    </Styled.TransitionAffichage>
+                )}
+            </Transition>
+        </>
     );
 };
 
@@ -738,7 +764,7 @@ const SuivPrec = () => {
         if (val === "-") {
             setState({
                 type: "ChangementID",
-                value: id === 1 ? nbSujets : id - 1 // Si dernier sujet de la liste, retour au début.
+                value: id === 1 ? nbSujets : id - 1 // Si premier sujet de la liste, dernier sujet.
             });
         }
     };
