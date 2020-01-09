@@ -1,14 +1,12 @@
 import * as React from "react";
-import { Desktop } from "../../../responsive";
+import { Desktop, Tablet } from "../../../responsive";
 
 const SujetsDesktop = React.lazy(() => import("./Responsive/SujetsDesktop"));
 
 const Sujets = () => {
     return (
         <React.Suspense fallback={<div></div>}>
-            <Desktop>
-                <SujetsDesktop />
-            </Desktop>
+            <SujetsDesktop />
         </React.Suspense>
     );
 };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Connexion from "../Connexion";
 import { Icon, Drawer } from "antd";
@@ -38,31 +38,34 @@ const TexteTitre = styled.div`
 `;
 
 const MenuMobile = () => {
-    const [redActive, setRedActive] = React.useState(false);
-    const [page, setPage] = React.useState("");
     const [menu, setMenu] = React.useState(false);
+    const history = useHistory();
 
-    let changementPage = (UrlPage: string) => {
-        setMenu(false);
-        setPage(UrlPage);
-        setRedActive(true);
-    };
     return (
         <>
-            {redActive && <Redirect push to={page} />}
             <Drawer
                 placement="left"
                 visible={menu}
                 onClose={() => setMenu(false)}
                 title="PHIDBAC"
             >
-                <BoutonPage onClick={() => changementPage("/")}>
+                <BoutonPage
+                    onClick={() => {
+                        setMenu(false);
+                        history.push("/");
+                    }}
+                >
                     Accueil
                 </BoutonPage>
                 <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
                     Programmes / Epreuves
                 </BoutonPage>
-                <BoutonPage onClick={() => changementPage("/Sujets")}>
+                <BoutonPage
+                    onClick={() => {
+                        setMenu(false);
+                        history.push("/Annales-Bac-Sujets-Philosophie");
+                    }}
+                >
                     Sujets
                 </BoutonPage>
                 <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>

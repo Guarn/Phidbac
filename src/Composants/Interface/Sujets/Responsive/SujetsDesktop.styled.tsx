@@ -8,11 +8,13 @@ export const Conteneur = styled.div`
     width: 100%;
 `;
 export const PartieG = styled.div`
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    z-index: 20;
+    max-height: 100%;
+    width: 100%;
 `;
 export const PartieD = styled.div`
     display: flex;
@@ -21,6 +23,12 @@ export const PartieD = styled.div`
     z-index: 20;
     max-height: 100%;
     width: 100%;
+    @media (max-width: 1023px) {
+        flex-direction: column;
+    }
+    @media (max-width: 767) {
+        flex-direction: column;
+    }
 `;
 export const ConteneurFiltres = styled.div`
     position: relative;
@@ -42,7 +50,13 @@ export const ConteneurSuivPrec = styled.div`
     flex-direction: column;
     z-index: 2;
     margin: 30px;
-    width: 170px;
+    @media (max-width: 1023px) {
+        flex-direction: row;
+        width: 100%;
+        margin: 0px;
+        margin-top: 0px;
+        justify-content: space-evenly;
+    }
 `;
 export const ConteneurSujet = styled.div`
     max-height: 100%;
@@ -51,6 +65,9 @@ export const ConteneurSujet = styled.div`
     user-select: text;
     max-width: 800px;
     width: 100%;
+    @media (max-width: 1023px) {
+        height: 95%;
+    }
 `;
 
 export const NombreSujets = styled.div`
@@ -58,6 +75,10 @@ export const NombreSujets = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
     text-align: center;
+    @media (max-width: 1023px) {
+        margin-bottom: 10px;
+        width: auto;
+    }
 `;
 
 export const Carre = styled.div`
@@ -89,6 +110,9 @@ export const Sujet = styled.div`
     background-color: #eeeeee;
     margin-top: 15px;
     margin-left: 6px;
+    @media (max-width: 1023px) {
+        margin-top: 5px;
+    }
 `;
 export const TitreNotions = styled.div`
     display: flex;
@@ -110,6 +134,7 @@ export const Notions = styled.div`
     font-style: italic;
     margin-top: 5px;
     margin-right: 5px;
+    text-align: right;
 `;
 
 export const CorpsSujet = styled.div``;
@@ -161,6 +186,10 @@ export const BoutonLeft = styled(Button)`
     background-color: #e2e0d8;
     border-color: #919191;
     transform: translateX(-20px);
+    @media (max-width: 1023px) {
+        transform: translateX(0px);
+        width: auto;
+    }
 `;
 
 export const BoutonRight = styled(Button)`
@@ -168,4 +197,8 @@ export const BoutonRight = styled(Button)`
     background-color: #e2e0d8;
     border-color: #919191;
     transform: translateX(20px);
+    @media (max-width: 1023px) {
+        transform: translateX(0px);
+        width: auto;
+    }
 `;

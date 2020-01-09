@@ -34,6 +34,7 @@ import {
     EnonceI
 } from "./reducers";
 import { RadioChangeEvent } from "antd/lib/radio";
+import { Desktop, Tablet } from "../../../../responsive";
 import { Helmet } from "react-helmet-async";
 
 //!SECTION
@@ -106,94 +107,6 @@ const Sujets = () => {
                 value: parseInt(location.pathname.substring(32))
             });
         }
-        /*
-        if (
-            elementsCoches.recherche !== "" &&
-            elementsCoches.typeRecherche === "exacte" &&
-            sujets.length > 0
-        ) {
-            let editor1 = refQuill1.current.getEditor();
-            let unst1 = refQuill1.current.makeUnprivilegedEditor(editor1);
-            let editor2 = refQuill2.current.getEditor();
-            let unst2 = refQuill2.current.makeUnprivilegedEditor(editor2);
-            let editor3 = refQuill3.current.getEditor();
-            let unst3 = refQuill3.current.makeUnprivilegedEditor(editor3);
-
-            let texte = elementsCoches.recherche;
-            let reg = new RegExp(texte, "gi");
-            let regex = reg,
-                result;
-            while ((result = regex.exec(unst1.getText()))) {
-                editor1.formatText(
-                    result.index,
-                    texte.length,
-                    "background-color",
-                    "yellow"
-                );
-            }
-            while ((result = regex.exec(unst2.getText()))) {
-                editor2.formatText(
-                    result.index,
-                    texte.length,
-                    "background-color",
-                    "yellow"
-                );
-            }
-            while ((result = regex.exec(unst3.getText()))) {
-                editor3.formatText(
-                    result.index,
-                    texte.length,
-                    "background-color",
-                    "yellow"
-                );
-            }
-        }
-        if (
-            elementsCoches.recherche !== "" &&
-            (elementsCoches.typeRecherche === "tousLesMots" ||
-                elementsCoches.typeRecherche === "unDesMots") &&
-            sujets.length > 0
-        ) {
-            let editor1 = refQuill1.current.getEditor();
-            let unst1 = refQuill1.current.makeUnprivilegedEditor(editor1);
-            let editor2 = refQuill2.current.getEditor();
-            let unst2 = refQuill2.current.makeUnprivilegedEditor(editor2);
-            let editor3 = refQuill3.current.getEditor();
-            let unst3 = refQuill3.current.makeUnprivilegedEditor(editor3);
-
-            let texte = elementsCoches.recherche.split(" ");
-            let reg;
-            let result;
-            texte.map((el, index) => {
-                reg = new RegExp(texte[index], "gi");
-                while ((result = reg.exec(unst1.getText()))) {
-                    editor1.formatText(
-                        result.index,
-                        texte[index].length,
-                        "background-color",
-                        "yellow"
-                    );
-                }
-                while ((result = reg.exec(unst2.getText()))) {
-                    editor2.formatText(
-                        result.index,
-                        texte[index].length,
-                        "background-color",
-                        "yellow"
-                    );
-                }
-                while ((result = reg.exec(unst3.getText()))) {
-                    editor3.formatText(
-                        result.index,
-                        texte[index].length,
-                        "background-color",
-                        "yellow"
-                    );
-                }
-
-                return null;
-            });
-        }*/
     }, [location.pathname]);
 
     //!SECTION
@@ -204,7 +117,9 @@ const Sujets = () => {
                 <Styled.Carre />
                 <Styled.Cercle />
                 <Styled.PartieD>
-                    <PartieFiltres />
+                    <Desktop>
+                        <PartieFiltres />
+                    </Desktop>
                     <SuivPrec />
                     {nbSujets !== 0 && <AffichageSujet />}
                     {nbSujets === 0 && !loading && (
@@ -296,28 +211,54 @@ const AffichageSujet = () => {
                                 filtres={filtres}
                                 actif={state.filtres.actif}
                             />
-                            <Styled.Details>
-                                <Styled.PartieGauche>
-                                    <Styled.Etiquette>
-                                        {sujetAffiche?.id ?? ""}
-                                    </Styled.Etiquette>
-                                    <Styled.Etiquette>
-                                        {sujetAffiche?.Annee ?? ""}
-                                    </Styled.Etiquette>
-                                    <Styled.Etiquette>
-                                        {sujetAffiche?.Serie ?? ""}
-                                    </Styled.Etiquette>
-                                    <Styled.Etiquette>
-                                        {sujetAffiche?.Destination ?? ""}
-                                    </Styled.Etiquette>
-                                    <Styled.Etiquette>
-                                        {sujetAffiche?.Session ?? ""}
-                                    </Styled.Etiquette>
-                                    <Styled.Etiquette>
-                                        {sujetAffiche?.Code ?? ""}
-                                    </Styled.Etiquette>
-                                </Styled.PartieGauche>
-                            </Styled.Details>
+                            <Desktop>
+                                <Styled.Details>
+                                    <Styled.PartieGauche>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.id ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Annee ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Serie ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Destination ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Session ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Code ?? ""}
+                                        </Styled.Etiquette>
+                                    </Styled.PartieGauche>
+                                </Styled.Details>
+                            </Desktop>
+                            <Tablet>
+                                <Styled.Details>
+                                    <Styled.PartieGauche>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.id ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Annee ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Serie ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Destination ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Session ?? ""}
+                                        </Styled.Etiquette>
+                                        <Styled.Etiquette>
+                                            {sujetAffiche?.Code ?? ""}
+                                        </Styled.Etiquette>
+                                    </Styled.PartieGauche>
+                                </Styled.Details>
+                            </Tablet>
                         </Styled.ConteneurSujet>
                     </Styled.TransitionAffichage>
                 )}
@@ -834,12 +775,13 @@ const SuivPrec = () => {
                     }}
                 >
                     <Styled.BoutonLeft
-                        icon="arrow-left"
                         onClick={() => {
                             SwitchSujet("-");
                         }}
                     >
-                        Sujet précédent
+                        <Icon type="arrow-left" />
+                        <Desktop> Sujet précédent</Desktop>
+                        <Tablet> Sujet précédent</Tablet>
                     </Styled.BoutonLeft>
                     <Styled.NombreSujets>{`${id} / ${nbSujets}`}</Styled.NombreSujets>
                     <Styled.BoutonRight
@@ -847,7 +789,8 @@ const SuivPrec = () => {
                             SwitchSujet("+");
                         }}
                     >
-                        Sujet suivant
+                        <Desktop>Sujet suivant </Desktop>
+                        <Tablet>Sujet suivant </Tablet>
                         <Icon type="arrow-right" />
                     </Styled.BoutonRight>
                 </Styled.ConteneurSuivPrec>
