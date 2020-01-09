@@ -21,7 +21,7 @@ const TexteContenuFooter = styled.p`
 const PartieGMobile = () => {
     return (
         <>
-            <div style={{ overflow: "auto" }}>
+            <div>
                 <Logo
                     width="60%"
                     style={{

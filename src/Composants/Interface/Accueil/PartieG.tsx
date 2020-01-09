@@ -16,6 +16,10 @@ const Conteneur = styled.div`
     height: 100%;
     flex-direction: column;
     justify-content: center;
+    @media (max-width: 767px) {
+        height: initial;
+        margin-top: 60px;
+    }
 `;
 
 const duration = 500;

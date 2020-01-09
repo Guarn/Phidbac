@@ -6,6 +6,10 @@ export const Conteneur = styled.div`
     height: 100%;
     max-width: 1450px;
     width: 100%;
+    @media (max-width: 767px) {
+        flex-direction: column;
+        height: initial;
+    }
 `;
 export const PartieG = styled.div`
     display: flex;
@@ -26,8 +30,9 @@ export const PartieD = styled.div`
     @media (max-width: 1023px) {
         flex-direction: column;
     }
-    @media (max-width: 767) {
+    @media (max-width: 767px) {
         flex-direction: column;
+        max-height: initial;
     }
 `;
 export const ConteneurFiltres = styled.div`
@@ -57,6 +62,9 @@ export const ConteneurSuivPrec = styled.div`
         margin-top: 0px;
         justify-content: space-evenly;
     }
+    @media (max-width: 767px) {
+        margin-top: 50px;
+    }
 `;
 export const ConteneurSujet = styled.div`
     max-height: 100%;
@@ -67,6 +75,12 @@ export const ConteneurSujet = styled.div`
     width: 100%;
     @media (max-width: 1023px) {
         height: 95%;
+    }
+    @media (max-width: 767px) {
+        height: initial;
+        overflow: initial;
+        margin-bottom: 30px;
+        padding-right: 0px;
     }
 `;
 
@@ -88,6 +102,9 @@ export const Carre = styled.div`
     height: 200%;
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.16);
+    @media (max-width: 767px) {
+        display: none;
+    }
 `;
 
 export const Cercle = styled.div`
@@ -101,6 +118,9 @@ export const Cercle = styled.div`
     border-radius: 50% /50%;
     z-index: 1;
     overflow: hidden;
+    @media (max-width: 767px) {
+        display: none;
+    }
 `;
 
 export const Sujet = styled.div`

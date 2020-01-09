@@ -67,3 +67,12 @@ body,
     -ms-user-select: none;
     user-select: none;
 }
+
+@media (max-width: 767px) {
+    html,
+    body,
+    #root {
+        height: initial;
+        overflow: initial;
+    }
+}

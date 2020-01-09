@@ -12,7 +12,10 @@ export const ConteneurGlobal = styled.div`
         grid-template-rows: 50px calc(100% - 50px);
     }
     @media (max-width: 767px) {
-        grid-template-rows: 50px calc(100% - 50px);
+        grid-template-rows: none;
+        display: flex;
+        flex-direction: column;
+        overflow: initial;
     }
 `;
 
@@ -20,6 +23,14 @@ export const ConteneurHeader = styled.div`
     display: flex;
     justify-content: space-between;
     z-index: 100;
+    @media (max-width: 767px) {
+        position: fixed;
+        height: 50px;
+        top: 0px;
+        width: 100%;
+        background-color: ${(props) => props.theme.background};
+        box-shadow: 0 3px 3px lightgrey;
+    }
 `;
 
 export const ConteneurContenu = styled.div`

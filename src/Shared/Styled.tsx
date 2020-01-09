@@ -2,7 +2,8 @@ import { css } from "styled-components";
 
 export const theme = {
     main: "#5e5e5e",
-    texteSecondaryColor: "orange"
+    texteSecondaryColor: "orange",
+    background: "#e2e0d8"
 };
 
 export const LayoutCentered = css`
