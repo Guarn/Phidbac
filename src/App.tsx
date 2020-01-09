@@ -35,12 +35,21 @@ const App = () => {
                         <Styled.ConteneurContenu>
                             <Switch>
                                 <Route exact path="/" component={Accueil} />
-                                <Route path="/Sujets" component={Sujets} />
-                                <Route path="/Programme">
+                                <Route
+                                    path="/Annales-Bac-Sujets-Philosophie"
+                                    component={Sujets}
+                                />
+                                <Route path="/Presentation-du-programme-et-des-epreuves">
                                     <Programme id={1} tableMatiereShow />
                                 </Route>
-                                <Route path="/Cours" component={Cours} />
-                                <Route path="/Index" component={Index} />
+                                <Route
+                                    path="/Liste-des-cours"
+                                    component={Cours}
+                                />
+                                <Route
+                                    path="/Liste-des-index"
+                                    component={Index}
+                                />
                             </Switch>
                         </Styled.ConteneurContenu>
 

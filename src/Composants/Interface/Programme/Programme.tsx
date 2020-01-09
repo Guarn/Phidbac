@@ -9,6 +9,7 @@ import { Transition } from "react-transition-group";
 import "./Programme.css";
 import { userContext } from "../../../App";
 import { useCookies } from "react-cookie";
+import { Helmet } from "react-helmet-async";
 
 export interface ProgrammeI {
     id: number;
@@ -144,11 +145,39 @@ const Programme: React.FC<ProgrammeI> = ({
     return (
         <Styled.Conteneur
             decalage={
-                location.pathname.substring(0, 6) === "/cours" &&
-                location.pathname.substring(7) !== "" &&
+                location.pathname.substring(0, 16) === "/Liste-des-cours" &&
+                location.pathname.substring(17) !== "" &&
                 !!tableMatiereShow
             }
         >
+            {id === 1 && (
+                <Helmet>
+                    <title>{`Présentation du programme et des épreuves`}</title>
+                    <meta charSet="utf-8" />
+                    <meta
+                        name="description"
+                        content={`Présentation du programme et des épreuves du bac de philosophie, et fonctionnement de Phidbac.`}
+                    />
+                    <link
+                        rel="canonical"
+                        href={`https://www.phidbac.fr/Presentation-du-programme-et-des-epreuves`}
+                    />
+                </Helmet>
+            )}
+            {id !== 1 && tableMatiereShow && (
+                <Helmet>
+                    <title>{`${cours.Titre}`}</title>
+                    <meta charSet="utf-8" />
+                    <meta name="description" content={`${cours.Description}`} />
+                    <link
+                        rel="canonical"
+                        href={`https://www.phidbac.fr/Liste-des-cours/${id}-${cours.Titre.trim().replace(
+                            / /g,
+                            "-"
+                        )}`}
+                    />
+                </Helmet>
+            )}
             <Transition
                 appear
                 enter

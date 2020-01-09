@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import ico from "../../../../Assets/ICONE-PHI.jpg";
 import styled from "styled-components";
 import Connexion from "../Connexion";
@@ -39,35 +39,38 @@ const BoutonHome = styled.div`
 `;
 
 const Desktop = () => {
-    const [redActive, setRedActive] = React.useState<boolean>(false);
-    const [page, setPage] = React.useState("");
     const history = useHistory();
 
-    let changementPage = (UrlPage: string) => {
-        setPage(UrlPage);
-        setRedActive(true);
-    };
     return (
         <>
-            {redActive && <Redirect push to={page} />}
-            <BoutonHome onClick={() => changementPage("/")}>
+            <BoutonHome onClick={() => history.push("/")}>
                 <img height="50" width="50" src={ico} alt="Bouton Home" />
             </BoutonHome>
             <ConteneurLiensPage>
-                <BoutonPage onClick={() => changementPage("/Programme")}>
+                <BoutonPage
+                    onClick={() =>
+                        history.push(
+                            "/Presentation-du-programme-et-des-epreuves"
+                        )
+                    }
+                >
                     Programmes / Epreuves
                 </BoutonPage>
-                <BoutonPage onClick={() => changementPage("/Sujets")}>
+                <BoutonPage
+                    onClick={() =>
+                        history.push("/Annales-Bac-Sujets-Philosophie")
+                    }
+                >
                     Sujets
                 </BoutonPage>
-                <BoutonPage onClick={() => history.push("/cours")}>
+                <BoutonPage onClick={() => history.push("/Liste-des-cours")}>
                     Cours
                 </BoutonPage>
 
                 <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
                     Exercices
                 </BoutonPage>
-                <BoutonPage onClick={() => changementPage("/Index")}>
+                <BoutonPage onClick={() => history.push("/Liste-des-index")}>
                     Index
                 </BoutonPage>
                 <BoutonPage>

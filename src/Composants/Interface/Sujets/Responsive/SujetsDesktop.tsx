@@ -100,10 +100,10 @@ const Sujets = () => {
                 count: rep.data.count
             });
         });
-        if (location.pathname.substring(8)) {
+        if (location.pathname.substring(32)) {
             setState({
                 type: "ChangementID",
-                value: parseInt(location.pathname.substring(8))
+                value: parseInt(location.pathname.substring(32))
             });
         }
         /*
@@ -352,6 +352,7 @@ const Enonce: React.FC<EnonceI> = ({
                         "yellow"
                     );
                 }
+                return null;
             });
         }
     });

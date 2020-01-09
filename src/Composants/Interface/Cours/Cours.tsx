@@ -1,106 +1,13 @@
 import * as React from "react";
-import styled from "styled-components";
 import { Timeline, Icon, Tooltip, Button } from "antd";
 import "./Cours.css";
 import { userContext } from "../../../App";
 import Axios from "../../Fonctionnels/Axios";
 import { Transition } from "react-transition-group";
 import Programme from "../Programme/Programme";
-import { useCookies } from "react-cookie";
 import { useLocation, useHistory } from "react-router";
-
-const Conteneur = styled.div`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const ConteneurCours = styled.div`
-    display: flex;
-    position: relative;
-    cursor: pointer;
-    transition: color 0.2s;
-    &:hover {
-        color: orange;
-    }
-`;
-
-const Description = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 450px;
-    margin-left: 30px;
-`;
-
-const Details = styled.div`
-    position: absolute;
-    font-size: 16px;
-    text-align: right;
-    width: 200px;
-    left: -240px;
-`;
-
-const TitreEtape = styled.div`
-    font-weight: bold;
-    font-size: 16px;
-`;
-
-const DescriptionEtape = styled.div`
-    font-size: 16px;
-    text-align: justify;
-`;
-
-interface DotProps {
-    color?: string;
-}
-
-const ConteneurProgression = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const Dot = styled.div<DotProps>`
-    height: 16px;
-    width: 16px;
-    border: 2px solid #707070;
-    border-radius: 50%;
-    background-color: ${(props) => (props.color ? props.color : "salmon")};
-    box-sizing: border-box;
-    margin-top: 8px;
-`;
-
-const ConteneurIcoProgress = styled.div`
-    display: flex;
-`;
-
-const IcoProgress = styled.div`
-    background-color: ${(props) => props.color};
-    height: 24px;
-    width: 24px;
-    border: 1px solid #707070;
-    margin-right: 5px;
-    border-radius: 2px;
-    transition: all 0.2s;
-    cursor: pointer;
-    &:hover {
-        transform: scale(1.1);
-    }
-`;
-
-const ConteneurTimeline = styled.div`
-    overflow: auto;
-    padding-right: 50px;
-    padding-left: 200px;
-    display: flex;
-    height: calc(100% - 48px);
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
-`;
+import * as Styled from "./Cours.styled";
+import { Helmet } from "react-helmet-async";
 
 type coursT = {
     id: number;
@@ -161,10 +68,10 @@ const SelIcone: React.FC<any> = ({ tab, idCours }) => {
     let newTab = tab ? tab.filter((el: any) => el.idCours === idCours) : [];
     if (tab && idCours) {
         if (newTab.length === 0) {
-            return <Dot color="salmon" />;
+            return <Styled.Dot color="salmon" />;
         } else {
             if (newTab[0].progression < 100 && newTab[0].progression > 0) {
-                return <Dot color="lightblue" />;
+                return <Styled.Dot color="lightblue" />;
             }
             if (newTab[0].progression === 100) {
                 return (
@@ -203,21 +110,21 @@ const ProgressIcone: React.FC<any> = ({ tab, idCours, tt }) => {
         if (newTab.length === 0) {
             return (
                 <Tooltip placement="bottom" title={tt}>
-                    <IcoProgress color="#FF8E9D" />
+                    <Styled.IcoProgress color="#FF8E9D" />
                 </Tooltip>
             );
         } else {
             if (newTab[0].progression < 100 && newTab[0].progression > 0) {
                 return (
                     <Tooltip placement="bottom" title={tt}>
-                        <IcoProgress color="#BFE4F5" />
+                        <Styled.IcoProgress color="#BFE4F5" />
                     </Tooltip>
                 );
             }
             if (newTab[0].progression === 100) {
                 return (
                     <Tooltip placement="bottom" title={tt}>
-                        <IcoProgress color="#85E27B" />
+                        <Styled.IcoProgress color="#85E27B" />
                     </Tooltip>
                 );
             }
@@ -229,80 +136,57 @@ const ProgressIcone: React.FC<any> = ({ tab, idCours, tt }) => {
 };
 
 const Cours = () => {
-    const [user] = React.useContext(userContext);
-    const [state, setState] = React.useState<coursT[]>([]);
-    const [progress, setProgress] = React.useState<progT[]>([]);
     const [lecture, setLecture] = React.useState(false);
     const [id, setId] = React.useState(0);
-    const [cookies] = useCookies();
     const location = useLocation();
-    const history = useHistory();
 
     React.useEffect(() => {
-        if (parseInt(location.pathname.substring(7).split("-")[0])) {
-            setLecture(true);
-            setId(parseInt(location.pathname.substring(7).split("-")[0]));
-        }
-        if (!parseInt(location.pathname.substring(7).split("-")[0])) {
+        if (location.pathname === "/Liste-des-cours") {
             setLecture(false);
         }
-
+        if (location.pathname.substring(17)) {
+            setId(parseInt(location.pathname.substring(17).split("-")[0]));
+            setLecture(true);
+        }
+        /*
         if (state.length === 0 && progress.length === 0 && !lecture) {
             Axios.get("/Cours").then((rep) => setState(rep.data));
-            if (cookies.token) {
+            if (cookies.token && user.connecte) {
                 Axios.get(`/progression`).then((rep) => {
                     setProgress(rep.data);
                 });
             }
-        }
-    }, [
-        location.pathname,
-        state.length,
-        progress.length,
-        lecture,
-        cookies.token
-    ]);
+        }*/
+    }, [location.pathname, lecture]);
 
     return (
-        <Conteneur>
-            {lecture && (
-                <div
-                    style={{
-                        position: "relative",
-                        top: "0px",
-                        left: "0px",
-                        height: "100%"
-                    }}
-                >
-                    <Transition
-                        appear
-                        enter
-                        mountOnEnter
-                        unmountOnExit
-                        in={true}
-                        timeout={{ appear: 200, enter: 0, exit: 200 }}
-                    >
-                        {(state3) => (
-                            <Button
-                                type="ghost"
-                                icon="arrow-left"
-                                onMouseDown={() => history.push("/cours/Liste")}
-                                style={{
-                                    position: "absolute",
-                                    top: "-10px",
-                                    left: "110px",
-                                    ...defaultStyle,
-                                    ...transitionStyles[state3]
-                                }}
-                            >
-                                Revenir à la liste de cours
-                            </Button>
-                        )}
-                    </Transition>
-                    <Programme id={id} tableMatiereShow />
-                </div>
-            )}
-            {!lecture && user.connecte && (
+        <Styled.Conteneur>
+            {lecture && <AfficherCours id={id} />}
+            {!lecture && <AfficherListeCours />}
+        </Styled.Conteneur>
+    );
+};
+export default Cours;
+
+interface AfficherCoursI {
+    id: number;
+}
+
+const AfficherCours: React.FC<AfficherCoursI> = ({ id }) => {
+    const history = useHistory();
+
+    React.useEffect(() => {});
+
+    return (
+        <>
+            <div
+                style={{
+                    position: "relative",
+                    top: "0px",
+                    left: "0px",
+                    height: "100%"
+                }}
+            >
                 <Transition
                     appear
                     enter
@@ -312,166 +196,156 @@ const Cours = () => {
                     timeout={{ appear: 200, enter: 0, exit: 200 }}
                 >
                     {(state3) => (
-                        <ConteneurProgression
+                        <Button
+                            type="ghost"
+                            icon="arrow-left"
+                            onMouseDown={() => history.push("/Liste-des-cours")}
                             style={{
+                                position: "absolute",
+                                top: "-10px",
+                                left: "110px",
                                 ...defaultStyle,
                                 ...transitionStyles[state3]
                             }}
                         >
-                            <ProgressionGenerale
-                                tab={progress}
-                                nbCours={state.length}
-                            />
-                            <ConteneurIcoProgress>
-                                {state.map((element, index) => {
-                                    return (
-                                        <ProgressIcone
-                                            key={`Icone - ${index}`}
-                                            tab={progress}
-                                            idCours={state[index].id}
-                                            tt={element.Titre}
-                                        />
-                                    );
-                                })}
-                            </ConteneurIcoProgress>
-                        </ConteneurProgression>
+                            Revenir à la liste de cours
+                        </Button>
                     )}
                 </Transition>
-            )}
-            {user.connecte && !lecture && (
-                <ConteneurTimeline>
-                    <Timeline>
-                        {state.map((element, index) => {
-                            return (
-                                <Transition
-                                    key={`Cours-${index}`}
-                                    appear
-                                    enter
-                                    mountOnEnter
-                                    unmountOnExit
-                                    in={true}
-                                    timeout={{
-                                        appear: 200 * index,
-                                        enter: 0,
-                                        exit: 200
-                                    }}
-                                >
-                                    {(state3) => (
-                                        <Timeline.Item
-                                            style={{
-                                                ...defaultStyle,
-                                                ...transitionStyles[state3]
-                                            }}
-                                            dot={
-                                                <SelIcone
-                                                    tab={progress}
-                                                    idCours={state[index].id}
-                                                />
-                                            }
-                                        >
-                                            <ConteneurCours
-                                                onMouseDown={() => {
-                                                    history.push(
-                                                        `/cours/${
-                                                            element.id
-                                                        }-${element.Titre.replace(
-                                                            / /g,
-                                                            "-"
-                                                        )}`
-                                                    );
-                                                }}
-                                            >
-                                                <Description>
-                                                    <TitreEtape>
-                                                        {element.Titre}
-                                                    </TitreEtape>
-                                                    <DescriptionEtape>
-                                                        {element.Description}
-                                                    </DescriptionEtape>
-                                                </Description>
+                <Programme id={id} tableMatiereShow />
+            </div>
+        </>
+    );
+};
 
-                                                <Details>
+const AfficherListeCours = () => {
+    const history = useHistory();
+    const [user] = React.useContext(userContext);
+    const [state, setState] = React.useState<coursT[]>([]);
+    const [progress] = React.useState<progT[]>([]);
+
+    React.useEffect(() => {
+        Axios.get("/Cours").then((rep) => setState(rep.data));
+    }, []);
+
+    return (
+        <>
+            <Helmet>
+                <title>{`Liste des cours de philosophie`}</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="description"
+                    content={`Liste des cours de philosophie, étude d'oeuvres.`}
+                />
+                <link
+                    rel="canonical"
+                    href={`https://www.phidbac.fr/Liste-des-cours`}
+                />
+            </Helmet>
+            <Transition
+                appear
+                enter
+                mountOnEnter
+                unmountOnExit
+                in={user.connecte}
+                timeout={{ appear: 200, enter: 0, exit: 200 }}
+            >
+                {(state3) => (
+                    <Styled.ConteneurProgression
+                        style={{
+                            ...defaultStyle,
+                            ...transitionStyles[state3]
+                        }}
+                    >
+                        <ProgressionGenerale
+                            tab={progress}
+                            nbCours={state.length}
+                        />
+                        <Styled.ConteneurIcoProgress>
+                            {state.map((element, index) => {
+                                return (
+                                    <ProgressIcone
+                                        key={`Icone - ${index}`}
+                                        tab={progress}
+                                        idCours={state[index].id}
+                                        tt={element.Titre}
+                                    />
+                                );
+                            })}
+                        </Styled.ConteneurIcoProgress>
+                    </Styled.ConteneurProgression>
+                )}
+            </Transition>
+
+            <Styled.ConteneurTimeline>
+                <Timeline>
+                    {state.map((element, index) => {
+                        return (
+                            <Transition
+                                key={`Cours-${index}`}
+                                appear
+                                enter
+                                mountOnEnter
+                                unmountOnExit
+                                in={true}
+                                timeout={{
+                                    appear: 200 * index,
+                                    enter: 0,
+                                    exit: 200
+                                }}
+                            >
+                                {(state3) => (
+                                    <Timeline.Item
+                                        style={{
+                                            ...defaultStyle,
+                                            ...transitionStyles[state3]
+                                        }}
+                                        dot={
+                                            <SelIcone
+                                                tab={progress}
+                                                idCours={state[index].id}
+                                            />
+                                        }
+                                    >
+                                        <Styled.ConteneurCours
+                                            onClick={() => {
+                                                history.push(
+                                                    `/Liste-des-cours/${
+                                                        element.id
+                                                    }-${element.Titre.trim().replace(
+                                                        / /g,
+                                                        "-"
+                                                    )}`
+                                                );
+                                            }}
+                                        >
+                                            <Styled.Description>
+                                                <Styled.TitreEtape>
+                                                    {element.Titre}
+                                                </Styled.TitreEtape>
+                                                <Styled.DescriptionEtape>
+                                                    {element.Description}
+                                                </Styled.DescriptionEtape>
+                                            </Styled.Description>
+
+                                            <Styled.Details>
+                                                {user.connecte && (
                                                     <Progression
                                                         tab={progress}
                                                         idCours={
                                                             state[index].id
                                                         }
                                                     />
-                                                </Details>
-                                            </ConteneurCours>
-                                        </Timeline.Item>
-                                    )}
-                                </Transition>
-                            );
-                        })}
-                    </Timeline>
-                </ConteneurTimeline>
-            )}
-            {!user.connecte && !lecture && (
-                <ConteneurTimeline>
-                    <Timeline>
-                        {state.map((element, index) => {
-                            return (
-                                <Transition
-                                    key={`Cours-${index}`}
-                                    appear
-                                    enter
-                                    mountOnEnter
-                                    unmountOnExit
-                                    in={true}
-                                    timeout={{
-                                        appear: 200 * index,
-                                        enter: 0,
-                                        exit: 200
-                                    }}
-                                >
-                                    {(state3) => (
-                                        <Timeline.Item
-                                            style={{
-                                                ...defaultStyle,
-                                                ...transitionStyles[state3]
-                                            }}
-                                            dot={
-                                                <SelIcone
-                                                    tab={progress}
-                                                    idCours={state[index].id}
-                                                />
-                                            }
-                                        >
-                                            <ConteneurCours
-                                                onMouseDown={() => {
-                                                    history.push(
-                                                        `/cours/${
-                                                            element.id
-                                                        }-${element.Titre.replace(
-                                                            / /g,
-                                                            "-"
-                                                        )}`
-                                                    );
-                                                }}
-                                            >
-                                                <Description>
-                                                    <TitreEtape>
-                                                        {element.Titre}
-                                                    </TitreEtape>
-                                                    <DescriptionEtape>
-                                                        {element.Description}
-                                                    </DescriptionEtape>
-                                                </Description>
-
-                                                <Details>
-                                                    {`Semaine ${index + 1}`}
-                                                </Details>
-                                            </ConteneurCours>
-                                        </Timeline.Item>
-                                    )}
-                                </Transition>
-                            );
-                        })}
-                    </Timeline>
-                </ConteneurTimeline>
-            )}
-        </Conteneur>
+                                                )}
+                                            </Styled.Details>
+                                        </Styled.ConteneurCours>
+                                    </Timeline.Item>
+                                )}
+                            </Transition>
+                        );
+                    })}
+                </Timeline>
+            </Styled.ConteneurTimeline>
+        </>
     );
 };
-export default Cours;
