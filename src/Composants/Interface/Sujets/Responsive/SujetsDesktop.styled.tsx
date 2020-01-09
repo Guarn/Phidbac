@@ -78,9 +78,11 @@ export const ConteneurSujet = styled.div`
     }
     @media (max-width: 767px) {
         height: initial;
+        min-height: 100%;
         overflow: initial;
         margin-bottom: 30px;
-        padding-right: 0px;
+        padding-right: 5px;
+        background-color: ${(props) => props.theme.background};
     }
 `;
 
