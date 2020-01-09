@@ -25,6 +25,9 @@ export const PuceLien = styled.div`
     align-items: center;
     background-color: salmon;
     transform: translate3d(-50px, 0, 0);
+    @media (max-width: 767px) {
+        display: none;
+    }
 `;
 
 interface ConteneurSlateI {
@@ -86,6 +89,13 @@ export const ConteneurGlobal = styled.div<WidthProps>`
     position: relative;
     padding-left: 10%;
     height: 100%;
+    @media (max-width: 767px) {
+        margin-top: 60px;
+        padding-right: 5px;
+        padding-left: 5px;
+        width: initial;
+        height: initial;
+    }
 `;
 
 export const ConteneurImage = styled.div<ConteneurSlateI>`

@@ -8,6 +8,7 @@ import Programme from "../Programme/Programme";
 import { useLocation, useHistory } from "react-router";
 import * as Styled from "./Cours.styled";
 import { Helmet } from "react-helmet-async";
+import { Desktop, Mobile } from "../../../responsive";
 
 type coursT = {
     id: number;
@@ -196,20 +197,43 @@ const AfficherCours: React.FC<AfficherCoursI> = ({ id }) => {
                     timeout={{ appear: 200, enter: 0, exit: 200 }}
                 >
                     {(state3) => (
-                        <Button
-                            type="ghost"
-                            icon="arrow-left"
-                            onMouseDown={() => history.push("/Liste-des-cours")}
-                            style={{
-                                position: "absolute",
-                                top: "-10px",
-                                left: "110px",
-                                ...defaultStyle,
-                                ...transitionStyles[state3]
-                            }}
-                        >
-                            Revenir à la liste de cours
-                        </Button>
+                        <>
+                            <Desktop>
+                                <Button
+                                    type="ghost"
+                                    icon="arrow-left"
+                                    onMouseDown={() =>
+                                        history.push("/Liste-des-cours")
+                                    }
+                                    style={{
+                                        position: "absolute",
+                                        top: "-10px",
+                                        left: "110px",
+                                        ...defaultStyle,
+                                        ...transitionStyles[state3]
+                                    }}
+                                >
+                                    Revenir à la liste de cours
+                                </Button>
+                            </Desktop>
+                            <Mobile>
+                                <Button
+                                    type="ghost"
+                                    icon="arrow-left"
+                                    onMouseDown={() =>
+                                        history.push("/Liste-des-cours")
+                                    }
+                                    style={{
+                                        position: "absolute",
+                                        top: "55px",
+                                        ...defaultStyle,
+                                        ...transitionStyles[state3]
+                                    }}
+                                >
+                                    Revenir à la liste de cours
+                                </Button>
+                            </Mobile>
+                        </>
                     )}
                 </Transition>
                 <Programme id={id} tableMatiereShow />

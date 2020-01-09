@@ -58,7 +58,14 @@ const MenuMobile = () => {
                 >
                     Accueil
                 </BoutonPage>
-                <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                <BoutonPage
+                    onClick={() => {
+                        setMenu(false);
+                        history.push(
+                            "/Presentation-du-programme-et-des-epreuves"
+                        );
+                    }}
+                >
                     Programmes / Epreuves
                 </BoutonPage>
                 <BoutonPage
@@ -69,7 +76,12 @@ const MenuMobile = () => {
                 >
                     Sujets
                 </BoutonPage>
-                <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                <BoutonPage
+                    onClick={() => {
+                        setMenu(false);
+                        history.push("/Liste-des-cours");
+                    }}
+                >
                     Cours
                 </BoutonPage>
                 <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>

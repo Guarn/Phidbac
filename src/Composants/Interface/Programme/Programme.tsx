@@ -10,6 +10,7 @@ import "./Programme.css";
 import { userContext } from "../../../App";
 import { useCookies } from "react-cookie";
 import { Helmet } from "react-helmet-async";
+import { Desktop } from "../../../responsive";
 
 export interface ProgrammeI {
     id: number;
@@ -311,7 +312,9 @@ const Programme: React.FC<ProgrammeI> = ({
                 )}
             </Transition>
 
-            {tableMatiereShow && <TableMatiere cours={cours} />}
+            <Desktop>
+                {tableMatiereShow && <TableMatiere cours={cours} />}
+            </Desktop>
         </Styled.Conteneur>
     );
 };

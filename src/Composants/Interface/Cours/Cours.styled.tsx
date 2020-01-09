@@ -6,6 +6,10 @@ export const Conteneur = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    @media (max-width: 767px) {
+        height: initial;
+        width: initial;
+    }
 `;
 
 export const ConteneurCours = styled.div`
@@ -23,6 +27,11 @@ export const Description = styled.div`
     flex-direction: column;
     width: 450px;
     margin-left: 30px;
+    @media (max-width: 767px) {
+        width: initial;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 `;
 
 export const Details = styled.div`
@@ -62,6 +71,9 @@ export const Dot = styled.div<DotProps>`
     background-color: ${(props) => (props.color ? props.color : "salmon")};
     box-sizing: border-box;
     margin-top: 8px;
+    @media (max-width: 767px) {
+        margin-left: 10px;
+    }
 `;
 
 export const ConteneurIcoProgress = styled.div`
@@ -91,4 +103,11 @@ export const ConteneurTimeline = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
+    @media (max-width: 767px) {
+        overflow: initial;
+        padding-right: 0px;
+        padding-left: 0px;
+        height: initial;
+        margin-top: 60px;
+    }
 `;
