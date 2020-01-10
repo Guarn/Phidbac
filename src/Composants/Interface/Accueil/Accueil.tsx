@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../../Assets/LOG.svg";
 import PartieG from "./PartieG";
-import { Desktop, Tablet } from "../../../responsive";
+import { DesktopTablet } from "../../../responsive";
 import { Transition } from "react-transition-group";
 import { Helmet } from "react-helmet-async";
 //SECTION STYLED-COMPONENTS
@@ -41,7 +41,7 @@ const Accueil = () => {
                 <link rel="canonical" href="https://www.phidbac.fr/" />
             </Helmet>
             <PartieG />
-            <Desktop>
+            <DesktopTablet>
                 <PartieD>
                     <Transition
                         appear
@@ -63,12 +63,7 @@ const Accueil = () => {
                         )}
                     </Transition>
                 </PartieD>
-            </Desktop>
-            <Tablet>
-                <PartieD>
-                    <Logo height="85%" width="85%" />
-                </PartieD>
-            </Tablet>
+            </DesktopTablet>
         </>
     );
 };

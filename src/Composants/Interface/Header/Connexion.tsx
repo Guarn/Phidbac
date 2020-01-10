@@ -4,7 +4,7 @@ import Login from "./Login";
 import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
-import { Desktop, Tablet, Mobile } from "../../../responsive";
+import { Desktop, TabletMobile } from "../../../responsive";
 import { Transition } from "react-transition-group";
 import { userContext } from "../../../App";
 import { Action } from "../../../reducers";
@@ -150,45 +150,8 @@ const Header = () => {
                     </Popover>
                 )}
             </Desktop>
-            <Tablet>
-                {user.connecte && (
-                    <Popover
-                        trigger="click"
-                        placement="bottomRight"
-                        content={
-                            <Lien
-                                removeCookie={() =>
-                                    removeCookie("token", {
-                                        domain: ".phidbac.fr"
-                                    })
-                                }
-                            />
-                        }
-                    >
-                        <span style={{ color: "orange" }}>
-                            {user.prenom + " " + user.nom}
-                            <Icon type="down" />
-                        </span>
-                    </Popover>
-                )}
-                {!user.connecte && (
-                    <Popover
-                        style={{ width: "100px" }}
-                        placement="bottomRight"
-                        content={
-                            <Identification
-                                userDispatch={(val: Action) =>
-                                    userDispatch(val)
-                                }
-                            />
-                        }
-                        trigger="click"
-                    >
-                        <span>Se connecter</span>
-                    </Popover>
-                )}
-            </Tablet>
-            <Mobile>
+
+            <TabletMobile>
                 {user.connecte && (
                     <Popover
                         trigger="click"
@@ -219,18 +182,20 @@ const Header = () => {
                             Se connecter
                         </span>
                         <Modal
+                            footer={null}
                             visible={connexionDisplay}
                             onCancel={() => setConnexionDisplay(false)}
                         >
                             <Identification
-                                userDispatch={(val: Action) =>
-                                    userDispatch(val)
-                                }
+                                userDispatch={(val: Action) => {
+                                    setConnexionDisplay(false);
+                                    userDispatch(val);
+                                }}
                             />
                         </Modal>
                     </>
                 )}
-            </Mobile>
+            </TabletMobile>
         </>
     );
 };

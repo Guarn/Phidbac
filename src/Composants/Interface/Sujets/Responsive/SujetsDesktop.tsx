@@ -5,8 +5,7 @@ import React, {
     createContext,
     useContext,
     Dispatch,
-    useState,
-    FC
+    useState
 } from "react";
 import * as Styled from "./SujetsDesktop.styled";
 import {

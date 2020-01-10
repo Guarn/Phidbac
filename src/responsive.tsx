@@ -8,6 +8,10 @@ export const DesktopTablet = ({ children }: any) => {
     const isDesktopTablet = useMediaQuery({ minWidth: 768 });
     return isDesktopTablet ? children : null;
 };
+export const TabletMobile = ({ children }: any) => {
+    const isTabletMobile = useMediaQuery({ maxWidth: 1023 });
+    return isTabletMobile ? children : null;
+};
 export const Tablet = ({ children }: any) => {
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
     return isTablet ? children : null;

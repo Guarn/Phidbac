@@ -1,5 +1,5 @@
 import * as React from "react";
-import styled from "styled-components";
+import * as Styled from "./PartieG.styled";
 import "./PartieG.css";
 import { Desktop, Tablet, Mobile } from "../../../responsive";
 import PartieGDesktop from "./Responsive/PartieGDesktop";
@@ -7,20 +7,6 @@ import { Transition } from "react-transition-group";
 
 const PartieGTablet = React.lazy(() => import("./Responsive/PartieGTablet"));
 const PartieGMobile = React.lazy(() => import("./Responsive/PartieGMobile"));
-
-const Conteneur = styled.div`
-    flex: 1;
-    z-index: 2;
-    display: flex;
-    font-size: 16px;
-    height: 100%;
-    flex-direction: column;
-    justify-content: center;
-    @media (max-width: 767px) {
-        height: initial;
-        margin-top: 60px;
-    }
-`;
 
 const duration = 500;
 const defaultStyle = {
@@ -33,24 +19,13 @@ const transitionStyles: any = {
     exiting: { opacity: 0 },
     exited: { opacity: 0 }
 };
-const Cercle = styled.div`
-    position: absolute;
-    top: -10%;
-    left: -40%;
-    width: 100%;
-    height: 200%;
-    background-color: #e9e7e1;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 50% /50%;
-    z-index: 0;
-    opacity: 0.5;
-`;
+
 const PartieG = () => {
     return (
-        <Conteneur>
+        <Styled.Conteneur>
             <React.Suspense fallback={<div></div>}>
                 <Desktop>
-                    <Cercle />
+                    <Styled.Cercle />
                     <Transition
                         appear
                         enter
@@ -72,13 +47,49 @@ const PartieG = () => {
                     </Transition>
                 </Desktop>
                 <Tablet>
-                    <PartieGTablet />
+                    <Transition
+                        appear
+                        enter
+                        mountOnEnter
+                        unmountOnExit
+                        in={true}
+                        timeout={{ appear: 500, enter: 200, exit: 200 }}
+                    >
+                        {(state) => (
+                            <div
+                                style={{
+                                    ...defaultStyle,
+                                    ...transitionStyles[state]
+                                }}
+                            >
+                                <PartieGTablet />
+                            </div>
+                        )}
+                    </Transition>
                 </Tablet>
                 <Mobile>
-                    <PartieGMobile />
+                    <Transition
+                        appear
+                        enter
+                        mountOnEnter
+                        unmountOnExit
+                        in={true}
+                        timeout={{ appear: 500, enter: 200, exit: 200 }}
+                    >
+                        {(state) => (
+                            <div
+                                style={{
+                                    ...defaultStyle,
+                                    ...transitionStyles[state]
+                                }}
+                            >
+                                <PartieGMobile />
+                            </div>
+                        )}
+                    </Transition>
                 </Mobile>
             </React.Suspense>
-        </Conteneur>
+        </Styled.Conteneur>
     );
 };
 

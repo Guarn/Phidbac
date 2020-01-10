@@ -22,9 +22,11 @@ const BoutonMenu = styled.div`
 const BoutonPage = styled.div`
     font-size: 18px;
     margin-left: 5px;
+    font-family: "Century Gothic";
     &:hover {
         color: orange;
     }
+    margin-bottom: 10px;
 `;
 
 const Phi = styled.span`
