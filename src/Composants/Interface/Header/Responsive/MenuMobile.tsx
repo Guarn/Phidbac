@@ -87,7 +87,10 @@ const MenuMobile = () => {
                     Cours
                 </BoutonPage>
                 <BoutonPage
-                    onClick={() => history.push("/Liste-des-exercices")}
+                    onClick={() => {
+                        setMenu(false);
+                        history.push("/Liste-des-exercices");
+                    }}
                 >
                     Exercices
                 </BoutonPage>
