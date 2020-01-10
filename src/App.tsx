@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch } from "react";
 import "./App.css";
 import * as Styled from "./App.Styled";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import Menu from "./Composants/Interface/Header/Menu";
 import { Desktop } from "./responsive";
@@ -35,6 +35,11 @@ const App = () => {
                         </Styled.ConteneurHeader>
                         <Styled.ConteneurContenu>
                             <Switch>
+                                <Redirect
+                                    exact
+                                    from="/Programme"
+                                    to="/Presentation-du-programme-et-des-epreuves"
+                                />
                                 <Route exact path="/" component={Accueil} />
                                 <Route
                                     path="/Annales-Bac-Sujets-Philosophie"
@@ -43,6 +48,7 @@ const App = () => {
                                 <Route path="/Presentation-du-programme-et-des-epreuves">
                                     <Programme id={1} tableMatiereShow />
                                 </Route>
+
                                 <Route
                                     path="/Liste-des-cours"
                                     component={Cours}

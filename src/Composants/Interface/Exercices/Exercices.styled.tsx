@@ -109,5 +109,7 @@ export const ConteneurTimeline = styled.div`
         padding-left: 0px;
         height: initial;
         margin-top: 60px;
+        align-items: flex-start;
+        justify-content: flex-start;
     }
 `;

@@ -8,7 +8,7 @@ import Programme from "../Programme/Programme";
 import { useLocation, useHistory } from "react-router";
 import * as Styled from "./Exercices.styled";
 import { Helmet } from "react-helmet-async";
-import { Desktop, Mobile } from "../../../responsive";
+import { Desktop, Mobile, DesktopTablet } from "../../../responsive";
 
 type coursT = {
     id: number;
@@ -274,41 +274,42 @@ const AfficherListeCours = () => {
                     href={`https://www.phidbac.fr/Liste-des-exercices`}
                 />
             </Helmet>
-            <Transition
-                appear
-                enter
-                mountOnEnter
-                unmountOnExit
-                in={user.connecte}
-                timeout={{ appear: 200, enter: 0, exit: 200 }}
-            >
-                {(state3) => (
-                    <Styled.ConteneurProgression
-                        style={{
-                            ...defaultStyle,
-                            ...transitionStyles[state3]
-                        }}
-                    >
-                        <ProgressionGenerale
-                            tab={progress}
-                            nbCours={state.length}
-                        />
-                        <Styled.ConteneurIcoProgress>
-                            {state.map((element, index) => {
-                                return (
-                                    <ProgressIcone
-                                        key={`Icone - ${index}`}
-                                        tab={progress}
-                                        idCours={state[index].id}
-                                        tt={element.Titre}
-                                    />
-                                );
-                            })}
-                        </Styled.ConteneurIcoProgress>
-                    </Styled.ConteneurProgression>
-                )}
-            </Transition>
-
+            <DesktopTablet>
+                <Transition
+                    appear
+                    enter
+                    mountOnEnter
+                    unmountOnExit
+                    in={user.connecte}
+                    timeout={{ appear: 200, enter: 0, exit: 200 }}
+                >
+                    {(state3) => (
+                        <Styled.ConteneurProgression
+                            style={{
+                                ...defaultStyle,
+                                ...transitionStyles[state3]
+                            }}
+                        >
+                            <ProgressionGenerale
+                                tab={progress}
+                                nbCours={state.length}
+                            />
+                            <Styled.ConteneurIcoProgress>
+                                {state.map((element, index) => {
+                                    return (
+                                        <ProgressIcone
+                                            key={`Icone - ${index}`}
+                                            tab={progress}
+                                            idCours={state[index].id}
+                                            tt={element.Titre}
+                                        />
+                                    );
+                                })}
+                            </Styled.ConteneurIcoProgress>
+                        </Styled.ConteneurProgression>
+                    )}
+                </Transition>
+            </DesktopTablet>
             <Styled.ConteneurTimeline>
                 <Timeline>
                     {state.map((element, index) => {
@@ -360,16 +361,18 @@ const AfficherListeCours = () => {
                                                 </Styled.DescriptionEtape>
                                             </Styled.Description>
 
-                                            <Styled.Details>
-                                                {user.connecte && (
-                                                    <Progression
-                                                        tab={progress}
-                                                        idCours={
-                                                            state[index].id
-                                                        }
-                                                    />
-                                                )}
-                                            </Styled.Details>
+                                            <DesktopTablet>
+                                                <Styled.Details>
+                                                    {user.connecte && (
+                                                        <Progression
+                                                            tab={progress}
+                                                            idCours={
+                                                                state[index].id
+                                                            }
+                                                        />
+                                                    )}
+                                                </Styled.Details>
+                                            </DesktopTablet>
                                         </Styled.ConteneurCours>
                                     </Timeline.Item>
                                 )}

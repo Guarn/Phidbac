@@ -8,6 +8,17 @@ const Conteneur = styled.div`
     margin-left: 20px;
     margin-top: 50px;
     font-size: 14px;
+    font-family: "Century Gothic";
+    @media (max-width: 1024px) {
+        padding: 10px;
+        margin-left: 10px;
+
+        margin-top: 10px;
+        bottom: 10px;
+        right: 10px;
+        position: fixed;
+        background-color: white;
+    }
 `;
 
 const Titre = styled.h2`

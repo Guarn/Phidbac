@@ -30,6 +30,13 @@ export const PuceLien = styled.div`
     }
 `;
 
+export const BoutonFlottant = styled.div`
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9000;
+`;
+
 interface ConteneurSlateI {
     options?: {
         marginTop: number;
@@ -64,6 +71,7 @@ export const ConteneurSlate = styled.div<ConteneurSlateI>`
     box-sizing: border-box;
     border: 1px dashed transparent;
     transition: all 0.2s;
+    transition: filter 0.5s;
 
     background-color: ${(props) => props.options?.backgroundColor ?? ""};
     margin-top: ${(props) => (props.options?.marginTop ?? 0) + "px"};
@@ -102,6 +110,7 @@ export const ConteneurGlobal = styled.div<WidthProps>`
         padding-left: 5px;
         width: initial;
         height: initial;
+        min-height: 100vh;
     }
 `;
 
