@@ -137,17 +137,23 @@ const ProgressIcone: React.FC<any> = ({ tab, idCours, tt }) => {
 };
 
 const Cours = () => {
-    const [lecture, setLecture] = React.useState(false);
-    const [id, setId] = React.useState(0);
     const location = useLocation();
+    const [id, setId] = React.useState(
+        location.pathname.substring(17)
+            ? parseInt(location.pathname.substring(17).split("-")[0])
+            : 0
+    );
+    const [lecture, setLecture] = React.useState(
+        location.pathname !== "/Liste-des-cours"
+    );
 
     React.useEffect(() => {
         if (location.pathname === "/Liste-des-cours") {
             setLecture(false);
         }
         if (location.pathname.substring(17)) {
-            setId(parseInt(location.pathname.substring(17).split("-")[0]));
             setLecture(true);
+            setId(parseInt(location.pathname.substring(17).split("-")[0]));
         }
         /*
         if (state.length === 0 && progress.length === 0 && !lecture) {

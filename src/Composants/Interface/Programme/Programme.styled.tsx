@@ -41,6 +41,7 @@ interface ConteneurSlateI {
         paddingLeft: number;
         paddingRight: number;
         paddingBottom: number;
+        hidden: boolean;
     };
     imageOptions?: {
         align: "left" | "right" | "center";
@@ -75,6 +76,12 @@ export const ConteneurSlate = styled.div<ConteneurSlateI>`
     padding-right: ${(props) => (props.options?.paddingRight ?? 0) + "px"};
     min-height: ${(props) =>
         props.image ? (props.imageOptions?.height ?? 0) + "px" : "0px"};
+    filter: ${(props) => (props.options?.hidden ? "blur(5px)" : "blur(0px)")};
+
+    &:hover {
+        filter: none;
+    }
+
     &:hover ${PuceLien} {
         opacity: 1;
     }

@@ -37,6 +37,7 @@ export interface ContenuCoursI {
         paddingLeft: number;
         paddingRight: number;
         paddingBottom: number;
+        hidden: boolean;
     };
     imageOptions?: {
         align: "left" | "right" | "center";
