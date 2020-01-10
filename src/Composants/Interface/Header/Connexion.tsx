@@ -194,7 +194,13 @@ const Header = () => {
                         trigger="click"
                         placement="bottomRight"
                         content={
-                            <Lien removeCookie={() => removeCookie("token")} />
+                            <Lien
+                                removeCookie={() =>
+                                    removeCookie("token", {
+                                        domain: ".phidbac.fr"
+                                    })
+                                }
+                            />
                         }
                     >
                         <span style={{ color: "orange" }}>
