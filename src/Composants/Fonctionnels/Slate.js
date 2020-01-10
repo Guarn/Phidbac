@@ -119,66 +119,390 @@ const Element = ({ attributes, children, element }) => {
         case "link":
             switch (element.select) {
                 case "web":
-                    return (
-                        <Popover
-                            overlayClassName="Pop-LienWeb"
-                            content={
-                                <div style={{ display: "flex" }}>
-                                    <div
-                                        style={{
-                                            color: "orange",
-                                            fontWeight: "bold"
-                                        }}
+                    switch (element.ouverture) {
+                        case "same":
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                WEB
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.value}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_self"
+                                        rel="noopener noreferrer"
+                                        href={element.value}
+                                        {...attributes}
                                     >
-                                        WEB
-                                    </div>
-                                    <div
-                                        style={{
-                                            color: "white",
-                                            marginLeft: "5px",
-                                            marginRight: "5px"
-                                        }}
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                        default:
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                WEB
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.value}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={element.value}
+                                        {...attributes}
                                     >
-                                        |
-                                    </div>
-                                    <div
-                                        style={{
-                                            color: "white"
-                                        }}
-                                    >
-                                        {element.value}
-                                    </div>
-                                </div>
-                            }
-                        >
-                            <a
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                href={element.value}
-                                {...attributes}
-                            >
-                                {children}
-                            </a>
-                        </Popover>
-                    );
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                    }
+
                 case "index":
-                    return (
-                        <OpenModal
-                            type="index"
-                            element={element}
-                            attributes={attributes}
-                            children={children}
-                        />
-                    );
+                    switch (element.ouverture) {
+                        case "same":
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                INDEX
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.nom}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_self"
+                                        rel="noopener noreferrer"
+                                        href={`https://www.phidbac.fr/Liste-des-index/${element.value}`}
+                                        {...attributes}
+                                    >
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                        case "new":
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                INDEX
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.nom}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={`https://www.phidbac.fr/Liste-des-index/${element.value}`}
+                                        {...attributes}
+                                    >
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                        default:
+                            return (
+                                <OpenModal
+                                    type="index"
+                                    element={element}
+                                    attributes={attributes}
+                                    children={children}
+                                />
+                            );
+                    }
+
                 case "cours":
-                    return (
-                        <OpenModal
-                            type="cours"
-                            element={element}
-                            attributes={attributes}
-                            children={children}
-                        />
-                    );
+                    switch (element.ouverture) {
+                        case "same":
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                COURS
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.nom}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_self"
+                                        rel="noopener noreferrer"
+                                        href={`https://www.phidbac.fr/Liste-des-cours/${element.value}`}
+                                        {...attributes}
+                                    >
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                        case "new":
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                COURS
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.nom}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={`https://www.phidbac.fr/Liste-des-cours/${element.value}`}
+                                        {...attributes}
+                                    >
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                        default:
+                            return (
+                                <OpenModal
+                                    type="cours"
+                                    element={element}
+                                    attributes={attributes}
+                                    children={children}
+                                />
+                            );
+                    }
+                case "exercices":
+                    switch (element.ouverture) {
+                        case "same":
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                EXERCICES
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.nom}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_self"
+                                        rel="noopener noreferrer"
+                                        href={`https://www.phidbac.fr/Liste-des-exercices/${element.value}`}
+                                        {...attributes}
+                                    >
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                        case "new":
+                            return (
+                                <Popover
+                                    overlayClassName="Pop-LienWeb"
+                                    content={
+                                        <div style={{ display: "flex" }}>
+                                            <div
+                                                style={{
+                                                    color: "orange",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                EXERCICES
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white",
+                                                    marginLeft: "5px",
+                                                    marginRight: "5px"
+                                                }}
+                                            >
+                                                |
+                                            </div>
+                                            <div
+                                                style={{
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {element.nom}
+                                            </div>
+                                        </div>
+                                    }
+                                >
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={`https://www.phidbac.fr/Liste-des-exercices/${element.value}`}
+                                        {...attributes}
+                                    >
+                                        {children}
+                                    </a>
+                                </Popover>
+                            );
+                        default:
+                            return (
+                                <OpenModal
+                                    type="exercices"
+                                    element={element}
+                                    attributes={attributes}
+                                    children={children}
+                                />
+                            );
+                    }
                 default:
                     return <a {...attributes}>{children}</a>;
             }
@@ -310,6 +634,12 @@ const OpenModal = ({ type, attributes, children, element }) => {
                         <Programme
                             id={element.value}
                             paragraphe={element.paragraphe}
+                            tableMatiereShow={false}
+                        />
+                    )}
+                    {type === "exercices" && (
+                        <Programme
+                            id={element.value}
                             tableMatiereShow={false}
                         />
                     )}

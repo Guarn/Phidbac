@@ -104,6 +104,7 @@ const Programme: React.FC<ProgrammeI> = ({
 
     React.useEffect(() => {
         // Fetch du cours si pas téléchargé
+
         if (cours.Titre === "") {
             Axios.get(`/Cours/${id}`).then((rep) => {
                 setCours({
@@ -146,9 +147,13 @@ const Programme: React.FC<ProgrammeI> = ({
     return (
         <Styled.Conteneur
             decalage={
-                location.pathname.substring(0, 16) === "/Liste-des-cours" &&
-                location.pathname.substring(17) !== "" &&
-                !!tableMatiereShow
+                (location.pathname.substring(0, 16) === "/Liste-des-cours" &&
+                    location.pathname.substring(17) !== "" &&
+                    !!tableMatiereShow) ||
+                (location.pathname.substring(0, 20) ===
+                    "/Liste-des-exercices" &&
+                    location.pathname.substring(21) !== "" &&
+                    !!tableMatiereShow)
             }
         >
             {id === 1 && (
@@ -165,7 +170,7 @@ const Programme: React.FC<ProgrammeI> = ({
                     />
                 </Helmet>
             )}
-            {id !== 1 && tableMatiereShow && (
+            {id !== 1 && tableMatiereShow && cours.type === "Cours" && (
                 <Helmet>
                     <title>{`${cours.Titre}`}</title>
                     <meta charSet="utf-8" />
@@ -173,6 +178,20 @@ const Programme: React.FC<ProgrammeI> = ({
                     <link
                         rel="canonical"
                         href={`https://www.phidbac.fr/Liste-des-cours/${id}-${cours.Titre.trim().replace(
+                            / /g,
+                            "-"
+                        )}`}
+                    />
+                </Helmet>
+            )}
+            {id !== 1 && tableMatiereShow && cours.type === "Exercice" && (
+                <Helmet>
+                    <title>{`${cours.Titre}`}</title>
+                    <meta charSet="utf-8" />
+                    <meta name="description" content={`${cours.Description}`} />
+                    <link
+                        rel="canonical"
+                        href={`https://www.phidbac.fr/Liste-des-exercices/${id}-${cours.Titre.trim().replace(
                             / /g,
                             "-"
                         )}`}

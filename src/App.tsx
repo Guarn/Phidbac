@@ -10,6 +10,7 @@ import Sujets from "./Composants/Interface/Sujets/Sujets";
 import Programme from "./Composants/Interface/Programme/Programme";
 import Cours from "./Composants/Interface/Cours/Cours";
 import Index from "./Composants/Interface/Index/Index";
+import Exercices from "./Composants/Interface/Exercices/Exercices";
 import { userReducer, userInit, Action, State } from "./reducers";
 import { theme } from "./Shared/Styled";
 import { HelmetProvider } from "react-helmet-async";
@@ -49,6 +50,10 @@ const App = () => {
                                 <Route
                                     path="/Liste-des-index"
                                     component={Index}
+                                />
+                                <Route
+                                    path="/Liste-des-exercices"
+                                    component={Exercices}
                                 />
                             </Switch>
                         </Styled.ConteneurContenu>

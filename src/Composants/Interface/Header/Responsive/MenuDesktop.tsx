@@ -67,7 +67,9 @@ const Desktop = () => {
                     Cours
                 </BoutonPage>
 
-                <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
+                <BoutonPage
+                    onClick={() => history.push("/Liste-des-exercices")}
+                >
                     Exercices
                 </BoutonPage>
                 <BoutonPage onClick={() => history.push("/Liste-des-index")}>
