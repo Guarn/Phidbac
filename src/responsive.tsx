@@ -4,6 +4,10 @@ export const Desktop = ({ children }: any) => {
     const isDesktop = useMediaQuery({ minWidth: 1024 });
     return isDesktop ? children : null;
 };
+export const DesktopTablet = ({ children }: any) => {
+    const isDesktopTablet = useMediaQuery({ minWidth: 768 });
+    return isDesktopTablet ? children : null;
+};
 export const Tablet = ({ children }: any) => {
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
     return isTablet ? children : null;

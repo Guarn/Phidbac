@@ -31,13 +31,15 @@
         "react-transition-group": "^4.3.0",
         "slate": "^0.53.0",
         "slate-react": "^0.53.0",
+        "source-map-explorer": "^2.2.1",
         "styled-components": "^4.4.0",
         "typescript": "~3.7.2"
     },
     "scripts": {
         "start": "react-app-rewired start",
         "build": "react-app-rewired build",
-        "test": "react-app-rewired test"
+        "test": "react-app-rewired test",
+        "analyze": "source-map-explorer 'build/static/js/*.js'"
     },
     "eslintConfig": {
         "extends": "react-app"

@@ -1,45 +1,52 @@
 import styled from "styled-components";
 import { Radio } from "antd";
 
-const Conteneur = styled.div`
+export const Conteneur = styled.div`
     height: 80%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 5%;
+    @media (max-width: 767px) {
+        height: initial;
+    }
 `;
 
-const ConteneurDescription = styled.div`
+export const ConteneurDescription = styled.div`
     width: 500px;
     margin-left: 40px;
     overflow: auto;
     height: 100%;
     padding-right: 10px;
+    @media (max-width: 1024px) {
+        width: 400px;
+        margin-left: 20px;
+    }
 `;
 
-const ConteneurLettres = styled.div`
+export const ConteneurLettres = styled.div`
     display: flex;
 `;
 
-const LettresG = styled.div`
+export const LettresG = styled.div`
     display: flex;
     flex-direction: column;
 `;
-const LettresD = styled.div`
+export const LettresD = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 20px;
 `;
 
-const ConteneurSlate = styled.div`
+export const ConteneurSlate = styled.div`
     position: relative;
     box-sizing: border-box;
     border: 1px dashed transparent;
     transition: all 0.2s;
 `;
 
-const Lettre = styled.div`
+export const Lettre = styled.div`
     height: 40px;
     width: 40px;
     text-align: center;
@@ -57,7 +64,7 @@ const Lettre = styled.div`
     }
 `;
 
-const ConteneurListe = styled.div`
+export const ConteneurListe = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
@@ -65,23 +72,55 @@ const ConteneurListe = styled.div`
     height: 90%;
     overflow: hidden;
     padding-right: 10px;
+    @media (max-width: 1024px) {
+        margin-left: 10px;
+        padding-right: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+    @media (max-width: 767px) {
+        margin-top: 60px;
+        margin-left: 0px;
+        height: initial;
+        overflow: initial;
+        padding-right: 0px;
+        justify-content: center;
+        align-items: center;
+    }
 `;
 
-const BlocLettre = styled.div`
+export const BlocLettre = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
 `;
 
-const Lettre2 = styled.div`
+export const Lettre2 = styled.div`
     font-size: 24px;
     color: orange;
 `;
 
-const RadioButton = styled(Radio.Button)`
+export const RadioButton = styled(Radio.Button)`
     background-color: rgba(0, 0, 0, 0);
 `;
 
-const LienAdmin = styled.div`
+export const ConteneurListeIndex = styled.div`
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    margin-top: 10px;
+    position: relative;
+    @media (max-width: 767px) {
+        text-align: center;
+        height: initial;
+        width: 100%;
+        overflow: initial;
+        padding-right: 0px;
+        justify-content: center;
+        align-items: center;
+    }
+`;
+
+export const LienAdmin = styled.div`
     position: absolute;
     height: 30px;
     width: 30px;
@@ -98,18 +137,3 @@ const LienAdmin = styled.div`
         box-shadow: 0 0 3px;
     }
 `;
-
-export const Styled = {
-    Conteneur,
-    ConteneurLettres,
-    LettresG,
-    LettresD,
-    ConteneurSlate,
-    Lettre,
-    Lettre2,
-    ConteneurListe,
-    RadioButton,
-    ConteneurDescription,
-    BlocLettre,
-    LienAdmin
-};

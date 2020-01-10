@@ -155,7 +155,7 @@ const AffichageSujet = () => {
                 setState({ type: "Loading", value: false });
             });
         }
-    }, [id, sujets, nbSujets, actif]);
+    }, [id, sujets, nbSujets, actif, setState]);
 
     return (
         <>
@@ -168,7 +168,7 @@ const AffichageSujet = () => {
                 />
                 <link
                     rel="canonical"
-                    href={`https://www.phidbac.fr/Sujets/${sujetAffiche?.id}`}
+                    href={`https://www.phidbac.fr/Annales-Bac-Sujets-Philosophie/${sujetAffiche?.id}`}
                 />
             </Helmet>
             <Transition

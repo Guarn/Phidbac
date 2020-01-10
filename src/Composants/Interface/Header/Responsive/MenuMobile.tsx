@@ -87,6 +87,14 @@ const MenuMobile = () => {
                 <BoutonPage style={{ color: "rgba(0,0,0,0.3" }}>
                     Exercices
                 </BoutonPage>
+                <BoutonPage
+                    onClick={() => {
+                        setMenu(false);
+                        history.push("/Liste-des-index");
+                    }}
+                >
+                    Index
+                </BoutonPage>
                 <BoutonPage>
                     <Connexion />
                 </BoutonPage>

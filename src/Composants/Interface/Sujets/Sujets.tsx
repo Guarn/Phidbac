@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Desktop, Tablet } from "../../../responsive";
 
 const SujetsDesktop = React.lazy(() => import("./Responsive/SujetsDesktop"));
 

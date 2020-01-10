@@ -1,13 +1,16 @@
-import * as React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import "./Index.css";
 import Axios from "../../Fonctionnels/Axios";
-import { Radio, Icon } from "antd";
+import { Radio, Icon, Modal } from "antd";
 import Slate from "../../Fonctionnels/Slate";
-import { Styled } from "./Styled";
+import * as Styled from "./Index.Styled";
 import { Link, Events, scrollSpy, Element } from "react-scroll";
 import { Transition } from "react-transition-group";
 import { userContext } from "../../../App";
+import { DesktopTablet, Desktop, Mobile } from "../../../responsive";
+import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router";
 
 interface elementProps {
     selected: boolean;
@@ -30,7 +33,7 @@ interface stateI {
     description?: string;
 }
 
-type filtres = "tous" | "notion" | "terme" | "auteur";
+type FiltresT = "tous" | "notion" | "terme" | "auteur";
 
 const alphabet = [
     "A",
@@ -74,9 +77,10 @@ const transitionStyles: any = {
 };
 
 const Index = () => {
-    const [id, setId] = React.useState<number>(50);
-
-    const refListe = React.useRef<HTMLDivElement>(null);
+    const [id, setId] = useState<number>(50);
+    const [modalShow, setModalShow] = useState(false);
+    const refListe = useRef<HTMLDivElement>(null);
+    const location = useLocation();
 
     React.useEffect(() => {
         Events.scrollEvent.register("begin", function() {});
@@ -85,76 +89,82 @@ const Index = () => {
 
         scrollSpy.update();
 
+        if (location.pathname.substring(16)) {
+            setId(parseInt(location.pathname.substring(17).split("-")[0]));
+        }
+
         return () => {
             Events.scrollEvent.remove("begin");
             Events.scrollEvent.remove("end");
         };
-    }, []);
+    }, [location.pathname]);
 
     return (
         <Styled.Conteneur>
-            <Transition
-                appear
-                enter
-                mountOnEnter
-                unmountOnExit
-                in={true}
-                timeout={{ appear: 100, enter: 100, exit: 200 }}
-            >
-                {(state) => (
-                    <Styled.ConteneurLettres
-                        style={{
-                            ...defaultStyle,
-                            ...transitionStyles[state]
-                        }}
-                    >
-                        <Styled.LettresG>
-                            {alphabet.map((item, index) => {
-                                if (index % 2 === 0) {
-                                    return (
-                                        <Link
-                                            activeClass="active"
-                                            to={`Lettre-${item}`}
-                                            spy={true}
-                                            smooth={true}
-                                            duration={350}
-                                            containerId="ConteneurListe"
-                                            key={item + "-" + index}
-                                        >
-                                            <Styled.Lettre>
-                                                {item}
-                                            </Styled.Lettre>
-                                        </Link>
-                                    );
-                                }
-                                return null;
-                            })}
-                        </Styled.LettresG>
-                        <Styled.LettresD>
-                            {alphabet.map((item, index) => {
-                                if (index % 2) {
-                                    return (
-                                        <Link
-                                            activeClass="active"
-                                            to={`Lettre-${item}`}
-                                            spy={true}
-                                            smooth={true}
-                                            duration={350}
-                                            containerId="ConteneurListe"
-                                            key={item + "-" + index}
-                                        >
-                                            <Styled.Lettre>
-                                                {item}
-                                            </Styled.Lettre>
-                                        </Link>
-                                    );
-                                }
-                                return null;
-                            })}
-                        </Styled.LettresD>
-                    </Styled.ConteneurLettres>
-                )}
-            </Transition>
+            <Desktop>
+                <Transition
+                    appear
+                    enter
+                    mountOnEnter
+                    unmountOnExit
+                    in={true}
+                    timeout={{ appear: 100, enter: 100, exit: 200 }}
+                >
+                    {(state) => (
+                        <Styled.ConteneurLettres
+                            style={{
+                                ...defaultStyle,
+                                ...transitionStyles[state]
+                            }}
+                        >
+                            <Styled.LettresG>
+                                {alphabet.map((item, index) => {
+                                    if (index % 2 === 0) {
+                                        return (
+                                            <Link
+                                                activeClass="active"
+                                                to={`Lettre-${item}`}
+                                                spy={true}
+                                                smooth={true}
+                                                duration={350}
+                                                containerId="ConteneurListe"
+                                                key={item + "-" + index}
+                                            >
+                                                <Styled.Lettre>
+                                                    {item}
+                                                </Styled.Lettre>
+                                            </Link>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </Styled.LettresG>
+                            <Styled.LettresD>
+                                {alphabet.map((item, index) => {
+                                    if (index % 2) {
+                                        return (
+                                            <Link
+                                                activeClass="active"
+                                                to={`Lettre-${item}`}
+                                                spy={true}
+                                                smooth={true}
+                                                duration={350}
+                                                containerId="ConteneurListe"
+                                                key={item + "-" + index}
+                                            >
+                                                <Styled.Lettre>
+                                                    {item}
+                                                </Styled.Lettre>
+                                            </Link>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </Styled.LettresD>
+                        </Styled.ConteneurLettres>
+                    )}
+                </Transition>
+            </Desktop>
             <Transition
                 appear
                 enter
@@ -173,30 +183,44 @@ const Index = () => {
                     >
                         <ListeIndex
                             id={id}
+                            setModalShow={(val: boolean) => setModalShow(val)}
                             setId={(val: number) => setId(val)}
                         />
                     </Styled.ConteneurListe>
                 )}
             </Transition>
-            <Transition
-                appear
-                enter
-                mountOnEnter
-                unmountOnExit
-                in={true}
-                timeout={{ appear: 500, enter: 500, exit: 200 }}
-            >
-                {(state) => (
-                    <Styled.ConteneurDescription
-                        style={{
-                            ...defaultStyle,
-                            ...transitionStyles[state]
-                        }}
-                    >
-                        <DescriptionIndex id={id} />
-                    </Styled.ConteneurDescription>
-                )}
-            </Transition>
+            <Mobile>
+                <Modal
+                    visible={modalShow}
+                    footer={null}
+                    destroyOnClose
+                    onCancel={() => setModalShow(false)}
+                    onOk={() => setModalShow(false)}
+                >
+                    <DescriptionIndex id={id} />
+                </Modal>
+            </Mobile>
+            <DesktopTablet>
+                <Transition
+                    appear
+                    enter
+                    mountOnEnter
+                    unmountOnExit
+                    in={true}
+                    timeout={{ appear: 500, enter: 500, exit: 200 }}
+                >
+                    {(state) => (
+                        <Styled.ConteneurDescription
+                            style={{
+                                ...defaultStyle,
+                                ...transitionStyles[state]
+                            }}
+                        >
+                            <DescriptionIndex id={id} />
+                        </Styled.ConteneurDescription>
+                    )}
+                </Transition>
+            </DesktopTablet>
         </Styled.Conteneur>
     );
 };
@@ -205,6 +229,7 @@ export default Index;
 interface ListeIndexI {
     id: number;
     setId: any;
+    setModalShow: any;
 }
 
 /**
@@ -212,28 +237,19 @@ interface ListeIndexI {
  *
  */
 
-const ListeIndex: React.FC<ListeIndexI> = ({ id, setId }) => {
+const ListeIndex: React.FC<ListeIndexI> = ({ id, setId, setModalShow }) => {
     const [state, setState] = React.useState<stateI[]>([]);
-    const [filtre, setFiltre] = React.useState<filtres>("tous");
+    const [filtre, setFiltre] = React.useState<FiltresT>("tous");
 
     React.useEffect(() => {
         Axios.get("/Indexes").then((rep) => {
             setState(rep.data);
         });
-    }, [filtre]);
+    }, []);
     return (
         <>
-            <ChoixFiltre setFiltre={(val: filtres) => setFiltre(val)} />
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    overflow: "auto",
-                    marginTop: "10px",
-                    position: "relative"
-                }}
-                id="ConteneurListe"
-            >
+            <ChoixFiltre setFiltre={(val: FiltresT) => setFiltre(val)} />
+            <Styled.ConteneurListeIndex id="ConteneurListe">
                 {alphabet.map((item) => {
                     return (
                         <div key={`Bloclettre-${item}`}>
@@ -263,6 +279,7 @@ const ListeIndex: React.FC<ListeIndexI> = ({ id, setId }) => {
                                                 selected={element.id === id}
                                                 onMouseDown={() => {
                                                     setId(element.id);
+                                                    setModalShow(true);
                                                 }}
                                                 key={element.id}
                                             >
@@ -274,7 +291,7 @@ const ListeIndex: React.FC<ListeIndexI> = ({ id, setId }) => {
                         </div>
                     );
                 })}
-            </div>
+            </Styled.ConteneurListeIndex>
         </>
     );
 };
@@ -344,12 +361,30 @@ export const DescriptionIndex: React.FC<DescriptionIndexI> = ({ id }) => {
                             paddingTop: element.options.paddingTop + "px",
                             paddingBottom: element.options.paddingBottom + "px",
                             fontFamily: "Century Gothic",
-                            fontSize: "16px",
                             minHeight: element.image
                                 ? element.imageOptions.height + "px"
                                 : ""
                         }}
                     >
+                        <Helmet>
+                            <title>{`${state.type?.toUpperCase()} : ${
+                                state.nom
+                            }`}</title>
+                            <meta charSet="utf-8" />
+                            <meta
+                                name="description"
+                                content={`Définition de  l'index ${state.nom}.`}
+                            />
+                            <link
+                                rel="canonical"
+                                href={`https://www.phidbac.fr/Liste-des-index/${
+                                    state.id
+                                }-${state.nom
+                                    ?.trim()
+                                    .replace(" ", "-")
+                                    .replace("/", "-")}`}
+                            />
+                        </Helmet>
                         {user.connecte &&
                             (user.grade === "Administrateur" ||
                                 user.grade === "Visiteur") &&
