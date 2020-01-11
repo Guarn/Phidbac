@@ -276,7 +276,6 @@ const AfficherListeCours = () => {
                 appear
                 enter
                 mountOnEnter
-                unmountOnExit
                 in={user.connecte}
                 timeout={{ appear: 200, enter: 0, exit: 200 }}
             >

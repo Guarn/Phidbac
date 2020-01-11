@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch } from "react";
+import React, { createContext, Dispatch, useEffect } from "react";
 import "./App.css";
 import * as Styled from "./App.Styled";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -14,6 +14,8 @@ import Exercices from "./Composants/Interface/Exercices/Exercices";
 import { userReducer, userInit, Action, State } from "./reducers";
 import { theme } from "./Shared/Styled";
 import { HelmetProvider } from "react-helmet-async";
+import Axios from "./Composants/Fonctionnels/Axios";
+import { useCookies } from "react-cookie";
 
 /**
  * Reducer de gestion de connection de l'utilisateur
@@ -24,7 +26,22 @@ export const userContext = createContext<[State, Dispatch<Action>]>(
 
 const App = () => {
     const [user, userDispatch] = React.useReducer(userReducer, userInit);
+    const [cookies, , removeCookie] = useCookies();
 
+    useEffect(() => {
+        if (cookies.token) {
+            if (!user.connecte) {
+                Axios.get("/p")
+                    .then((rep) => {
+                        userDispatch({ type: "UPDATE", user: rep.data });
+                    })
+                    .catch((err) => {
+                        removeCookie("token", { domain: ".phidbac.fr" });
+                        userDispatch({ type: "REMOVE" });
+                    });
+            }
+        }
+    });
     return (
         <HelmetProvider>
             <ThemeProvider theme={theme}>

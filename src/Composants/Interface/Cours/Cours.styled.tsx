@@ -9,6 +9,7 @@ export const Conteneur = styled.div`
     @media (max-width: 767px) {
         height: initial;
         width: initial;
+        padding-top: 60px;
     }
 `;
 
@@ -108,6 +109,6 @@ export const ConteneurTimeline = styled.div`
         padding-right: 0px;
         padding-left: 0px;
         height: initial;
-        margin-top: 60px;
+        margin-top: 20px;
     }
 `;

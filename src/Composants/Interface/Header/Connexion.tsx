@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Icon, Popover, Form, Modal } from "antd";
 import Login from "./Login";
-import Axios from "../../Fonctionnels/Axios";
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import { Desktop, TabletMobile } from "../../../responsive";
@@ -70,24 +69,9 @@ const transitionStyles: any = {
 
 const Header = () => {
     const [user, userDispatch] = useContext(userContext);
-    const [cookies, , removeCookie] = useCookies();
+    const [, , removeCookie] = useCookies();
     const [connexionDisplay, setConnexionDisplay] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
-
-    useEffect(() => {
-        if (cookies.token) {
-            if (!user.connecte) {
-                Axios.get("/p")
-                    .then((rep) => {
-                        userDispatch({ type: "UPDATE", user: rep.data });
-                    })
-                    .catch((err) => {
-                        removeCookie("token", { domain: ".phidbac.fr" });
-                        userDispatch({ type: "REMOVE" });
-                    });
-            }
-        }
-    });
 
     return (
         <>

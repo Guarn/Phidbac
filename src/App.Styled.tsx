@@ -39,7 +39,6 @@ export const ConteneurContenu = styled.div`
     background-color: ${(props) => props.theme.background};
     @media (max-width: 1024px) {
         position: relative;
-        flex-direction: column;
         justify-content: flex-start;
         min-height: 100vh;
     }

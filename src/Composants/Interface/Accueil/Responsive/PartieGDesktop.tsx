@@ -65,6 +65,7 @@ const DescriptionCat = styled.div`
 const PartieGDesktop = () => {
     const [descriptionAff, setDescriptionAff] = React.useState(false);
     const [numDescription, setnumDescription] = React.useState(0);
+    const cat = [0, 1, 2, 3, 4, 5];
     return (
         <div
             style={{
@@ -123,97 +124,26 @@ const PartieGDesktop = () => {
                                 timeout={200}
                             >
                                 <SousConteneurCat>
-                                    <TitreCat
-                                        onClick={() => {
-                                            setnumDescription(0);
-                                            setDescriptionAff(true);
-                                        }}
-                                    >
-                                        <Icon
-                                            type="right"
-                                            style={{
-                                                color: "orange",
-                                                marginRight: "10px"
-                                            }}
-                                        />
-                                        {contenuTexte[0].Titre}
-                                    </TitreCat>
-
-                                    <TitreCat
-                                        onClick={() => {
-                                            setnumDescription(1);
-                                            setDescriptionAff(true);
-                                        }}
-                                    >
-                                        <Icon
-                                            type="right"
-                                            style={{
-                                                color: "orange",
-                                                marginRight: "10px"
-                                            }}
-                                        />
-                                        {contenuTexte[1].Titre}
-                                    </TitreCat>
-                                    <TitreCat
-                                        onClick={() => {
-                                            setnumDescription(2);
-                                            setDescriptionAff(true);
-                                        }}
-                                    >
-                                        <Icon
-                                            type="right"
-                                            style={{
-                                                color: "orange",
-                                                marginRight: "10px"
-                                            }}
-                                        />
-                                        {contenuTexte[2].Titre}
-                                    </TitreCat>
-                                    <TitreCat
-                                        onClick={() => {
-                                            setnumDescription(3);
-                                            setDescriptionAff(true);
-                                        }}
-                                    >
-                                        <Icon
-                                            type="right"
-                                            style={{
-                                                color: "orange",
-                                                marginRight: "10px"
-                                            }}
-                                        />
-                                        {contenuTexte[3].Titre}
-                                    </TitreCat>
-                                    <TitreCat
-                                        onClick={() => {
-                                            setnumDescription(4);
-                                            setDescriptionAff(true);
-                                        }}
-                                    >
-                                        <Icon
-                                            type="right"
-                                            style={{
-                                                color: "orange",
-                                                marginRight: "10px"
-                                            }}
-                                        />
-                                        {contenuTexte[4].Titre}
-                                    </TitreCat>
-                                    <TitreCat
-                                        onClick={() => {
-                                            setnumDescription(5);
-                                            setDescriptionAff(true);
-                                        }}
-                                    >
-                                        <Icon
-                                            type="right"
-                                            style={{
-                                                color: "orange",
-                                                marginRight: "10px"
-                                            }}
-                                        />
-                                        {contenuTexte[5].Titre}
-                                    </TitreCat>
+                                    {cat.map((el) => {
+                                        return (
+                                            <TitreCat
+                                                key={`Preesentation-${el}`}
+                                                onClick={() => {
+                                                    setnumDescription(el);
+                                                    setDescriptionAff(true);
+                                                }}
+                                            >
+                                                <Icon
+                                                    type="right"
+                                                    style={{
+                                                        color: "orange",
+                                                        marginRight: "10px"
+                                                    }}
+                                                />
+                                                {contenuTexte[el].Titre}
+                                            </TitreCat>
+                                        );
+                                    })}
                                 </SousConteneurCat>
                             </CSSTransition>
                         )}
