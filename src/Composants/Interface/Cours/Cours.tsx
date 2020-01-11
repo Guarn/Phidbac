@@ -8,7 +8,7 @@ import Programme from "../Programme/Programme";
 import { useLocation, useHistory } from "react-router";
 import * as Styled from "./Cours.styled";
 import { Helmet } from "react-helmet-async";
-import { Desktop, Mobile } from "../../../responsive";
+import { Desktop, TabletMobile } from "../../../responsive";
 
 type coursT = {
     id: number;
@@ -186,14 +186,7 @@ const AfficherCours: React.FC<AfficherCoursI> = ({ id }) => {
 
     return (
         <>
-            <div
-                style={{
-                    position: "relative",
-                    top: "0px",
-                    left: "0px",
-                    height: "100%"
-                }}
-            >
+            <Styled.ContenuCours>
                 <Transition
                     appear
                     enter
@@ -212,9 +205,9 @@ const AfficherCours: React.FC<AfficherCoursI> = ({ id }) => {
                                         history.push("/Liste-des-cours")
                                     }
                                     style={{
-                                        position: "absolute",
-                                        top: "-10px",
+                                        position: "relative",
                                         left: "110px",
+                                        marginBottom: "10px",
                                         ...defaultStyle,
                                         ...transitionStyles[state3]
                                     }}
@@ -222,7 +215,7 @@ const AfficherCours: React.FC<AfficherCoursI> = ({ id }) => {
                                     Revenir à la liste de cours
                                 </Button>
                             </Desktop>
-                            <Mobile>
+                            <TabletMobile>
                                 <Button
                                     type="ghost"
                                     icon="arrow-left"
@@ -230,20 +223,20 @@ const AfficherCours: React.FC<AfficherCoursI> = ({ id }) => {
                                         history.push("/Liste-des-cours")
                                     }
                                     style={{
-                                        position: "absolute",
-                                        top: "55px",
+                                        marginBottom: "10px",
+
                                         ...defaultStyle,
                                         ...transitionStyles[state3]
                                     }}
                                 >
                                     Revenir à la liste de cours
                                 </Button>
-                            </Mobile>
+                            </TabletMobile>
                         </>
                     )}
                 </Transition>
                 <Programme id={id} tableMatiereShow />
-            </div>
+            </Styled.ContenuCours>
         </>
     );
 };

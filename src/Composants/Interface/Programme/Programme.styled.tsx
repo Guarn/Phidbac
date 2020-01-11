@@ -6,10 +6,12 @@ export interface ConteneurI {
 
 export const Conteneur = styled.div<ConteneurI>`
     width: 100%;
-    height: ${(props) => (props.decalage ? "calc(100%  - 40px)" : "100%")};
+    height: 100%;
     display: flex;
     justify-content: center;
-    margin-top: ${(props) => (props.decalage ? "40px" : "0px")};
+    @media (max-width: 767px) {
+        margin-top: ${(props) => (props.decalage ? "60px" : "0px")};
+    }
 `;
 export const PuceLien = styled.div`
     opacity: 0;
@@ -104,8 +106,7 @@ export const ConteneurGlobal = styled.div<WidthProps>`
     position: relative;
     padding-left: 10%;
     height: 100%;
-    @media (max-width: 767px) {
-        margin-top: 60px;
+    @media (max-width: 1023px) {
         padding-right: 5px;
         padding-left: 5px;
         width: initial;

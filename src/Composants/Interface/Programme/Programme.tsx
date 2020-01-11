@@ -148,13 +148,8 @@ const Programme: React.FC<ProgrammeI> = ({
     return (
         <Styled.Conteneur
             decalage={
-                (location.pathname.substring(0, 16) === "/Liste-des-cours" &&
-                    location.pathname.substring(17) !== "" &&
-                    !!tableMatiereShow) ||
-                (location.pathname.substring(0, 20) ===
-                    "/Liste-des-exercices" &&
-                    location.pathname.substring(21) !== "" &&
-                    !!tableMatiereShow)
+                location.pathname ===
+                "/Presentation-du-programme-et-des-epreuves"
             }
         >
             {id === 1 && (

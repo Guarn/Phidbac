@@ -23,6 +23,16 @@ export const ConteneurCours = styled.div`
     }
 `;
 
+export const ContenuCours = styled.div`
+    height: calc(100% - 32px);
+    @media (max-width: 1023px) {
+        height: calc(100% - 100px);
+    }
+    @media (max-width: 768px) {
+        height: calc(100% - 32px);
+    }
+`;
+
 export const Description = styled.div`
     display: flex;
     flex-direction: column;
