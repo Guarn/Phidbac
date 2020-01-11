@@ -61,6 +61,9 @@ const App = () => {
                                     path="/Liste-des-exercices"
                                     component={Exercices}
                                 />
+                                <Route>
+                                    <div>TEST</div>
+                                </Route>
                             </Switch>
                         </Styled.ConteneurContenu>
 

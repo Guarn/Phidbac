@@ -37,11 +37,11 @@ export const ConteneurContenu = styled.div`
     display: flex;
     justify-content: center;
     background-color: ${(props) => props.theme.background};
-    min-height: 100vh;
     @media (max-width: 1024px) {
         position: relative;
         flex-direction: column;
         justify-content: flex-start;
+        min-height: 100vh;
     }
 `;
 
