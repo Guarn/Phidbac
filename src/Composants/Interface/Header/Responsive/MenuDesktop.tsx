@@ -2,7 +2,8 @@ import * as React from "react";
 import { useHistory } from "react-router-dom";
 import ico from "../../../../Assets/ICONE-PHI.jpg";
 import styled from "styled-components";
-import Connexion from "../Connexion";
+
+const Connexion = React.lazy(() => import("../Connexion"));
 
 const ConteneurLiensPage = styled.div`
     height: 80px;
@@ -75,9 +76,13 @@ const Desktop = () => {
                 <BoutonPage onClick={() => history.push("/Liste-des-index")}>
                     Index
                 </BoutonPage>
-                <BoutonPage>
-                    <Connexion />
-                </BoutonPage>
+                <React.Suspense
+                    fallback={<BoutonPage>Se connecter</BoutonPage>}
+                >
+                    <BoutonPage>
+                        <Connexion />
+                    </BoutonPage>
+                </React.Suspense>
             </ConteneurLiensPage>
         </>
     );
