@@ -1,0 +1,13 @@
+{
+    "plugins": [
+        [
+            "babel-plugin-styled-components",
+            {
+                "displayName": true,
+                "ssr": false,
+                "fileName": false,
+                "pure": false
+            }
+        ]
+    ]
+}
